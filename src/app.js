@@ -1,6 +1,6 @@
 import express from "express";
 import routes from "./routes";
-// import './database'; (só depois com sequelize)
+import "./database";
 
 class App {
   constructor() {
@@ -19,5 +19,5 @@ class App {
   }
 }
 
-// Exporto apenas o server da classe, e não a classe toda, pois traz segurança
+// Exportar apenas o server da classe traz segurança
 export default new App().server;
