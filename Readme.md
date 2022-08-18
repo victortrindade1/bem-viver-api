@@ -14,3 +14,4 @@
 - Sentry (debug p/ produção)
 - Express-async-errors (Funções Async não captadas pelo Express)
 - Youch (transforma erro em JSON)
+- DotEnv (gerencia .env)
