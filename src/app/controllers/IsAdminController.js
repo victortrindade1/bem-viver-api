@@ -1,0 +1,23 @@
+import User from "../models/User";
+import File from "../models/File";
+
+class IsAdminController {
+  async index(req, res) {
+    const admins = await User.findAll({
+      where: { isAdmin: true },
+      // Os campos q eu quero q mostre ficam em "attributes"
+      attributes: ["id", "name", "email", "avatar_id"],
+      include: [
+        {
+          model: File,
+          as: "avatar",
+          attributes: ["name", "path", "url"],
+        },
+      ],
+    });
+
+    return res.json(admins);
+  }
+}
+
+export default new IsAdminController();

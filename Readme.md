@@ -11,3 +11,4 @@
 - JWT e Bcrypt (auth)
 - Yup (Validações)
 - Multer (p/ manipular `multipart/form-data`, ou seja, imagens e outros)
+- Sentry (debug p/ produção)
