@@ -3,8 +3,6 @@ import authConfig from "../../config/auth";
 import User from "../models/User";
 
 class SessionController {
-  // Método store -> cria nova session]
-  // Repare q store não necessariamente significa gravar algo no banco
   async store(req, res) {
     const { email, password } = req.body;
 
@@ -18,13 +16,14 @@ class SessionController {
       return res.status(401).json({ error: "Password does not match" });
     }
 
-    const { id, name } = user;
+    const { id, name, isAdmin } = user;
 
     return res.json({
       user: {
         id,
         name,
         email,
+        isAdmin,
       },
       token: jwt.sign({ id }, authConfig.secret, {
         expiresIn: authConfig.expiresIn,
