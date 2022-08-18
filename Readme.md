@@ -12,3 +12,5 @@
 - Yup (Validações)
 - Multer (p/ manipular `multipart/form-data`, ou seja, imagens e outros)
 - Sentry (debug p/ produção)
+- Express-async-errors (Funções Async não captadas pelo Express)
+- Youch (transforma erro em JSON)
