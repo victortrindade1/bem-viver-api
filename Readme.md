@@ -16,3 +16,4 @@
 - Youch (transforma erro em JSON)
 - DotEnv (gerencia .env)
 - Cors (Proteção API)
+- Desenho Diagrama Database: 'https://dbdiagram.io/d'
