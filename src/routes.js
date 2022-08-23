@@ -22,6 +22,9 @@ routes.use(authMiddleware);
 
 routes.post("/users", UserController.store);
 routes.put("/users", UserController.update);
+routes.get("/users", UserController.index);
+routes.delete("/users/:id", UserController.delete);
+routes.get("/users/:id", UserController.show);
 
 routes.get("/admins", IsAdminController.index);
 
