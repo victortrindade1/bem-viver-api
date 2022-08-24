@@ -1,5 +1,9 @@
 # API Bem Viver Admin
 
+## Onde parei
+
+CRUD Alunos -> Método Index
+
 ## Configuração
 
 - Node.JS
@@ -7,7 +11,8 @@
 - Nodemon (para autoreload no desenvolvimento)
 - Sucrase (permite usar sintaxe ES6+ e TS)
 - Eslint, Prettier e EditorConfig
-- Postgres (ORM Sequelize)
+- PostgreSQL
+- ORM Sequelize
 - JWT e Bcrypt (auth)
 - Yup (Validações)
 - Multer (p/ manipular `multipart/form-data`, ou seja, imagens e outros)

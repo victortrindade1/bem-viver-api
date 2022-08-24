@@ -59,9 +59,8 @@ class UserController {
         ),
       });
 
-      const { id, name, email, oldPassword, password, confirmPassword } =
-        req.body;
-      // const { id } = req.params;
+      const { name, email, oldPassword, password, confirmPassword } = req.body;
+      const { id } = req.params;
 
       const userRequest = {
         id,
@@ -75,8 +74,6 @@ class UserController {
       if (!(await schema.isValid(userRequest))) {
         return res.status(400).json({ error: "Validation fails" });
       }
-
-      // const { email, oldPassword } = req.body;
 
       const user = await User.findByPk(id);
 
@@ -92,32 +89,15 @@ class UserController {
         return res.status(401).json({ error: "Password does not match" });
       }
 
-      // const { id, name, isAdmin } = await user.update(req.body);
-      await user.update(req.body);
+      const request = {
+        name: req.body.name,
+        email: req.body.email,
+        avatar_id: req.body.avatar_id,
+      };
 
-      const {
-        id: updatedId,
-        name: updatedName,
-        email: updatedEmail,
-        isAdmin,
-        avatar,
-      } = await User.findByPk(req.body.id, {
-        include: [
-          {
-            model: File,
-            as: "avatar",
-            attributes: ["id", "path", "url"],
-          },
-        ],
-      });
+      const userUpdated = await user.update(request);
 
-      return res.json({
-        id: updatedId,
-        name: updatedName,
-        email: updatedEmail,
-        isAdmin,
-        avatar,
-      });
+      return res.json(userUpdated);
     } catch (err) {
       if (process.env.NODE_ENV === "development") {
         const errors = await new Youch(err, req).toJSON();
