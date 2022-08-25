@@ -1,7 +1,21 @@
 import Youch from "youch";
+import { Op } from "sequelize";
 import * as Yup from "yup";
 
 import Aluno from "../models/Aluno";
+
+const verifyTypeFilter = async (filter) => {
+  const where = {};
+
+  where.nome = { [Op.iLike]: `${filter}%` };
+
+  const temNomes = await Aluno.count({ where });
+  if (temNomes > 0) {
+    return where;
+  }
+
+  return {};
+};
 
 class AlunoController {
   async store(req, res) {
@@ -296,7 +310,31 @@ class AlunoController {
 
   async index(req, res) {
     try {
-      return res.json({});
+      const { page = 1, q: filter, limit = 5 } = req.query;
+
+      let where = {};
+
+      if (filter) {
+        where = await verifyTypeFilter(filter);
+      }
+
+      const total = await Aluno.count({ where });
+
+      const alunos = await Aluno.findAll({
+        where,
+        limit,
+        offset: (page - 1) * limit,
+        order: [["id", "DESC"]],
+        attributes: ["id", "nome"],
+      });
+
+      return res.json({
+        limit,
+        page: Number(page),
+        items: alunos,
+        total,
+        pages: Math.ceil(total / limit),
+      });
     } catch (err) {
       if (process.env.NODE_ENV === "development") {
         const errors = await new Youch(err, req).toJSON();
