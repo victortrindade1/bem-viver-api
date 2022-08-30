@@ -19,6 +19,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.BOOLEAN,
       },
+      status: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
       dados_pessoais_rg: {
         type: Sequelize.STRING,
         allowNull: true,

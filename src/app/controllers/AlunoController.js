@@ -1,21 +1,9 @@
 import Youch from "youch";
-import { Op } from "sequelize";
 import * as Yup from "yup";
 
 import Aluno from "../models/Aluno";
 
-const verifyTypeFilter = async (filter) => {
-  const where = {};
-
-  where.nome = { [Op.iLike]: `${filter}%` };
-
-  const temNomes = await Aluno.count({ where });
-  if (temNomes > 0) {
-    return where;
-  }
-
-  return {};
-};
+import { verifyTypeFilter } from "../../Utils";
 
 class AlunoController {
   async store(req, res) {
@@ -23,6 +11,7 @@ class AlunoController {
       const schema = Yup.object().shape({
         nome: Yup.string().required(),
         matricula: Yup.number().required(),
+        // status: Yup.string().required(),
         dataMatricula: Yup.string().when(
           "dataPreMatricula",
           (dataPreMatricula, field) =>
@@ -51,6 +40,7 @@ class AlunoController {
         dataMatricula: req.body.dataMatricula,
         dataPreMatricula: req.body.dataPreMatricula,
         ativo: true,
+        status: "Sem Pgto",
       };
 
       const aluno = await Aluno.create(alunoRequest);
@@ -314,11 +304,24 @@ class AlunoController {
 
       let where = {};
 
+      const queryFields = [
+        "nome",
+        "status",
+        "dados_escolares_sistema",
+        "matricula",
+        "dados_escolares_ano",
+        "dados_escolares_turma",
+      ];
+
       if (filter) {
-        where = await verifyTypeFilter(filter);
+        where = await verifyTypeFilter({
+          filter,
+          queryFields,
+          Model: Aluno,
+        });
       }
 
-      const total = await Aluno.count({ where });
+      const total = await Aluno.count(where);
 
       const alunos = await Aluno.findAll({
         where,
@@ -348,7 +351,15 @@ class AlunoController {
 
   async show(req, res) {
     try {
-      return res.json({});
+      const { id } = req.params;
+
+      const aluno = await Aluno.findByPk(id);
+
+      if (!aluno) {
+        return res.status(400).json({ error: "Aluno não existe." });
+      }
+
+      return res.json(aluno);
     } catch (err) {
       if (process.env.NODE_ENV === "development") {
         const errors = await new Youch(err, req).toJSON();
@@ -362,7 +373,17 @@ class AlunoController {
 
   async delete(req, res) {
     try {
-      return res.json({});
+      const { id } = req.params;
+
+      const aluno = await Aluno.findByPk(id);
+
+      if (!aluno) {
+        return res.status(400).json({ error: "Aluno não existe." });
+      }
+
+      await Aluno.destroy({ where: { id } });
+
+      return res.status(200).json({ message: "Aluno excluído com sucesso." });
     } catch (err) {
       if (process.env.NODE_ENV === "development") {
         const errors = await new Youch(err, req).toJSON();

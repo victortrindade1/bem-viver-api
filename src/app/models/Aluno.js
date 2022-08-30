@@ -7,6 +7,7 @@ class Aluno extends Model {
         ativo: Sequelize.BOOLEAN,
         matricula: Sequelize.BIGINT,
         nome: Sequelize.STRING,
+        status: Sequelize.STRING,
         dados_pessoais_rg: Sequelize.STRING,
         dados_pessoais_cpf: Sequelize.STRING,
         dados_pessoais_data_nascimento: Sequelize.STRING,

@@ -2,8 +2,7 @@
 
 ## Onde parei
 
-CRUD Alunos -> Método Index
-A função verifyTypeFilter está funcionando! Estou nela
+CRUD Alunos finalizado.
 
 ## Configuração
 
