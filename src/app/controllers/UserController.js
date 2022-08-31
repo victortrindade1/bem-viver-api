@@ -26,8 +26,15 @@ class UserController {
         return res.status(400).json({ error: "User already exists." });
       }
 
+      const request = {
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password,
+        isAdmin: req.body.isAdmin,
+      };
+
       // Em vez de carregar na response todos os dados de User, eu escolho carregar estes 4
-      const { id, name, email, isAdmin } = await User.create(req.body);
+      const { id, name, email, isAdmin } = await User.create(request);
 
       return res.json({
         id,

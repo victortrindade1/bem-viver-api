@@ -328,7 +328,7 @@ class AlunoController {
         limit,
         offset: (page - 1) * limit,
         order: [["id", "DESC"]],
-        attributes: ["id", "nome"],
+        // attributes: ["id", "nome"],
       });
 
       return res.json({

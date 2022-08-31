@@ -7,7 +7,8 @@ import UserController from "./app/controllers/UserController";
 import AlunoController from "./app/controllers/AlunoController";
 import SessionController from "./app/controllers/SessionController";
 import FileController from "./app/controllers/FileController";
-import IsAdminController from "./app/controllers/IsAdminController";
+import AnoController from "./app/controllers/AnoController";
+import TurmaController from "./app/controllers/TurmaController";
 
 import authMiddleware from "./app/middlewares/auth";
 
@@ -39,8 +40,27 @@ routes.get("/alunos", AlunoController.index);
 routes.delete("/alunos/:id", AlunoController.delete);
 routes.get("/alunos/:id", AlunoController.show);
 
-routes.get("/admins", IsAdminController.index);
-
+/**
+ * File
+ */
 routes.post("/files", upload.single("file"), FileController.store);
+
+/**
+ * Ano
+ */
+routes.post("/anos", AnoController.store);
+routes.put("/anos/:id", AnoController.update);
+routes.get("/anos", AnoController.index);
+routes.delete("/anos/:id", AnoController.delete);
+routes.get("/anos/:id", AnoController.show);
+
+/**
+ * Turma
+ */
+routes.post("/turmas", TurmaController.store);
+routes.put("/turmas/:id", TurmaController.update);
+routes.get("/turmas", TurmaController.index);
+routes.delete("/turmas/:id", TurmaController.delete);
+routes.get("/turmas/:id", TurmaController.show);
 
 export default routes;
