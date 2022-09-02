@@ -53,7 +53,7 @@ class Aluno extends Model {
         contatos_buscar3_parentesco: Sequelize.STRING,
         contatos_buscar3_contato: Sequelize.STRING,
         dados_escolares_sistema: Sequelize.STRING,
-        dados_escolares_turma: Sequelize.STRING,
+        // dados_escolares_turma: Sequelize.STRING,
         dados_escolares_turno: Sequelize.STRING,
         dados_escolares_horario_entrada: Sequelize.STRING,
         dados_escolares_horario_saida: Sequelize.STRING,
@@ -75,6 +75,13 @@ class Aluno extends Model {
     );
 
     return this;
+  }
+
+  static associate(models) {
+    this.belongsTo(models.Turma, {
+      foreignKey: "turma_id",
+      as: "dados_escolares_turma",
+    });
   }
 }
 

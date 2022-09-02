@@ -1,7 +1,9 @@
 import Youch from "youch";
 import * as Yup from "yup";
+// import { Op } from "sequelize";
 
 import Aluno from "../models/Aluno";
+import Turma from "../models/Turma";
 
 import { verifyTypeFilter } from "../../Utils";
 
@@ -125,7 +127,7 @@ class AlunoController {
         contatos_buscar3_parentesco: Yup.string(),
         contatos_buscar3_contato: Yup.string(),
         dados_escolares_sistema: Yup.string(),
-        dados_escolares_turma: Yup.string(),
+        turma_id: Yup.number(),
         dados_escolares_turno: Yup.string(),
         dados_escolares_horario_entrada: Yup.string(),
         dados_escolares_horario_saida: Yup.string(),
@@ -202,7 +204,7 @@ class AlunoController {
         contatos_buscar3_parentesco,
         contatos_buscar3_contato,
         dados_escolares_sistema,
-        dados_escolares_turma,
+        turma_id,
         dados_escolares_turno,
         dados_escolares_horario_entrada,
         dados_escolares_horario_saida,
@@ -268,7 +270,7 @@ class AlunoController {
         contatos_buscar3_parentesco,
         contatos_buscar3_contato,
         dados_escolares_sistema,
-        dados_escolares_turma,
+        turma_id,
         dados_escolares_turno,
         dados_escolares_horario_entrada,
         dados_escolares_horario_saida,
@@ -310,7 +312,7 @@ class AlunoController {
         "dados_escolares_sistema",
         "matricula",
         "dados_escolares_ano",
-        "dados_escolares_turma",
+        "turma_id",
       ];
 
       if (filter) {
@@ -318,17 +320,42 @@ class AlunoController {
           filter,
           queryFields,
           Model: Aluno,
+          modelsRef: [{ Model: Turma, title: "turmas" }],
         });
       }
 
-      const total = await Aluno.count(where);
+      const total = await Aluno.count({
+        where: where.where,
+        include: [
+          {
+            model: Turma,
+            // where: where.whereRef.where,
+            // where: {
+            //   label: {
+            //     [Op.eq]: "Maternal",
+            //   },
+            // },
+            as: "dados_escolares_turma",
+            required: false,
+          },
+        ],
+      });
 
       const alunos = await Aluno.findAll({
-        where,
+        where: where.where,
         limit,
         offset: (page - 1) * limit,
         order: [["id", "DESC"]],
         // attributes: ["id", "nome"],
+        include: [
+          {
+            model: Turma,
+            as: "dados_escolares_turma",
+            required: false,
+            // where: where.whereRef,
+            // attributes: ["name", "path", "url"],
+          },
+        ],
       });
 
       return res.json({
@@ -353,7 +380,15 @@ class AlunoController {
     try {
       const { id } = req.params;
 
-      const aluno = await Aluno.findByPk(id);
+      const aluno = await Aluno.findByPk(id, {
+        include: [
+          {
+            model: Turma,
+            as: "dados_escolares_turma",
+            // attributes: ["name", "path", "url"],
+          },
+        ],
+      });
 
       if (!aluno) {
         return res.status(400).json({ error: "Aluno não existe." });

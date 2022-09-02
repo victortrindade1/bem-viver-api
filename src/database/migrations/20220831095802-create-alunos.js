@@ -206,8 +206,11 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      dados_escolares_turma: {
-        type: Sequelize.STRING,
+      turma_id: {
+        type: Sequelize.INTEGER,
+        references: { model: "turmas", key: "id" },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
         allowNull: true,
       },
       dados_escolares_turno: {

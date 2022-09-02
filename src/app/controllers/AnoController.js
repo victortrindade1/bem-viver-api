@@ -82,7 +82,7 @@ class AnoController {
       const where = {};
 
       if (nameFilter) {
-        where.label = { [Op.iLike]: `${nameFilter}%` };
+        where.label = { [Op.iLike]: `%${nameFilter}%` };
       }
 
       const total = await Ano.count({ where });
