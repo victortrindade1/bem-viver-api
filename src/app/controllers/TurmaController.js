@@ -25,7 +25,10 @@ class TurmaController {
       }
 
       const verifyExists = await Turma.findOne({
-        where: { turma },
+        where: {
+          turma,
+          ano_id,
+        },
       });
 
       if (verifyExists) {

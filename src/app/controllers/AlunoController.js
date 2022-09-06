@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import Aluno from "../models/Aluno";
 import Turma from "../models/Turma";
 import Ano from "../models/Ano";
+import Sistema from "../models/Sistema";
 
 import { whereFilter } from "../../Utils";
 
@@ -320,6 +321,23 @@ class AlunoController {
         },
         {
           queryId: 3,
+          field: "sistema",
+          model: Sistema,
+          as: "dados_escolares_sistema",
+          at: {
+            model: Ano,
+            as: "dados_escolares_ano",
+            at: {
+              model: Turma,
+              as: "dados_escolares_turma",
+              at: {
+                model: Aluno,
+              },
+            },
+          },
+        },
+        {
+          queryId: 4,
           field: "ano",
           model: Ano,
           as: "dados_escolares_ano",
@@ -332,7 +350,7 @@ class AlunoController {
           },
         },
         {
-          queryId: 4,
+          queryId: 5,
           field: "turma",
           model: Turma,
           as: "dados_escolares_turma",
@@ -341,7 +359,7 @@ class AlunoController {
           },
         },
         {
-          queryId: 5,
+          queryId: 6,
           field: "status",
           model: Aluno,
         },
@@ -359,7 +377,7 @@ class AlunoController {
         where:
           (queryWhere.queryId === 1 ||
             queryWhere.queryId === 2 ||
-            queryWhere.queryId === 5) &&
+            queryWhere.queryId === 6) &&
           queryWhere.where,
         limit,
         offset: (page - 1) * limit,
@@ -369,13 +387,21 @@ class AlunoController {
             model: Turma,
             as: "dados_escolares_turma",
             required: true,
-            where: queryWhere.queryId === 4 && queryWhere.where,
+            where: queryWhere.queryId === 5 && queryWhere.where,
             include: [
               {
                 model: Ano,
                 as: "dados_escolares_ano",
                 required: true,
-                where: queryWhere.queryId === 3 && queryWhere.where,
+                where: queryWhere.queryId === 4 && queryWhere.where,
+                include: [
+                  {
+                    model: Sistema,
+                    as: "dados_escolares_sistema",
+                    required: true,
+                    where: queryWhere.queryId === 3 && queryWhere.where,
+                  },
+                ],
               },
             ],
           },

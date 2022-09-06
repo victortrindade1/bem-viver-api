@@ -1,10 +1,10 @@
 import Sequelize, { Model } from "sequelize";
 
-class Ano extends Model {
+class Sistema extends Model {
   static init(sequelize) {
     super.init(
       {
-        ano: Sequelize.STRING,
+        sistema: Sequelize.STRING,
       },
       {
         sequelize,
@@ -15,16 +15,11 @@ class Ano extends Model {
   }
 
   static associate(models) {
-    this.hasMany(models.Turma, {
-      foreignKey: "ano_id",
-      as: "dados_escolares_ano",
-    });
-
-    this.belongsTo(models.Sistema, {
+    this.hasMany(models.Ano, {
       foreignKey: "sistema_id",
       as: "dados_escolares_sistema",
     });
   }
 }
 
-export default Ano;
+export default Sistema;

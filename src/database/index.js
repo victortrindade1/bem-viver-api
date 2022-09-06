@@ -5,12 +5,13 @@ import File from "../app/models/File";
 import Aluno from "../app/models/Aluno";
 import Ano from "../app/models/Ano";
 import Turma from "../app/models/Turma";
+import Sistema from "../app/models/Sistema";
 
 // import AlunosDado from "../app/models/AlunosDado";
 
 import databaseConfig from "../config/database";
 
-const models = [User, File, Aluno, Ano, Turma];
+const models = [User, File, Aluno, Ano, Turma, Sistema];
 
 class Database {
   constructor() {

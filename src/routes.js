@@ -7,6 +7,7 @@ import UserController from "./app/controllers/UserController";
 import AlunoController from "./app/controllers/AlunoController";
 import SessionController from "./app/controllers/SessionController";
 import FileController from "./app/controllers/FileController";
+import SistemaController from "./app/controllers/SistemaController";
 import AnoController from "./app/controllers/AnoController";
 import TurmaController from "./app/controllers/TurmaController";
 
@@ -44,6 +45,15 @@ routes.get("/alunos/:id", AlunoController.show);
  * File
  */
 routes.post("/files", upload.single("file"), FileController.store);
+
+/**
+ * Sistema
+ */
+routes.post("/sistemas", SistemaController.store);
+routes.put("/sistemas/:id", SistemaController.update);
+routes.get("/sistemas", SistemaController.index);
+routes.delete("/sistemas/:id", SistemaController.delete);
+routes.get("/sistemas/:id", SistemaController.show);
 
 /**
  * Ano
