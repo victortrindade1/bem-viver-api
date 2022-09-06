@@ -57,7 +57,7 @@ class Aluno extends Model {
         dados_escolares_turno: Sequelize.STRING,
         dados_escolares_horario_entrada: Sequelize.STRING,
         dados_escolares_horario_saida: Sequelize.STRING,
-        dados_escolares_ano: Sequelize.STRING,
+        // dados_escolares_ano: Sequelize.STRING,
         dados_escolares_periodo: Sequelize.STRING,
         dados_escolares_data_pre_matricula: Sequelize.STRING,
         dados_escolares_data_matricula: Sequelize.STRING,
@@ -78,6 +78,10 @@ class Aluno extends Model {
   }
 
   static associate(models) {
+    // this.hasMany(models.Turma, {
+    //   foreignKey: "turma_id",
+    //   as: "dados_escolares_turma",
+    // });
     this.belongsTo(models.Turma, {
       foreignKey: "turma_id",
       as: "dados_escolares_turma",

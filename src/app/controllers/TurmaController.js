@@ -9,14 +9,14 @@ class TurmaController {
   async store(req, res) {
     try {
       const schema = Yup.object().shape({
-        label: Yup.string().required(),
+        turma: Yup.string().required(),
         ano_id: Yup.number(),
       });
 
-      const { label, ano_id } = req.body;
+      const { turma, ano_id } = req.body;
 
       const request = {
-        label,
+        turma,
         ano_id,
       };
 
@@ -25,7 +25,7 @@ class TurmaController {
       }
 
       const verifyExists = await Turma.findOne({
-        where: { label },
+        where: { turma },
       });
 
       if (verifyExists) {
@@ -36,7 +36,7 @@ class TurmaController {
 
       return res.json({
         id,
-        label,
+        turma,
         ano_id,
       });
     } catch (error) {
@@ -48,16 +48,16 @@ class TurmaController {
     try {
       const schema = Yup.object().shape({
         id: Yup.number().required(),
-        label: Yup.string().required(),
+        turma: Yup.string(),
         ano_id: Yup.number(),
       });
 
-      const { label, ano_id } = req.body;
+      const { turma, ano_id } = req.body;
       const { id } = req.params;
 
       const request = {
         id,
-        label,
+        turma,
         ano_id,
       };
 
@@ -65,9 +65,9 @@ class TurmaController {
         return res.status(400).json({ error: "Validation fails" });
       }
 
-      const turma = await Turma.findByPk(id);
+      const turmaExists = await Turma.findByPk(id);
 
-      const response = await turma.update(request);
+      const response = await turmaExists.update(request);
 
       return res.json(response);
     } catch (err) {
@@ -88,7 +88,7 @@ class TurmaController {
       const where = {};
 
       if (filter) {
-        where.label = { [Op.iLike]: `${filter}%` };
+        where.turma = { [Op.iLike]: `${filter}%` };
       }
 
       const total = await Turma.count({ where });
@@ -102,7 +102,7 @@ class TurmaController {
         include: [
           {
             model: Ano,
-            as: "ano",
+            as: "dados_escolares_ano",
             // attributes: ["name", "path", "url"],
           },
         ],
@@ -152,7 +152,7 @@ class TurmaController {
         include: [
           {
             model: Ano,
-            as: "ano",
+            as: "dados_escolares_ano",
             // attributes: ["name", "path", "url"],
           },
         ],

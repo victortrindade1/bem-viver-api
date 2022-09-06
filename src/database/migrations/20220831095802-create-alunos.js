@@ -225,10 +225,13 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      dados_escolares_ano: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
+      // ano_id: {
+      //   type: Sequelize.INTEGER,
+      //   references: { model: "anos", key: "id" },
+      //   onUpdate: "CASCADE",
+      //   onDelete: "SET NULL",
+      //   allowNull: true,
+      // },
       dados_escolares_periodo: {
         type: Sequelize.STRING,
         allowNull: true,

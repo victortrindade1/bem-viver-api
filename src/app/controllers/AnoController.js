@@ -8,7 +8,7 @@ class AnoController {
   async store(req, res) {
     try {
       const schema = Yup.object().shape({
-        label: Yup.string().required(),
+        ano: Yup.string().required(),
       });
 
       if (!(await schema.isValid(req.body))) {
@@ -16,24 +16,24 @@ class AnoController {
       }
 
       const anoExists = await Ano.findOne({
-        where: { label: req.body.label },
+        where: { ano: req.body.ano },
       });
 
       if (anoExists) {
         return res.status(400).json({ error: "Ano já existe." });
       }
 
-      const { label } = req.body;
+      const { ano } = req.body;
 
       const request = {
-        label,
+        ano,
       };
 
       const { id } = await Ano.create(request);
 
       return res.json({
         id,
-        label,
+        ano,
       });
     } catch (error) {
       return res.status(400).json({ error: "Error in database" });
@@ -44,24 +44,24 @@ class AnoController {
     try {
       const schema = Yup.object().shape({
         id: Yup.number().required(),
-        label: Yup.string().required(),
+        ano: Yup.string().required(),
       });
 
-      const { label } = req.body;
+      const { ano } = req.body;
       const { id } = req.params;
 
       const request = {
         id,
-        label,
+        ano,
       };
 
       if (!(await schema.isValid(request))) {
         return res.status(400).json({ error: "Validation fails" });
       }
 
-      const ano = await Ano.findByPk(id);
+      const anoExists = await Ano.findByPk(id);
 
-      const anoUpdated = await ano.update(request);
+      const anoUpdated = await anoExists.update(request);
 
       return res.json(anoUpdated);
     } catch (err) {
@@ -82,7 +82,7 @@ class AnoController {
       const where = {};
 
       if (nameFilter) {
-        where.label = { [Op.iLike]: `%${nameFilter}%` };
+        where.ano = { [Op.iLike]: `%${nameFilter}%` };
       }
 
       const total = await Ano.count({ where });

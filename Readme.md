@@ -2,7 +2,6 @@
 
 ## Onde parei
 
-Trocar turma e ano do aluno pra turma_id e ano_id
 CRUD Sistema, CRUD Período, CRUD Horário de Entrada, CRUD Horário de Saída
 E Status, vira status_id? Poderia, com um banco sem CRUD... Assim busca pelo id
 

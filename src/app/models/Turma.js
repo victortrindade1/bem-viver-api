@@ -4,7 +4,7 @@ class Turma extends Model {
   static init(sequelize) {
     super.init(
       {
-        label: Sequelize.STRING,
+        turma: Sequelize.STRING,
       },
       {
         sequelize,
@@ -15,7 +15,15 @@ class Turma extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.Ano, { foreignKey: "ano_id", as: "ano" });
+    this.belongsTo(models.Ano, {
+      foreignKey: "ano_id",
+      as: "dados_escolares_ano",
+    });
+
+    this.hasMany(models.Aluno, {
+      foreignKey: "turma_id",
+      as: "dados_escolares_turma",
+    });
   }
 }
 

@@ -10,62 +10,113 @@ export function isNumeric(str) {
 }
 
 /**
- * Cria WHERE com mais de uma possibilidade de filtro pra query de consulta
- * Argumentos:
- *  filter: string,
- *  queryFields: array_de_strings[colunas_do_banco],
- *  Model: Model da consulta,
- * modelsRef: array de models p/ os fields id de referência
- *  modelsRef: [{ Model: Model, title: string }],
+ * Baseado no filter, retorna o where do que achar.
+ * Para implementar, veja como ficou em AlunoController.index
  */
-export const verifyTypeFilter = async ({
-  filter,
-  queryFields,
-  Model,
-  modelsRef,
-}) => {
+export const whereFilter = async ({ filter, queryFields }) => {
   const query = {};
-
   let countFiltered = 0;
+  let queryId = 0;
 
   // eslint-disable-next-line no-restricted-syntax
-  for (const field of queryFields) {
-    // Verifica se filter é id de referência de outra table
-    if (field.slice(-3) === "_id") {
-      // Ex: turma_id -> turma_id - _id + s = turmas
-      const modelField = `${field.slice(0, field.length - 3)}s`;
-
-      // eslint-disable-next-line no-restricted-syntax
-      for (const modelRef of modelsRef) {
-        if (modelRef.title === modelField) {
-          // eslint-disable-next-line no-await-in-loop
-          const item = await modelRef.Model.findOne({
-            where: {
-              label: {
-                [Op.iLike]: `%${filter}%`,
-              },
-            },
-            attributes: ["id"],
-          });
-
-          if (item) {
-            query.where = { [field]: item.id };
-            return query;
-          }
-        }
-      }
-    }
-
-    query.where = where(cast(col(field), "VARCHAR"), {
+  for (const queryField of queryFields) {
+    query.where = where(cast(col(queryField.field), "VARCHAR"), {
       [Op.iLike]: `%${filter}%`,
     });
 
+    if (queryField.at) {
+      if (queryField.at.at) {
+        if (queryField.at.at.at) {
+          // eslint-disable-next-line no-await-in-loop
+          countFiltered = await queryField.at.at.at.model.count({
+            include: [
+              {
+                required: true,
+                model: queryField.at.at.model,
+                as: queryField.at.at.as,
+                include: [
+                  {
+                    required: true,
+                    model: queryField.at.model,
+                    as: queryField.at.as,
+                    include: [
+                      {
+                        required: true,
+                        model: queryField.model,
+                        as: queryField.as,
+                        where: query.where,
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          });
+
+          if (countFiltered > 0) {
+            queryId = queryField.queryId;
+            break;
+          }
+        }
+
+        // eslint-disable-next-line no-await-in-loop
+        countFiltered = await queryField.at.at.model.count({
+          include: [
+            {
+              required: true,
+              model: queryField.at.model,
+              as: queryField.at.as,
+              include: [
+                {
+                  required: true,
+                  model: queryField.model,
+                  as: queryField.as,
+                  where: query.where,
+                },
+              ],
+            },
+          ],
+        });
+
+        if (countFiltered > 0) {
+          queryId = queryField.queryId;
+          break;
+        }
+      }
+
+      // eslint-disable-next-line no-await-in-loop
+      countFiltered = await queryField.at.model.count({
+        include: [
+          {
+            required: true,
+            model: queryField.model,
+            as: queryField.as,
+            where: query.where,
+          },
+        ],
+      });
+
+      if (countFiltered > 0) {
+        queryId = queryField.queryId;
+        break;
+      }
+    }
+
     // eslint-disable-next-line no-await-in-loop
-    countFiltered = await Model.count({ where: query.where });
+    countFiltered = await queryField.model.count({ where: query.where });
 
     if (countFiltered > 0) {
+      queryId = queryField.queryId;
       break;
     }
   }
+
+  query.total = countFiltered;
+  query.queryId = queryId;
+
+  if (queryId === 0) {
+    query.where = {};
+  }
+
   return query;
 };

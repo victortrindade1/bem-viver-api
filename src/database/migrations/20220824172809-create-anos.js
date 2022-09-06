@@ -7,7 +7,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      label: {
+      ano: {
         allowNull: false,
         type: Sequelize.STRING,
       },

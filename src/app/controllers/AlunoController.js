@@ -1,11 +1,12 @@
 import Youch from "youch";
 import * as Yup from "yup";
-// import { Op } from "sequelize";
+// import { literal } from "sequelize";
 
 import Aluno from "../models/Aluno";
 import Turma from "../models/Turma";
+import Ano from "../models/Ano";
 
-import { verifyTypeFilter } from "../../Utils";
+import { whereFilter } from "../../Utils";
 
 class AlunoController {
   async store(req, res) {
@@ -131,7 +132,7 @@ class AlunoController {
         dados_escolares_turno: Yup.string(),
         dados_escolares_horario_entrada: Yup.string(),
         dados_escolares_horario_saida: Yup.string(),
-        dados_escolares_ano: Yup.string(),
+        // ano_id: Yup.number(),
         dados_escolares_periodo: Yup.string(),
         dados_escolares_data_pre_matricula: Yup.string(),
         dados_escolares_data_matricula: Yup.string(),
@@ -208,7 +209,7 @@ class AlunoController {
         dados_escolares_turno,
         dados_escolares_horario_entrada,
         dados_escolares_horario_saida,
-        dados_escolares_ano,
+        // ano_id,
         dados_escolares_periodo,
         dados_escolares_data_pre_matricula,
         dados_escolares_data_matricula,
@@ -274,7 +275,7 @@ class AlunoController {
         dados_escolares_turno,
         dados_escolares_horario_entrada,
         dados_escolares_horario_saida,
-        dados_escolares_ano,
+        // ano_id,
         dados_escolares_periodo,
         dados_escolares_data_pre_matricula,
         dados_escolares_data_matricula,
@@ -304,64 +305,89 @@ class AlunoController {
     try {
       const { page = 1, q: filter, limit = 5 } = req.query;
 
-      let where = {};
+      let queryWhere = {};
 
       const queryFields = [
-        "nome",
-        "status",
-        "dados_escolares_sistema",
-        "matricula",
-        "dados_escolares_ano",
-        "turma_id",
+        {
+          queryId: 1,
+          field: "nome",
+          model: Aluno,
+        },
+        {
+          queryId: 2,
+          field: "matricula",
+          model: Aluno,
+        },
+        {
+          queryId: 3,
+          field: "ano",
+          model: Ano,
+          as: "dados_escolares_ano",
+          at: {
+            model: Turma,
+            as: "dados_escolares_turma",
+            at: {
+              model: Aluno,
+            },
+          },
+        },
+        {
+          queryId: 4,
+          field: "turma",
+          model: Turma,
+          as: "dados_escolares_turma",
+          at: {
+            model: Aluno,
+          },
+        },
+        {
+          queryId: 5,
+          field: "status",
+          model: Aluno,
+        },
       ];
 
       if (filter) {
-        where = await verifyTypeFilter({
+        queryWhere = await whereFilter({
           filter,
           queryFields,
-          Model: Aluno,
-          modelsRef: [{ Model: Turma, title: "turmas" }],
         });
       }
 
-      const total = await Aluno.count({
-        where: where.where,
+      const alunos = await Aluno.findAndCountAll({
+        distinct: true,
+        where:
+          (queryWhere.queryId === 1 ||
+            queryWhere.queryId === 2 ||
+            queryWhere.queryId === 5) &&
+          queryWhere.where,
+        limit,
+        offset: (page - 1) * limit,
+        order: [["id", "DESC"]],
         include: [
           {
             model: Turma,
-            // where: where.whereRef.where,
-            // where: {
-            //   label: {
-            //     [Op.eq]: "Maternal",
-            //   },
-            // },
             as: "dados_escolares_turma",
-            required: false,
+            required: true,
+            where: queryWhere.queryId === 4 && queryWhere.where,
+            include: [
+              {
+                model: Ano,
+                as: "dados_escolares_ano",
+                required: true,
+                where: queryWhere.queryId === 3 && queryWhere.where,
+              },
+            ],
           },
         ],
       });
 
-      const alunos = await Aluno.findAll({
-        where: where.where,
-        limit,
-        offset: (page - 1) * limit,
-        order: [["id", "DESC"]],
-        // attributes: ["id", "nome"],
-        include: [
-          {
-            model: Turma,
-            as: "dados_escolares_turma",
-            required: false,
-            // where: where.whereRef,
-            // attributes: ["name", "path", "url"],
-          },
-        ],
-      });
+      const total = alunos.count;
 
       return res.json({
         limit,
         page: Number(page),
-        items: alunos,
+        items: alunos.rows,
         total,
         pages: Math.ceil(total / limit),
       });
