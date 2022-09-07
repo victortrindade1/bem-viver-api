@@ -9,7 +9,7 @@
     "docker:start": "docker start bemviver",
     "docker:stop": "docker stop bemviver",
     "start": "docker start bemviver && nodemon src/server.js",
-    "test": "jest"
+    "test": "NODE_ENV=test jest"
   },
   "dependencies": {
     "@sentry/node": "^7.11.1",
