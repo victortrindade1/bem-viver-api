@@ -19,9 +19,12 @@ module.exports = {
         allowNull: false,
         type: Sequelize.BOOLEAN,
       },
-      status: {
-        allowNull: false,
-        type: Sequelize.STRING,
+      statuspagamento_id: {
+        type: Sequelize.INTEGER,
+        references: { model: "statuspagamentos", key: "id" },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
+        allowNull: true,
       },
       dados_pessoais_rg: {
         type: Sequelize.STRING,
@@ -202,10 +205,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      dados_escolares_sistema: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
       turma_id: {
         type: Sequelize.INTEGER,
         references: { model: "turmas", key: "id" },
@@ -213,27 +212,32 @@ module.exports = {
         onDelete: "SET NULL",
         allowNull: true,
       },
-      dados_escolares_turno: {
-        type: Sequelize.STRING,
+      horaentrada_id: {
+        type: Sequelize.INTEGER,
+        references: { model: "horaentradas", key: "id" },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
         allowNull: true,
       },
-      dados_escolares_horario_entrada: {
-        type: Sequelize.STRING,
+      horasaida_id: {
+        type: Sequelize.INTEGER,
+        references: { model: "horasaidas", key: "id" },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
         allowNull: true,
       },
-      dados_escolares_horario_saida: {
-        type: Sequelize.STRING,
+      turno_id: {
+        type: Sequelize.INTEGER,
+        references: { model: "turnos", key: "id" },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
         allowNull: true,
       },
-      // ano_id: {
-      //   type: Sequelize.INTEGER,
-      //   references: { model: "anos", key: "id" },
-      //   onUpdate: "CASCADE",
-      //   onDelete: "SET NULL",
-      //   allowNull: true,
-      // },
-      dados_escolares_periodo: {
-        type: Sequelize.STRING,
+      periodo_id: {
+        type: Sequelize.INTEGER,
+        references: { model: "periodos", key: "id" },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
         allowNull: true,
       },
       dados_escolares_data_pre_matricula: {

@@ -6,12 +6,27 @@ import Aluno from "../app/models/Aluno";
 import Ano from "../app/models/Ano";
 import Turma from "../app/models/Turma";
 import Sistema from "../app/models/Sistema";
-
-// import AlunosDado from "../app/models/AlunosDado";
+import Turno from "../app/models/Turno";
+import StatusPagamento from "../app/models/StatusPagamento";
+import Periodo from "../app/models/Periodo";
+import HoraEntrada from "../app/models/HoraEntrada";
+import HoraSaida from "../app/models/HoraSaida";
 
 import databaseConfig from "../config/database";
 
-const models = [User, File, Aluno, Ano, Turma, Sistema];
+const models = [
+  User,
+  File,
+  Aluno,
+  Ano,
+  Turma,
+  Sistema,
+  Turno,
+  StatusPagamento,
+  Periodo,
+  HoraEntrada,
+  HoraSaida,
+];
 
 class Database {
   constructor() {

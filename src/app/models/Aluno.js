@@ -7,7 +7,7 @@ class Aluno extends Model {
         ativo: Sequelize.BOOLEAN,
         matricula: Sequelize.BIGINT,
         nome: Sequelize.STRING,
-        status: Sequelize.STRING,
+        // status: Sequelize.STRING,
         dados_pessoais_rg: Sequelize.STRING,
         dados_pessoais_cpf: Sequelize.STRING,
         dados_pessoais_data_nascimento: Sequelize.STRING,
@@ -52,13 +52,13 @@ class Aluno extends Model {
         contatos_buscar3_nome: Sequelize.STRING,
         contatos_buscar3_parentesco: Sequelize.STRING,
         contatos_buscar3_contato: Sequelize.STRING,
-        dados_escolares_sistema: Sequelize.STRING,
+        // dados_escolares_sistema: Sequelize.STRING,
         // dados_escolares_turma: Sequelize.STRING,
-        dados_escolares_turno: Sequelize.STRING,
-        dados_escolares_horario_entrada: Sequelize.STRING,
-        dados_escolares_horario_saida: Sequelize.STRING,
+        // dados_escolares_turno: Sequelize.STRING,
+        // dados_escolares_horario_entrada: Sequelize.STRING,
+        // dados_escolares_horario_saida: Sequelize.STRING,
         // dados_escolares_ano: Sequelize.STRING,
-        dados_escolares_periodo: Sequelize.STRING,
+        // dados_escolares_periodo: Sequelize.STRING,
         dados_escolares_data_pre_matricula: Sequelize.STRING,
         dados_escolares_data_matricula: Sequelize.STRING,
         dados_escolares_observacoes: Sequelize.STRING,
@@ -78,13 +78,29 @@ class Aluno extends Model {
   }
 
   static associate(models) {
-    // this.hasMany(models.Turma, {
-    //   foreignKey: "turma_id",
-    //   as: "dados_escolares_turma",
-    // });
     this.belongsTo(models.Turma, {
       foreignKey: "turma_id",
       as: "dados_escolares_turma",
+    });
+    this.belongsTo(models.Periodo, {
+      foreignKey: "periodo_id",
+      as: "dados_escolares_periodo",
+    });
+    this.belongsTo(models.Turno, {
+      foreignKey: "turno_id",
+      as: "dados_escolares_turno",
+    });
+    this.belongsTo(models.HoraEntrada, {
+      foreignKey: "horaentrada_id",
+      as: "dados_escolares_horaentrada",
+    });
+    this.belongsTo(models.HoraSaida, {
+      foreignKey: "horasaida_id",
+      as: "dados_escolares_horasaida",
+    });
+    this.belongsTo(models.StatusPagamento, {
+      foreignKey: "statuspagamento_id",
+      as: "dados_escolares_statuspagamento",
     });
   }
 }

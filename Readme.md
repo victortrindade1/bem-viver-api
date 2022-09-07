@@ -2,8 +2,7 @@
 
 ## Onde parei
 
-CRUD Sistema, CRUD Período, CRUD Horário de Entrada, CRUD Horário de Saída
-E Status, vira status_id? Poderia, com um banco sem CRUD... Assim busca pelo id
+Criar os testes e seeds
 
 ## Configuração
 
