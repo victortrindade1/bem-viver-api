@@ -3,6 +3,13 @@
 ## Onde parei
 
 Criar os testes e seeds
+Criar abstraçao de validaçoes
+Criar abstraçao de controllers
+
+## Fazer futuramente
+
+Estrutura de Cache
+Segurança do NodeJS
 
 ## Configuração
 

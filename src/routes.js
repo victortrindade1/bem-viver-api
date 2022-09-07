@@ -10,6 +10,10 @@ import FileController from "./app/controllers/FileController";
 import SistemaController from "./app/controllers/SistemaController";
 import AnoController from "./app/controllers/AnoController";
 import TurmaController from "./app/controllers/TurmaController";
+import TurnoController from "./app/controllers/TurnoController";
+import PeriodoController from "./app/controllers/PeriodoController";
+import HoraEntradaController from "./app/controllers/HoraEntradaController";
+import HoraSaidaController from "./app/controllers/HoraSaidaController";
 
 import authMiddleware from "./app/middlewares/auth";
 
@@ -72,5 +76,41 @@ routes.put("/turmas/:id", TurmaController.update);
 routes.get("/turmas", TurmaController.index);
 routes.delete("/turmas/:id", TurmaController.delete);
 routes.get("/turmas/:id", TurmaController.show);
+
+/**
+ * Turno
+ */
+routes.post("/turnos", TurnoController.store);
+routes.put("/turnos/:id", TurnoController.update);
+routes.get("/turnos", TurnoController.index);
+routes.delete("/turnos/:id", TurnoController.delete);
+routes.get("/turnos/:id", TurnoController.show);
+
+/**
+ * Periodo
+ */
+routes.post("/periodos", PeriodoController.store);
+routes.put("/periodos/:id", PeriodoController.update);
+routes.get("/periodos", PeriodoController.index);
+routes.delete("/periodos/:id", PeriodoController.delete);
+routes.get("/periodos/:id", PeriodoController.show);
+
+/**
+ * HoraEntrada
+ */
+routes.post("/horaentradas", HoraEntradaController.store);
+routes.put("/horaentradas/:id", HoraEntradaController.update);
+routes.get("/horaentradas", HoraEntradaController.index);
+routes.delete("/horaentradas/:id", HoraEntradaController.delete);
+routes.get("/horaentradas/:id", HoraEntradaController.show);
+
+/**
+ * HoraSaida
+ */
+routes.post("/horasaidas", HoraSaidaController.store);
+routes.put("/horasaidas/:id", HoraSaidaController.update);
+routes.get("/horasaidas", HoraSaidaController.index);
+routes.delete("/horasaidas/:id", HoraSaidaController.delete);
+routes.get("/horasaidas/:id", HoraSaidaController.show);
 
 export default routes;
