@@ -29,3 +29,4 @@ Segurança do NodeJS
 - DotEnv (gerencia .env)
 - Cors (Proteção API)
 - Desenho Diagrama Database: 'https://dbdiagram.io/d'
+- Jest (testes)
