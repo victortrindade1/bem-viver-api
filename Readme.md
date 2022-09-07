@@ -30,4 +30,4 @@ Segurança do NodeJS
 - Cors (Proteção API)
 - Desenho Diagrama Database: 'https://dbdiagram.io/d'
 - Jest (testes)
-- DB para testes: SQLite
+- DB para testes: SQLite 3

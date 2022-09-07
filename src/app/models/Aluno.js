@@ -98,7 +98,7 @@ class Aluno extends Model {
       foreignKey: "horasaida_id",
       as: "dados_escolares_horasaida",
     });
-    this.belongsTo(models.StatusPagamento, {
+    this.belongsTo(models.Statuspagamento, {
       foreignKey: "statuspagamento_id",
       as: "dados_escolares_statuspagamento",
     });

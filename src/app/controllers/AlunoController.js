@@ -5,7 +5,7 @@ import Aluno from "../models/Aluno";
 import Turma from "../models/Turma";
 import Ano from "../models/Ano";
 import Sistema from "../models/Sistema";
-import StatusPagamento from "../models/StatusPagamento";
+import Statuspagamento from "../models/Statuspagamento";
 import Periodo from "../models/Periodo";
 import Turno from "../models/Turno";
 import HoraEntrada from "../models/HoraEntrada";
@@ -366,7 +366,7 @@ class AlunoController {
         {
           queryId: 6,
           field: "statuspagamento",
-          model: StatusPagamento,
+          model: Statuspagamento,
           as: "dados_escolares_statuspagamento",
           at: {
             model: Aluno,
@@ -393,7 +393,12 @@ class AlunoController {
           {
             model: Turma,
             as: "dados_escolares_turma",
-            required: true,
+            required: !!(
+              queryWhere.queryId === 3 ||
+              queryWhere.queryId === 4 ||
+              queryWhere.queryId === 5 ||
+              queryWhere.queryId === 6
+            ),
             where:
               (queryWhere.queryId === 5 || queryWhere.queryId === 6) &&
               queryWhere.where,
@@ -401,7 +406,9 @@ class AlunoController {
               {
                 model: Ano,
                 as: "dados_escolares_ano",
-                required: true,
+                required: !!(
+                  queryWhere.queryId === 3 || queryWhere.queryId === 4
+                ),
                 where: queryWhere.queryId === 4 && queryWhere.where,
                 include: [
                   {
@@ -464,7 +471,7 @@ class AlunoController {
             as: "dados_escolares_horasaida",
           },
           {
-            model: StatusPagamento,
+            model: Statuspagamento,
             as: "dados_escolares_turma",
           },
         ],

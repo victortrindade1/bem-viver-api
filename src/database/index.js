@@ -7,7 +7,7 @@ import Ano from "../app/models/Ano";
 import Turma from "../app/models/Turma";
 import Sistema from "../app/models/Sistema";
 import Turno from "../app/models/Turno";
-import StatusPagamento from "../app/models/StatusPagamento";
+import Statuspagamento from "../app/models/Statuspagamento";
 import Periodo from "../app/models/Periodo";
 import HoraEntrada from "../app/models/HoraEntrada";
 import HoraSaida from "../app/models/HoraSaida";
@@ -22,7 +22,7 @@ const models = [
   Turma,
   Sistema,
   Turno,
-  StatusPagamento,
+  Statuspagamento,
   Periodo,
   HoraEntrada,
   HoraSaida,
