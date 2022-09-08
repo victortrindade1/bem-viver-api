@@ -13,6 +13,14 @@ module.exports = {
           created_at: new Date(),
           updated_at: new Date(),
         },
+        {
+          name: "Testes",
+          email: "test@test.com",
+          password_hash: bcrypt.hashSync("123456", 8),
+          is_admin: true,
+          created_at: new Date(),
+          updated_at: new Date(),
+        },
       ],
       {}
     ),

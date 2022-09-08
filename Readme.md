@@ -31,3 +31,4 @@ Segurança do NodeJS
 - Desenho Diagrama Database: 'https://dbdiagram.io/d'
 - Jest (testes)
 - DB para testes: SQLite 3
+- Supertest (requests de teste com dados fictíceis)

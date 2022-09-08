@@ -12,6 +12,7 @@ class UserController {
         name: Yup.string().required(),
         email: Yup.string().email().required(),
         password: Yup.string().required().min(6),
+        isAdmin: Yup.boolean().required(),
       });
 
       if (!(await schema.isValid(req.body))) {
