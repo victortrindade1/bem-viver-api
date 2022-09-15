@@ -8,10 +8,10 @@ import Sistema from "../models/Sistema";
 import Statuspagamento from "../models/Statuspagamento";
 import Periodo from "../models/Periodo";
 import Turno from "../models/Turno";
-import HoraEntrada from "../models/HoraEntrada";
-import HoraSaida from "../models/HoraSaida";
+import Horaentrada from "../models/Horaentrada";
+import Horasaida from "../models/Horasaida";
 
-import { whereFilter } from "../../Utils";
+import { whereFilter } from "../../utils";
 
 class AlunoController {
   async store(req, res) {
@@ -463,11 +463,11 @@ class AlunoController {
             as: "dados_escolares_turno",
           },
           {
-            model: HoraEntrada,
+            model: Horaentrada,
             as: "dados_escolares_horaentrada",
           },
           {
-            model: HoraSaida,
+            model: Horasaida,
             as: "dados_escolares_horasaida",
           },
           {

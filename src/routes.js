@@ -12,8 +12,8 @@ import AnoController from "./app/controllers/AnoController";
 import TurmaController from "./app/controllers/TurmaController";
 import TurnoController from "./app/controllers/TurnoController";
 import PeriodoController from "./app/controllers/PeriodoController";
-import HoraEntradaController from "./app/controllers/HoraEntradaController";
-import HoraSaidaController from "./app/controllers/HoraSaidaController";
+import HoraentradaController from "./app/controllers/HoraentradaController";
+import HorasaidaController from "./app/controllers/HorasaidaController";
 
 import authMiddleware from "./app/middlewares/auth";
 
@@ -24,6 +24,10 @@ const upload = multer(multerConfig);
 routes.get("/", (req, res) => res.json({ message: "hello world!" }));
 
 routes.post("/sessions", SessionController.store);
+
+if (process.env.NODE_ENV === "test") {
+  routes.post(process.env.ROUTE_TEST_JWT, UserController.store);
+}
 
 routes.use(authMiddleware);
 
@@ -96,21 +100,21 @@ routes.delete("/periodos/:id", PeriodoController.delete);
 routes.get("/periodos/:id", PeriodoController.show);
 
 /**
- * HoraEntrada
+ * Horaentrada
  */
-routes.post("/horaentradas", HoraEntradaController.store);
-routes.put("/horaentradas/:id", HoraEntradaController.update);
-routes.get("/horaentradas", HoraEntradaController.index);
-routes.delete("/horaentradas/:id", HoraEntradaController.delete);
-routes.get("/horaentradas/:id", HoraEntradaController.show);
+routes.post("/horaentradas", HoraentradaController.store);
+routes.put("/horaentradas/:id", HoraentradaController.update);
+routes.get("/horaentradas", HoraentradaController.index);
+routes.delete("/horaentradas/:id", HoraentradaController.delete);
+routes.get("/horaentradas/:id", HoraentradaController.show);
 
 /**
- * HoraSaida
+ * Horasaida
  */
-routes.post("/horasaidas", HoraSaidaController.store);
-routes.put("/horasaidas/:id", HoraSaidaController.update);
-routes.get("/horasaidas", HoraSaidaController.index);
-routes.delete("/horasaidas/:id", HoraSaidaController.delete);
-routes.get("/horasaidas/:id", HoraSaidaController.show);
+routes.post("/horasaidas", HorasaidaController.store);
+routes.put("/horasaidas/:id", HorasaidaController.update);
+routes.get("/horasaidas", HorasaidaController.index);
+routes.delete("/horasaidas/:id", HorasaidaController.delete);
+routes.get("/horasaidas/:id", HorasaidaController.show);
 
 export default routes;

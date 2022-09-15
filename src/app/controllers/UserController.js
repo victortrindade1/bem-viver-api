@@ -15,27 +15,22 @@ class UserController {
         isAdmin: Yup.boolean().required(),
       });
 
-      if (!(await schema.isValid(req.body))) {
+      const { name, email, password, isAdmin } = req.body;
+
+      if (!(await schema.isValid({ name, email, password, isAdmin }))) {
         return res.status(400).json({ error: "Validation fails" });
       }
 
       const userExists = await User.findOne({
-        where: { email: req.body.email },
+        where: { email },
       });
 
       if (userExists) {
         return res.status(400).json({ error: "User already exists." });
       }
 
-      const request = {
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password,
-        isAdmin: req.body.isAdmin,
-      };
-
       // Em vez de carregar na response todos os dados de User, eu escolho carregar estes 4
-      const { id, name, email, isAdmin } = await User.create(request);
+      const { id } = await User.create({ name, email, password, isAdmin });
 
       return res.json({
         id,

@@ -9,8 +9,8 @@ import Sistema from "../app/models/Sistema";
 import Turno from "../app/models/Turno";
 import Statuspagamento from "../app/models/Statuspagamento";
 import Periodo from "../app/models/Periodo";
-import HoraEntrada from "../app/models/HoraEntrada";
-import HoraSaida from "../app/models/HoraSaida";
+import Horaentrada from "../app/models/Horaentrada";
+import Horasaida from "../app/models/Horasaida";
 
 import databaseConfig from "../config/database";
 
@@ -24,8 +24,8 @@ const models = [
   Turno,
   Statuspagamento,
   Periodo,
-  HoraEntrada,
-  HoraSaida,
+  Horaentrada,
+  Horasaida,
 ];
 
 class Database {

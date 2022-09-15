@@ -2,6 +2,8 @@
 
 ## Onde parei
 
+Tirar a tabela de status.
+
 Criar os testes e seeds
 Criar abstraçao de validaçoes
 Criar abstraçao de controllers

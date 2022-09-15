@@ -2,9 +2,9 @@ import * as Yup from "yup";
 import Youch from "youch";
 import { Op } from "sequelize";
 
-import HoraSaida from "../models/HoraSaida";
+import Horasaida from "../models/Horasaida";
 
-class HoraSaidaController {
+class HorasaidaController {
   async store(req, res) {
     try {
       const schema = Yup.object().shape({
@@ -15,7 +15,7 @@ class HoraSaidaController {
         return res.status(400).json({ error: "Validation fails" });
       }
 
-      const horasaidaExists = await HoraSaida.findOne({
+      const horasaidaExists = await Horasaida.findOne({
         where: { horasaida: req.body.horasaida },
       });
 
@@ -29,7 +29,7 @@ class HoraSaidaController {
         horasaida,
       };
 
-      const { id } = await HoraSaida.create(request);
+      const { id } = await Horasaida.create(request);
 
       return res.json({
         id,
@@ -59,7 +59,7 @@ class HoraSaidaController {
         return res.status(400).json({ error: "Validation fails" });
       }
 
-      const horasaidaExists = await HoraSaida.findByPk(id);
+      const horasaidaExists = await Horasaida.findByPk(id);
 
       const horasaidaUpdated = await horasaidaExists.update(request);
 
@@ -85,9 +85,9 @@ class HoraSaidaController {
         where.horasaida = { [Op.iLike]: `%${nameFilter}%` };
       }
 
-      const total = await HoraSaida.count({ where });
+      const total = await Horasaida.count({ where });
 
-      const horasaidas = await HoraSaida.findAll({
+      const horasaidas = await Horasaida.findAll({
         where,
         limit,
         offset: (page - 1) * limit,
@@ -116,17 +116,17 @@ class HoraSaidaController {
     try {
       const { id } = req.params;
 
-      const horasaida = await HoraSaida.findByPk(id);
+      const horasaida = await Horasaida.findByPk(id);
 
       if (!horasaida) {
-        return res.status(400).json({ error: "HoraSaida não existe." });
+        return res.status(400).json({ error: "Horasaida não existe." });
       }
 
-      await HoraSaida.destroy({ where: { id } });
+      await Horasaida.destroy({ where: { id } });
 
       return res
         .status(200)
-        .json({ message: "HoraSaida excluído com sucesso." });
+        .json({ message: "Horasaida excluído com sucesso." });
     } catch (err) {
       return res.status(400).json({ error: "Error in database." });
     }
@@ -136,10 +136,10 @@ class HoraSaidaController {
     try {
       const { id } = req.params;
 
-      const horasaida = await HoraSaida.findByPk(id, {});
+      const horasaida = await Horasaida.findByPk(id, {});
 
       if (!horasaida) {
-        return res.status(400).json({ error: "HoraSaida não existe" });
+        return res.status(400).json({ error: "Horasaida não existe" });
       }
 
       return res.json(horasaida);
@@ -155,4 +155,4 @@ class HoraSaidaController {
   }
 }
 
-export default new HoraSaidaController();
+export default new HorasaidaController();
