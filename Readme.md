@@ -2,6 +2,7 @@
 
 ## Onde parei
 
+Tenho q tirar todos os iLikes dos testes e trocar pra like
 Tirar a tabela de status.
 
 Criar os testes e seeds

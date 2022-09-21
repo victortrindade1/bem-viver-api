@@ -7,19 +7,24 @@ import truncate from "../../util/truncate";
 import setToken from "../../util/setToken";
 
 describe("File", () => {
+  // jest.setTimeout(30000);
+
   let token = "";
 
-  beforeAll(async () => {
+  // beforeAll(async () => {
+  //   token = await setToken();
+  // });
+  beforeEach(async () => {
+    await truncate(); // Apaga dados a cada teste para não conflitar
     token = await setToken();
   });
+  // beforeEach(async () => {
+  //   await truncate().then(async () => {
+  //     token = await setToken();
+  //   });
+  // });
 
-  beforeEach(() => {
-    truncate(); // Apaga dados a cada teste para não conflitar
-  });
-
-  it("should upload a new file", async () => {
-    // const token = await setToken();
-
+  it("[STORE] should upload a new file", async () => {
     const response = await request(app)
       .post("/files")
       .set("Content-Type", "multipart/form-data")
@@ -29,6 +34,11 @@ describe("File", () => {
       )
       .set("Authorization", `Bearer ${token}`);
 
-    expect(response.body).toHaveProperty("id");
+    // Deleta depois pra não lotar servidor
+    await request(app)
+      .del(`/files/${response.body.id}`)
+      .set("Authorization", `Bearer ${token}`);
+
+    return expect(response.body).toHaveProperty("id");
   });
 });

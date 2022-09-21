@@ -44,72 +44,63 @@ class UserController {
   }
 
   async update(req, res) {
-    try {
-      const schema = Yup.object().shape({
-        id: Yup.number().required(),
-        name: Yup.string(),
-        email: Yup.string().email(),
-        oldPassword: Yup.string().min(6),
-        // Condicional: Se for passado um oldPassword, então o campo password é
-        // obrigatório
-        password: Yup.string()
-          .min(6)
-          .when("oldPassword", (oldPassword, field) =>
-            oldPassword ? field.required() : field
-          ),
-        confirmPassword: Yup.string().when("password", (password, field) =>
-          password ? field.required().oneOf([Yup.ref("password")]) : field
+    const schema = Yup.object().shape({
+      id: Yup.number().required(),
+      name: Yup.string(),
+      email: Yup.string().email(),
+      oldPassword: Yup.string().min(6),
+      // Condicional: Se for passado um oldPassword, então o campo password é
+      // obrigatório
+      password: Yup.string()
+        .min(6)
+        .when("oldPassword", (oldPassword, field) =>
+          oldPassword ? field.required() : field
         ),
-      });
+      confirmPassword: Yup.string().when("password", (password, field) =>
+        password ? field.required().oneOf([Yup.ref("password")]) : field
+      ),
+    });
 
-      const { name, email, oldPassword, password, confirmPassword } = req.body;
-      const { id } = req.params;
+    const { name, email, oldPassword, password, confirmPassword } = req.body;
+    const { id } = req.params;
 
-      const userRequest = {
-        id,
-        name,
-        email,
-        oldPassword,
-        password,
-        confirmPassword,
-      };
+    const userRequest = {
+      id,
+      name,
+      email,
+      oldPassword,
+      password,
+      confirmPassword,
+    };
 
-      if (!(await schema.isValid(userRequest))) {
-        return res.status(400).json({ error: "Validation fails" });
-      }
-
-      const user = await User.findByPk(id);
-
-      if (email !== user.email) {
-        const userExists = await User.findOne({ where: { email } });
-
-        if (userExists) {
-          return res.status(400).json({ error: "User already exists." });
-        }
-      }
-
-      if (oldPassword && !(await user.checkPassword(oldPassword))) {
-        return res.status(401).json({ error: "Password does not match" });
-      }
-
-      const request = {
-        name: req.body.name,
-        email: req.body.email,
-        avatar_id: req.body.avatar_id,
-      };
-
-      const userUpdated = await user.update(request);
-
-      return res.json(userUpdated);
-    } catch (err) {
-      if (process.env.NODE_ENV === "development") {
-        const errors = await new Youch(err, req).toJSON();
-
-        return res.status(400).json(errors);
-      }
-
-      return res.status(400).json({ error: "Error in database" });
+    if (!(await schema.isValid(userRequest))) {
+      return res.status(400).json({ error: "Validation fails" });
     }
+
+    const user = await User.findByPk(id);
+
+    // Se tiver enviado e-mail, verifica se já existe algum igual
+    if (email && email !== user.email) {
+      const userExists = await User.findOne({ where: { email } });
+
+      if (userExists) {
+        return res.status(400).json({ error: "User already exists." });
+      }
+    }
+
+    if (oldPassword && !(await user.checkPassword(oldPassword))) {
+      return res.status(401).json({ error: "Password does not match" });
+    }
+
+    const request = {
+      name: req.body.name,
+      email: req.body.email,
+      avatar_id: req.body.avatar_id,
+    };
+
+    const userUpdated = await user.update(request);
+
+    return res.json(userUpdated);
   }
 
   async index(req, res) {
@@ -119,7 +110,10 @@ class UserController {
       const where = {};
 
       if (nameFilter) {
-        where.name = { [Op.iLike]: `${nameFilter}%` };
+        where.name =
+          process.env.NODE_ENV === "test" // Somente PG suporta iLike
+            ? { [Op.like]: `%${nameFilter}%` }
+            : { [Op.iLike]: `%${nameFilter}%` };
       }
 
       const total = await User.count({ where });
@@ -154,7 +148,10 @@ class UserController {
         pages: Math.ceil(total / limit),
       });
     } catch (err) {
-      if (process.env.NODE_ENV === "development") {
+      if (
+        process.env.NODE_ENV === "development" ||
+        process.env.NODE_ENV === "test"
+      ) {
         const errors = await new Youch(err, req).toJSON();
 
         return res.status(400).json(errors);

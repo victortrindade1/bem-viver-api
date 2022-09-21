@@ -3,8 +3,10 @@ import app from "../../../src/app";
 import truncate from "../../util/truncate";
 
 describe("Session", () => {
-  beforeEach(() => {
-    truncate(); // Apaga dados a cada teste para não conflitar
+  jest.setTimeout(30000);
+
+  beforeEach(async () => {
+    await truncate(); // Apaga dados a cada teste para não conflitar
   });
 
   it("should invalidate session", async () => {
@@ -13,7 +15,7 @@ describe("Session", () => {
       password: "123456",
     });
 
-    expect(response.status).toBe(400);
+    return expect(response.status).toBe(400);
   });
 
   it("should not find user", async () => {
@@ -22,7 +24,7 @@ describe("Session", () => {
       password: "123456",
     });
 
-    expect(response.status).toBe(401);
+    return expect(response.status).toBe(401);
   });
 
   it("should not match password", async () => {
@@ -39,6 +41,6 @@ describe("Session", () => {
       password: "passworderrado",
     });
 
-    expect(response.status).toBe(406);
+    return expect(response.status).toBe(406);
   });
 });

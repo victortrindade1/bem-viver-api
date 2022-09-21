@@ -53,6 +53,7 @@ routes.get("/alunos/:id", AlunoController.show);
  * File
  */
 routes.post("/files", upload.single("file"), FileController.store);
+routes.delete("/files/:id", FileController.delete);
 
 /**
  * Sistema

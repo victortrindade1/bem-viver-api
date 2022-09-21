@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import Youch from "youch";
+// import Youch from "youch";
 import { Op } from "sequelize";
 
 import Turno from "../models/Turno";
@@ -20,7 +20,7 @@ class TurnoController {
       });
 
       if (turnoExists) {
-        return res.status(400).json({ error: "Ano já existe." });
+        return res.status(400).json({ error: "Turno já existe." });
       }
 
       const { turno } = req.body;
@@ -64,13 +64,7 @@ class TurnoController {
       const turnoUpdated = await turnoExists.update(request);
 
       return res.json(turnoUpdated);
-    } catch (err) {
-      if (process.env.NODE_ENV === "development") {
-        const errors = await new Youch(err, req).toJSON();
-
-        return res.status(400).json(errors);
-      }
-
+    } catch (error) {
       return res.status(400).json({ error: "Error in database" });
     }
   }
@@ -101,13 +95,7 @@ class TurnoController {
         total,
         pages: Math.ceil(total / limit),
       });
-    } catch (err) {
-      if (process.env.NODE_ENV === "development") {
-        const errors = await new Youch(err, req).toJSON();
-
-        return res.status(400).json(errors);
-      }
-
+    } catch (error) {
       return res.status(400).json({ error: "Error in database" });
     }
   }
@@ -141,13 +129,7 @@ class TurnoController {
       }
 
       return res.json(turno);
-    } catch (err) {
-      if (process.env.NODE_ENV === "development") {
-        const errors = await new Youch(err, req).toJSON();
-
-        return res.status(400).json(errors);
-      }
-
+    } catch (error) {
       return res.status(400).json({ error: "Error in database" });
     }
   }
