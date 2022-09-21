@@ -95,7 +95,10 @@ class TurmaController {
       const where = {};
 
       if (filter) {
-        where.turma = { [Op.iLike]: `${filter}%` };
+        where.turma =
+          process.env.NODE_ENV === "test" // Somente PG suporta iLike
+            ? { [Op.like]: `%${filter}%` }
+            : { [Op.iLike]: `%${filter}%` };
       }
 
       const total = await Turma.count({ where });

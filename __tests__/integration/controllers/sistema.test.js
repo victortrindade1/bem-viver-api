@@ -4,9 +4,7 @@ import app from "../../../src/app";
 import truncate from "../../util/truncate";
 import setToken from "../../util/setToken";
 
-describe("Turma", () => {
-  // jest.setTimeout(30000);
-
+describe("Sistema", () => {
   let token = "";
 
   beforeEach(async () => {
@@ -14,11 +12,11 @@ describe("Turma", () => {
     token = await setToken();
   });
 
-  it("[STORE] should store new turma", async () => {
+  it("[STORE] should store new sistema", async () => {
     const response = await request(app)
-      .post("/turmas")
+      .post("/sistemas")
       .send({
-        turma: "5070",
+        sistema: "Creche",
       })
       .set("Authorization", `Bearer ${token}`);
 

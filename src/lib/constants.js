@@ -15,6 +15,10 @@ const statusPagamento = [
     id: 4,
     status: "Inativo",
   },
+  {
+    id: 5,
+    status: "Pré Matr.",
+  },
 ];
 
 export default statusPagamento;

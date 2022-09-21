@@ -82,7 +82,10 @@ class SistemaController {
       const where = {};
 
       if (nameFilter) {
-        where.sistema = { [Op.iLike]: `%${nameFilter}%` };
+        where.sistema =
+          process.env.NODE_ENV === "test" // Somente PG suporta iLike
+            ? { [Op.like]: `%${nameFilter}%` }
+            : { [Op.iLike]: `%${nameFilter}%` };
       }
 
       const total = await Sistema.count({ where });

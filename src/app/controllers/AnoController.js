@@ -87,7 +87,10 @@ class AnoController {
       const where = {};
 
       if (nameFilter) {
-        where.ano = { [Op.iLike]: `%${nameFilter}%` };
+        where.ano =
+          process.env.NODE_ENV === "test" // Somente PG suporta iLike
+            ? { [Op.like]: `%${nameFilter}%` }
+            : { [Op.iLike]: `%${nameFilter}%` };
       }
 
       const total = await Ano.count({ where });

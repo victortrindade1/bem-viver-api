@@ -5,13 +5,15 @@ import Aluno from "../models/Aluno";
 import Turma from "../models/Turma";
 import Ano from "../models/Ano";
 import Sistema from "../models/Sistema";
-import Statuspagamento from "../models/Statuspagamento";
+// import Statuspagamento from "../models/Statuspagamento";
 import Periodo from "../models/Periodo";
 import Turno from "../models/Turno";
 import Horaentrada from "../models/Horaentrada";
 import Horasaida from "../models/Horasaida";
 
 import { whereFilter } from "../../utils";
+
+import statusPagamento from "../../lib/constants";
 
 class AlunoController {
   async store(req, res) {
@@ -49,8 +51,10 @@ class AlunoController {
         ativo: true,
         // 5 = Pré Matr.
         // 1 = Sem Pgto
-        statuspagamento_id:
-          req.body.dataPreMatricula && !req.body.dataMatricula ? 5 : 1,
+        statuspagamento:
+          req.body.dataPreMatricula && !req.body.dataMatricula
+            ? statusPagamento[5].status
+            : statusPagamento[1].status,
       };
 
       const aluno = await Aluno.create(alunoRequest);
@@ -74,7 +78,9 @@ class AlunoController {
         ativo: Yup.boolean(),
         matricula: Yup.number(),
         nome: Yup.string(),
-        statuspagamento_id: Yup.number(),
+        statuspagamento: Yup.string().oneOf(
+          statusPagamento.map((item) => item.status)
+        ),
         dados_pessoais_rg: Yup.string(),
         dados_pessoais_cpf: Yup.string()
           .min(11, "CPF precisa ter 11 caracteres")
@@ -166,7 +172,7 @@ class AlunoController {
       const {
         ativo,
         nome,
-        statuspagamento_id,
+        statuspagamento,
         dados_pessoais_rg,
         dados_pessoais_cpf,
         dados_pessoais_data_nascimento,
@@ -232,7 +238,7 @@ class AlunoController {
       const alunoUpdated = await aluno.update({
         ativo,
         nome,
-        statuspagamento_id,
+        statuspagamento,
         dados_pessoais_rg,
         dados_pessoais_cpf,
         dados_pessoais_data_nascimento,
@@ -366,12 +372,17 @@ class AlunoController {
         {
           queryId: 6,
           field: "statuspagamento",
-          model: Statuspagamento,
-          as: "dados_escolares_statuspagamento",
-          at: {
-            model: Aluno,
-          },
+          model: Aluno,
         },
+        // {
+        //   queryId: 6,
+        //   field: "statuspagamento",
+        //   model: Statuspagamento,
+        //   as: "dados_escolares_statuspagamento",
+        //   at: {
+        //     model: Aluno,
+        //   },
+        // },
       ];
 
       if (filter) {
@@ -384,7 +395,9 @@ class AlunoController {
       const alunos = await Aluno.findAndCountAll({
         distinct: true,
         where:
-          (queryWhere.queryId === 1 || queryWhere.queryId === 2) &&
+          (queryWhere.queryId === 1 ||
+            queryWhere.queryId === 2 ||
+            queryWhere.queryId === 6) &&
           queryWhere.where,
         limit,
         offset: (page - 1) * limit,
@@ -396,12 +409,9 @@ class AlunoController {
             required: !!(
               queryWhere.queryId === 3 ||
               queryWhere.queryId === 4 ||
-              queryWhere.queryId === 5 ||
-              queryWhere.queryId === 6
+              queryWhere.queryId === 5
             ),
-            where:
-              (queryWhere.queryId === 5 || queryWhere.queryId === 6) &&
-              queryWhere.where,
+            where: queryWhere.queryId === 5 && queryWhere.where,
             include: [
               {
                 model: Ano,
@@ -470,10 +480,10 @@ class AlunoController {
             model: Horasaida,
             as: "dados_escolares_horasaida",
           },
-          {
-            model: Statuspagamento,
-            as: "dados_escolares_turma",
-          },
+          // {
+          //   model: Statuspagamento,
+          //   as: "dados_escolares_turma",
+          // },
         ],
       });
 

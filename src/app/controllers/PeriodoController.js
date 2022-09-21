@@ -82,7 +82,10 @@ class PeriodoController {
       const where = {};
 
       if (nameFilter) {
-        where.periodo = { [Op.iLike]: `%${nameFilter}%` };
+        where.periodo =
+          process.env.NODE_ENV === "test" // Somente PG suporta iLike
+            ? { [Op.like]: `%${nameFilter}%` }
+            : { [Op.iLike]: `%${nameFilter}%` };
       }
 
       const total = await Periodo.count({ where });

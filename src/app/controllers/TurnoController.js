@@ -76,7 +76,10 @@ class TurnoController {
       const where = {};
 
       if (nameFilter) {
-        where.turno = { [Op.iLike]: `%${nameFilter}%` };
+        where.turno =
+          process.env.NODE_ENV === "test" // Somente PG suporta iLike
+            ? { [Op.like]: `%${nameFilter}%` }
+            : { [Op.iLike]: `%${nameFilter}%` };
       }
 
       const total = await Turno.count({ where });

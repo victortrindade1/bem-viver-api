@@ -82,7 +82,10 @@ class HorasaidaController {
       const where = {};
 
       if (nameFilter) {
-        where.horasaida = { [Op.iLike]: `%${nameFilter}%` };
+        where.horasaida =
+          process.env.NODE_ENV === "test" // Somente PG suporta iLike
+            ? { [Op.like]: `%${nameFilter}%` }
+            : { [Op.iLike]: `%${nameFilter}%` };
       }
 
       const total = await Horasaida.count({ where });

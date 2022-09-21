@@ -19,13 +19,17 @@ module.exports = {
         allowNull: false,
         type: Sequelize.BOOLEAN,
       },
-      statuspagamento_id: {
-        type: Sequelize.INTEGER,
-        references: { model: "statuspagamentos", key: "id" },
-        onUpdate: "CASCADE",
-        onDelete: "SET NULL",
+      statuspagamento: {
         allowNull: true,
+        type: Sequelize.STRING,
       },
+      // statuspagamento_id: {
+      //   type: Sequelize.INTEGER,
+      //   references: { model: "statuspagamentos", key: "id" },
+      //   onUpdate: "CASCADE",
+      //   onDelete: "SET NULL",
+      //   allowNull: true,
+      // },
       dados_pessoais_rg: {
         type: Sequelize.STRING,
         allowNull: true,

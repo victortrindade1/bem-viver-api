@@ -20,9 +20,15 @@ export const whereFilter = async ({ filter, queryFields }) => {
 
   // eslint-disable-next-line no-restricted-syntax
   for (const queryField of queryFields) {
-    query.where = where(cast(col(queryField.field), "VARCHAR"), {
-      [Op.iLike]: `%${filter}%`,
-    });
+    query.where = where(
+      cast(col(queryField.field), "VARCHAR"),
+      process.env.NODE_ENV === "test" // Somente PG suporta iLike
+        ? { [Op.like]: `%${filter}%` }
+        : { [Op.iLike]: `%${filter}%` }
+    );
+    // {
+    //   [Op.iLike]: `%${filter}%`,
+    // });
 
     if (queryField.at) {
       if (queryField.at.at) {

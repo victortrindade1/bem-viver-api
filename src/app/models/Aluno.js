@@ -7,7 +7,7 @@ class Aluno extends Model {
         ativo: Sequelize.BOOLEAN,
         matricula: Sequelize.BIGINT,
         nome: Sequelize.STRING,
-        // status: Sequelize.STRING,
+        statuspagamento: Sequelize.STRING,
         dados_pessoais_rg: Sequelize.STRING,
         dados_pessoais_cpf: Sequelize.STRING,
         dados_pessoais_data_nascimento: Sequelize.STRING,
@@ -98,10 +98,10 @@ class Aluno extends Model {
       foreignKey: "horasaida_id",
       as: "dados_escolares_horasaida",
     });
-    this.belongsTo(models.Statuspagamento, {
-      foreignKey: "statuspagamento_id",
-      as: "dados_escolares_statuspagamento",
-    });
+    // this.belongsTo(models.Statuspagamento, {
+    //   foreignKey: "statuspagamento_id",
+    //   as: "dados_escolares_statuspagamento",
+    // });
   }
 }
 
