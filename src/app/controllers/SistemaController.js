@@ -20,7 +20,7 @@ class SistemaController {
       });
 
       if (sistemaExists) {
-        return res.status(400).json({ error: "Ano já existe." });
+        return res.status(400).json({ error: "Sistema já existe." });
       }
 
       const { sistema } = req.body;

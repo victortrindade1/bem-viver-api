@@ -12,24 +12,28 @@ class AnoController {
         sistema_id: Yup.number(),
       });
 
-      if (!(await schema.isValid(req.body))) {
+      const { ano, sistema_id } = req.body;
+
+      const request = { ano, sistema_id };
+
+      if (!(await schema.isValid(request))) {
         return res.status(400).json({ error: "Validation fails" });
       }
 
       const anoExists = await Ano.findOne({
-        where: { ano: req.body.ano, sistema_id: req.body.sistema_id },
+        where: sistema_id ? { ano, sistema_id } : { ano },
       });
 
       if (anoExists) {
         return res.status(400).json({ error: "Ano já existe." });
       }
 
-      const { ano, sistema_id } = req.body;
+      // const { ano, sistema_id } = req.body;
 
-      const request = {
-        ano,
-        sistema_id,
-      };
+      // const request = {
+      //   ano,
+      //   sistema_id,
+      // };
 
       const { id } = await Ano.create(request);
 

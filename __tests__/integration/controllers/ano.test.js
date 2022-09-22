@@ -4,7 +4,7 @@ import app from "../../../src/app";
 import truncate from "../../util/truncate";
 import setToken from "../../util/setToken";
 
-describe("Sistema", () => {
+describe("Ano", () => {
   let token = "";
 
   beforeEach(async () => {
@@ -12,11 +12,11 @@ describe("Sistema", () => {
     token = await setToken();
   });
 
-  it("[STORE] should store new sistema", async () => {
+  it("[STORE] should store new ano", async () => {
     const response = await request(app)
-      .post("/sistemas")
+      .post("/anos")
       .send({
-        sistema: "Creche",
+        ano: "1",
       })
       .set("Authorization", `Bearer ${token}`);
 
@@ -25,7 +25,7 @@ describe("Sistema", () => {
 
   it("[STORE] should fail validation", async () => {
     const response = await request(app)
-      .post("/sistemas")
+      .post("/anos")
       .send({
         foo: "bar",
       })
@@ -34,36 +34,36 @@ describe("Sistema", () => {
     expect(response.status).toBe(400);
   });
 
-  it("[STORE] should show error: Sistema já existe.", async () => {
+  it("[STORE] should show error: Ano já existe.", async () => {
     await request(app)
-      .post("/sistemas")
+      .post("/anos")
       .send({
-        sistema: "Fundamental",
+        ano: "1",
       })
       .set("Authorization", `Bearer ${token}`);
 
     const response = await request(app)
-      .post("/sistemas")
+      .post("/anos")
       .send({
-        sistema: "Fundamental",
+        ano: "1",
       })
       .set("Authorization", `Bearer ${token}`);
 
     expect(response.status).toBe(400);
   });
 
-  it("[UPDATE] should update sistema", async () => {
-    const newSistema = await request(app)
-      .post("/sistemas")
+  it("[UPDATE] should update ano", async () => {
+    const newAno = await request(app)
+      .post("/anos")
       .send({
-        sistema: "Fundamental",
+        ano: "1",
       })
       .set("Authorization", `Bearer ${token}`);
 
     const response = await request(app)
-      .put(`/sistemas/${newSistema.body.id}`)
+      .put(`/anos/${newAno.body.id}`)
       .send({
-        sistema: "Maternal",
+        ano: "2",
       })
       .set("Authorization", `Bearer ${token}`);
 
@@ -71,92 +71,92 @@ describe("Sistema", () => {
   });
 
   it("[UPDATE] should fail validation", async () => {
-    const newSistema = await request(app)
-      .post("/sistemas")
-      .send({
-        sistema: "Fundamental",
-      })
-      .set("Authorization", `Bearer ${token}`);
+    // await request(app)
+    //   .post("/anos")
+    //   .send({
+    //     ano: "1",
+    //   })
+    //   .set("Authorization", `Bearer ${token}`);
 
     const response = await request(app)
-      .put(`/sistemas/${newSistema.body.id}`)
+      .put(`/anos/a`)
       .send({
-        foo: "bar",
+        ano: 1,
       })
       .set("Authorization", `Bearer ${token}`);
 
     expect(response.status).toBe(400);
   });
 
-  it("[INDEX] should list sistemas", async () => {
+  it("[INDEX] should list anos", async () => {
     await request(app)
-      .post("/sistemas")
+      .post("/anos")
       .send({
-        sistema: "Maternal",
+        ano: "1",
       })
       .set("Authorization", `Bearer ${token}`);
 
     const response = await request(app)
-      .get("/sistemas")
+      .get("/anos")
       .query({
-        q: "Mater",
+        q: "1",
       })
       .set("Authorization", `Bearer ${token}`);
 
     return expect(response.body.items).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          sistema: "Maternal",
+          ano: "1",
         }),
       ])
     );
   });
 
-  it("[DELETE] should delete sistema", async () => {
-    const newSistema = await request(app)
-      .post("/sistemas")
+  it("[DELETE] should delete ano", async () => {
+    const newAno = await request(app)
+      .post("/anos")
       .send({
-        sistema: "Maternal",
+        ano: "1",
       })
       .set("Authorization", `Bearer ${token}`);
 
     const response = await request(app)
-      .del(`/sistemas/${newSistema.body.id}`)
+      .del(`/anos/${newAno.body.id}`)
       .set("Authorization", `Bearer ${token}`);
 
     return expect(response.body).toEqual(
       expect.objectContaining({
-        message: "Sistema excluído com sucesso.",
+        message: "Ano excluído com sucesso.",
       })
     );
   });
 
-  it("[DELETE] should show error: Sistema não existe", async () => {
+  it("[DELETE] should show error: Ano não existe", async () => {
     const response = await request(app)
-      .del(`/sistemas/99`)
+      .del(`/anos/99`)
       .set("Authorization", `Bearer ${token}`);
 
     expect(response.status).toBe(400);
   });
 
-  it("[SHOW] should show sistema", async () => {
-    const newSistema = await request(app)
-      .post("/sistemas")
+  it("[SHOW] should show ano", async () => {
+    const newAno = await request(app)
+      .post("/anos")
       .send({
-        sistema: "Fundamental",
+        ano: "1",
       })
       .set("Authorization", `Bearer ${token}`);
 
     const response = await request(app)
-      .get(`/sistemas/${newSistema.body.id}`)
+      .get(`/anos/${newAno.body.id}`)
       .set("Authorization", `Bearer ${token}`);
 
     return expect(response.body).toHaveProperty("id");
   });
 
-  it("[SHOW] should show error: Sistema não existe", async () => {
+  it("[SHOW] should show error: Ano não existe", async () => {
     const response = await request(app)
-      .get(`/sistemas/99`)
+      .get(`/anos/99`)
       .set("Authorization", `Bearer ${token}`);
 
     expect(response.status).toBe(400);

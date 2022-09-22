@@ -2,6 +2,8 @@
 
 ## Onde parei
 
+Teste de sistema
+
 Criar os testes e seeds
 Criar abstraçao de validaçoes
 Criar abstraçao de controllers

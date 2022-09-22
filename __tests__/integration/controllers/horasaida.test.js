@@ -4,7 +4,7 @@ import app from "../../../src/app";
 import truncate from "../../util/truncate";
 import setToken from "../../util/setToken";
 
-describe("Sistema", () => {
+describe("Hora Saída", () => {
   let token = "";
 
   beforeEach(async () => {
@@ -12,11 +12,11 @@ describe("Sistema", () => {
     token = await setToken();
   });
 
-  it("[STORE] should store new sistema", async () => {
+  it("[STORE] should store new horasaida", async () => {
     const response = await request(app)
-      .post("/sistemas")
+      .post("/horasaidas")
       .send({
-        sistema: "Creche",
+        horasaida: "12:00h",
       })
       .set("Authorization", `Bearer ${token}`);
 
@@ -25,7 +25,7 @@ describe("Sistema", () => {
 
   it("[STORE] should fail validation", async () => {
     const response = await request(app)
-      .post("/sistemas")
+      .post("/horasaidas")
       .send({
         foo: "bar",
       })
@@ -34,36 +34,36 @@ describe("Sistema", () => {
     expect(response.status).toBe(400);
   });
 
-  it("[STORE] should show error: Sistema já existe.", async () => {
+  it("[STORE] should show error: Hora Saída já existe.", async () => {
     await request(app)
-      .post("/sistemas")
+      .post("/horasaidas")
       .send({
-        sistema: "Fundamental",
+        horasaida: "12:00h",
       })
       .set("Authorization", `Bearer ${token}`);
 
     const response = await request(app)
-      .post("/sistemas")
+      .post("/horasaidas")
       .send({
-        sistema: "Fundamental",
+        horasaida: "12:00h",
       })
       .set("Authorization", `Bearer ${token}`);
 
     expect(response.status).toBe(400);
   });
 
-  it("[UPDATE] should update sistema", async () => {
-    const newSistema = await request(app)
-      .post("/sistemas")
+  it("[UPDATE] should update horasaida", async () => {
+    const newHoraSaida = await request(app)
+      .post("/horasaidas")
       .send({
-        sistema: "Fundamental",
+        horasaida: "12:00h",
       })
       .set("Authorization", `Bearer ${token}`);
 
     const response = await request(app)
-      .put(`/sistemas/${newSistema.body.id}`)
+      .put(`/horasaidas/${newHoraSaida.body.id}`)
       .send({
-        sistema: "Maternal",
+        horasaida: "18:00h",
       })
       .set("Authorization", `Bearer ${token}`);
 
@@ -71,15 +71,15 @@ describe("Sistema", () => {
   });
 
   it("[UPDATE] should fail validation", async () => {
-    const newSistema = await request(app)
-      .post("/sistemas")
+    const newHoraSaida = await request(app)
+      .post("/horasaidas")
       .send({
-        sistema: "Fundamental",
+        horasaida: "12:00h",
       })
       .set("Authorization", `Bearer ${token}`);
 
     const response = await request(app)
-      .put(`/sistemas/${newSistema.body.id}`)
+      .put(`/horasaidas/${newHoraSaida.body.id}`)
       .send({
         foo: "bar",
       })
@@ -88,75 +88,75 @@ describe("Sistema", () => {
     expect(response.status).toBe(400);
   });
 
-  it("[INDEX] should list sistemas", async () => {
+  it("[INDEX] should list horasaidas", async () => {
     await request(app)
-      .post("/sistemas")
+      .post("/horasaidas")
       .send({
-        sistema: "Maternal",
+        horasaida: "18:00h",
       })
       .set("Authorization", `Bearer ${token}`);
 
     const response = await request(app)
-      .get("/sistemas")
+      .get("/horasaidas")
       .query({
-        q: "Mater",
+        q: "18",
       })
       .set("Authorization", `Bearer ${token}`);
 
     return expect(response.body.items).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          sistema: "Maternal",
+          horasaida: "18:00h",
         }),
       ])
     );
   });
 
-  it("[DELETE] should delete sistema", async () => {
-    const newSistema = await request(app)
-      .post("/sistemas")
+  it("[DELETE] should delete horasaida", async () => {
+    const newHoraSaida = await request(app)
+      .post("/horasaidas")
       .send({
-        sistema: "Maternal",
+        horasaida: "18:00h",
       })
       .set("Authorization", `Bearer ${token}`);
 
     const response = await request(app)
-      .del(`/sistemas/${newSistema.body.id}`)
+      .del(`/horasaidas/${newHoraSaida.body.id}`)
       .set("Authorization", `Bearer ${token}`);
 
     return expect(response.body).toEqual(
       expect.objectContaining({
-        message: "Sistema excluído com sucesso.",
+        message: "Horasaida excluído com sucesso.",
       })
     );
   });
 
-  it("[DELETE] should show error: Sistema não existe", async () => {
+  it("[DELETE] should show error: Hora Saída não existe", async () => {
     const response = await request(app)
-      .del(`/sistemas/99`)
+      .del(`/horasaidas/99`)
       .set("Authorization", `Bearer ${token}`);
 
     expect(response.status).toBe(400);
   });
 
-  it("[SHOW] should show sistema", async () => {
-    const newSistema = await request(app)
-      .post("/sistemas")
+  it("[SHOW] should show horasaida", async () => {
+    const newHoraSaida = await request(app)
+      .post("/horasaidas")
       .send({
-        sistema: "Fundamental",
+        horasaida: "12:00h",
       })
       .set("Authorization", `Bearer ${token}`);
 
     const response = await request(app)
-      .get(`/sistemas/${newSistema.body.id}`)
+      .get(`/horasaidas/${newHoraSaida.body.id}`)
       .set("Authorization", `Bearer ${token}`);
 
     return expect(response.body).toHaveProperty("id");
   });
 
-  it("[SHOW] should show error: Sistema não existe", async () => {
+  it("[SHOW] should show error: Hora Saída não existe", async () => {
     const response = await request(app)
-      .get(`/sistemas/99`)
+      .get(`/horasaidas/99`)
       .set("Authorization", `Bearer ${token}`);
 
     expect(response.status).toBe(400);
