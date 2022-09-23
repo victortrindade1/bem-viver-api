@@ -5,22 +5,12 @@ import truncate from "../../util/truncate";
 import setToken from "../../util/setToken";
 
 describe("Turno", () => {
-  jest.setTimeout(30000);
-
   let token = "";
 
-  // beforeAll(async () => {
-  //   token = await setToken();
-  // });
   beforeEach(async () => {
     await truncate(); // Apaga dados a cada teste para não conflitar
     token = await setToken();
   });
-  // beforeEach(async () => {
-  //   await truncate().then(async () => {
-  //     token = await setToken();
-  //   });
-  // });
 
   it("[STORE] should store new turno", async () => {
     const response = await request(app)
@@ -31,6 +21,17 @@ describe("Turno", () => {
       .set("Authorization", `Bearer ${token}`);
 
     return expect(response.body).toHaveProperty("id");
+  });
+
+  it("[STORE] should fail validation", async () => {
+    const response = await request(app)
+      .post("/turnos")
+      .send({
+        foo: "bar",
+      })
+      .set("Authorization", `Bearer ${token}`);
+
+    return expect(response.status).toBe(400);
   });
 
   it("[UPDATE] should update turno", async () => {
@@ -49,6 +50,24 @@ describe("Turno", () => {
       .set("Authorization", `Bearer ${token}`);
 
     return expect(response.body).toHaveProperty("id");
+  });
+
+  it("[UPDATE] should fail validation", async () => {
+    // const newTurno = await request(app)
+    //   .post("/turnos")
+    //   .send({
+    //     turno: "Diurno",
+    //   })
+    //   .set("Authorization", `Bearer ${token}`);
+
+    const response = await request(app)
+      .put(`/turnos/a`)
+      .send({
+        foo: "bar",
+      })
+      .set("Authorization", `Bearer ${token}`);
+
+    return expect(response.status).toBe(400);
   });
 
   it("[INDEX] should list turnos", async () => {

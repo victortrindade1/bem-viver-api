@@ -1,4 +1,4 @@
-import * as Yup from "yup";
+// import * as Yup from "yup";
 import Youch from "youch";
 import { Op } from "sequelize";
 
@@ -8,18 +8,7 @@ import File from "../models/File";
 class UserController {
   async store(req, res) {
     try {
-      const schema = Yup.object().shape({
-        name: Yup.string().required(),
-        email: Yup.string().email().required(),
-        password: Yup.string().required().min(6),
-        isAdmin: Yup.boolean().required(),
-      });
-
       const { name, email, password, isAdmin } = req.body;
-
-      if (!(await schema.isValid({ name, email, password, isAdmin }))) {
-        return res.status(400).json({ error: "Validation fails" });
-      }
 
       const userExists = await User.findOne({
         where: { email },
@@ -44,38 +33,8 @@ class UserController {
   }
 
   async update(req, res) {
-    const schema = Yup.object().shape({
-      id: Yup.number().required(),
-      name: Yup.string(),
-      email: Yup.string().email(),
-      oldPassword: Yup.string().min(6),
-      // Condicional: Se for passado um oldPassword, então o campo password é
-      // obrigatório
-      password: Yup.string()
-        .min(6)
-        .when("oldPassword", (oldPassword, field) =>
-          oldPassword ? field.required() : field
-        ),
-      confirmPassword: Yup.string().when("password", (password, field) =>
-        password ? field.required().oneOf([Yup.ref("password")]) : field
-      ),
-    });
-
-    const { name, email, oldPassword, password, confirmPassword } = req.body;
+    const { email, oldPassword } = req.body;
     const { id } = req.params;
-
-    const userRequest = {
-      id,
-      name,
-      email,
-      oldPassword,
-      password,
-      confirmPassword,
-    };
-
-    if (!(await schema.isValid(userRequest))) {
-      return res.status(400).json({ error: "Validation fails" });
-    }
 
     const user = await User.findByPk(id);
 

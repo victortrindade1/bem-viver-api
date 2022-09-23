@@ -1,5 +1,3 @@
-import * as Yup from "yup";
-// import Youch from "youch";
 import { Op } from "sequelize";
 
 import Turno from "../models/Turno";
@@ -7,14 +5,6 @@ import Turno from "../models/Turno";
 class TurnoController {
   async store(req, res) {
     try {
-      const schema = Yup.object().shape({
-        turno: Yup.string().required(),
-      });
-
-      if (!(await schema.isValid(req.body))) {
-        return res.status(400).json({ error: "Validation fails" });
-      }
-
       const turnoExists = await Turno.findOne({
         where: { turno: req.body.turno },
       });
@@ -42,11 +32,6 @@ class TurnoController {
 
   async update(req, res) {
     try {
-      const schema = Yup.object().shape({
-        id: Yup.number().required(),
-        turno: Yup.string().required(),
-      });
-
       const { turno } = req.body;
       const { id } = req.params;
 
@@ -54,10 +39,6 @@ class TurnoController {
         id,
         turno,
       };
-
-      if (!(await schema.isValid(request))) {
-        return res.status(400).json({ error: "Validation fails" });
-      }
 
       const turnoExists = await Turno.findByPk(id);
 

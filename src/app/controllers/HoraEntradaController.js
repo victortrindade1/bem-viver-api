@@ -1,4 +1,3 @@
-import * as Yup from "yup";
 import Youch from "youch";
 import { Op } from "sequelize";
 
@@ -7,14 +6,6 @@ import Horaentrada from "../models/Horaentrada";
 class HoraentradaController {
   async store(req, res) {
     try {
-      const schema = Yup.object().shape({
-        horaentrada: Yup.string().required(),
-      });
-
-      if (!(await schema.isValid(req.body))) {
-        return res.status(400).json({ error: "Validation fails" });
-      }
-
       const horaentradaExists = await Horaentrada.findOne({
         where: { horaentrada: req.body.horaentrada },
       });
@@ -42,11 +33,6 @@ class HoraentradaController {
 
   async update(req, res) {
     try {
-      const schema = Yup.object().shape({
-        id: Yup.number().required(),
-        horaentrada: Yup.string().required(),
-      });
-
       const { horaentrada } = req.body;
       const { id } = req.params;
 
@@ -54,10 +40,6 @@ class HoraentradaController {
         id,
         horaentrada,
       };
-
-      if (!(await schema.isValid(request))) {
-        return res.status(400).json({ error: "Validation fails" });
-      }
 
       const horaentradaExists = await Horaentrada.findByPk(id);
 

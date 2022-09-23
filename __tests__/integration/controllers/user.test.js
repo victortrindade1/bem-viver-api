@@ -13,18 +13,10 @@ describe("User", () => {
 
   let token = "";
 
-  // beforeAll(async () => {
-  //   token = await setToken();
-  // });
   beforeEach(async () => {
     await truncate(); // Apaga dados a cada teste para não conflitar
     token = await setToken();
   });
-  // beforeEach(async () => {
-  //   await truncate().then(async () => {
-  //     token = await setToken();
-  //   });
-  // });
 
   it("[STORE] should fail validation", async () => {
     const response = await request(app)

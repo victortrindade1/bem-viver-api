@@ -1,4 +1,3 @@
-import * as Yup from "yup";
 import Youch from "youch";
 import { Op } from "sequelize";
 
@@ -7,18 +6,9 @@ import Ano from "../models/Ano";
 class AnoController {
   async store(req, res) {
     try {
-      const schema = Yup.object().shape({
-        ano: Yup.string().required(),
-        sistema_id: Yup.number(),
-      });
-
       const { ano, sistema_id } = req.body;
 
       const request = { ano, sistema_id };
-
-      if (!(await schema.isValid(request))) {
-        return res.status(400).json({ error: "Validation fails" });
-      }
 
       const anoExists = await Ano.findOne({
         where: sistema_id ? { ano, sistema_id } : { ano },
@@ -49,12 +39,6 @@ class AnoController {
 
   async update(req, res) {
     try {
-      const schema = Yup.object().shape({
-        id: Yup.number().required(),
-        ano: Yup.string(),
-        sistema_id: Yup.string(),
-      });
-
       const { ano, sistema_id } = req.body;
       const { id } = req.params;
 
@@ -63,10 +47,6 @@ class AnoController {
         ano,
         sistema_id,
       };
-
-      if (!(await schema.isValid(request))) {
-        return res.status(400).json({ error: "Validation fails" });
-      }
 
       const anoExists = await Ano.findByPk(id);
 

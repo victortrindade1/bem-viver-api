@@ -2,7 +2,6 @@
 
 ## Onde parei
 
-Criar os seeds
 Criar abstraçao de validaçoes
 Criar abstraçao de controllers
 

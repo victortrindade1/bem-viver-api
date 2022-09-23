@@ -1,5 +1,3 @@
-import * as Yup from "yup";
-import Youch from "youch";
 import { Op } from "sequelize";
 
 import Sistema from "../models/Sistema";
@@ -7,14 +5,6 @@ import Sistema from "../models/Sistema";
 class SistemaController {
   async store(req, res) {
     try {
-      const schema = Yup.object().shape({
-        sistema: Yup.string().required(),
-      });
-
-      if (!(await schema.isValid(req.body))) {
-        return res.status(400).json({ error: "Validation fails" });
-      }
-
       const sistemaExists = await Sistema.findOne({
         where: { sistema: req.body.sistema },
       });
@@ -42,11 +32,6 @@ class SistemaController {
 
   async update(req, res) {
     try {
-      const schema = Yup.object().shape({
-        id: Yup.number().required(),
-        sistema: Yup.string().required(),
-      });
-
       const { sistema } = req.body;
       const { id } = req.params;
 
@@ -55,22 +40,12 @@ class SistemaController {
         sistema,
       };
 
-      if (!(await schema.isValid(request))) {
-        return res.status(400).json({ error: "Validation fails" });
-      }
-
       const sistemaExists = await Sistema.findByPk(id);
 
       const sistemaUpdated = await sistemaExists.update(request);
 
       return res.json(sistemaUpdated);
     } catch (err) {
-      if (process.env.NODE_ENV === "development") {
-        const errors = await new Youch(err, req).toJSON();
-
-        return res.status(400).json(errors);
-      }
-
       return res.status(400).json({ error: "Error in database" });
     }
   }
@@ -105,12 +80,6 @@ class SistemaController {
         pages: Math.ceil(total / limit),
       });
     } catch (err) {
-      if (process.env.NODE_ENV === "development") {
-        const errors = await new Youch(err, req).toJSON();
-
-        return res.status(400).json(errors);
-      }
-
       return res.status(400).json({ error: "Error in database" });
     }
   }
@@ -145,12 +114,6 @@ class SistemaController {
 
       return res.json(sistema);
     } catch (err) {
-      if (process.env.NODE_ENV === "development") {
-        const errors = await new Youch(err, req).toJSON();
-
-        return res.status(400).json(errors);
-      }
-
       return res.status(400).json({ error: "Error in database" });
     }
   }

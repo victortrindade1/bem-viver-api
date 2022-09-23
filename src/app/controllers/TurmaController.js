@@ -1,4 +1,3 @@
-import * as Yup from "yup";
 import Youch from "youch";
 import { Op } from "sequelize";
 
@@ -8,21 +7,12 @@ import Ano from "../models/Ano";
 class TurmaController {
   async store(req, res) {
     try {
-      const schema = Yup.object().shape({
-        turma: Yup.string().required(),
-        ano_id: Yup.number(),
-      });
-
       const { turma, ano_id } = req.body;
 
       const request = {
         turma,
         ano_id,
       };
-
-      if (!(await schema.isValid(request))) {
-        return res.status(400).json({ error: "Validation fails" });
-      }
 
       const verifyExists = await Turma.findOne({
         where: ano_id
@@ -53,12 +43,6 @@ class TurmaController {
 
   async update(req, res) {
     try {
-      const schema = Yup.object().shape({
-        id: Yup.number().required(),
-        turma: Yup.string(),
-        ano_id: Yup.number(),
-      });
-
       const { turma, ano_id } = req.body;
       const { id } = req.params;
 
@@ -67,10 +51,6 @@ class TurmaController {
         turma,
         ano_id,
       };
-
-      if (!(await schema.isValid(request))) {
-        return res.status(400).json({ error: "Validation fails" });
-      }
 
       const turmaExists = await Turma.findByPk(id);
 
