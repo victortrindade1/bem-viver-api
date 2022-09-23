@@ -2,7 +2,6 @@
 
 ## Onde parei
 
-Criar abstraçao de validaçoes
 Criar abstraçao de controllers
 
 ## Fazer futuramente

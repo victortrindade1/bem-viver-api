@@ -215,7 +215,7 @@ describe("User", () => {
       })
       .set("Authorization", `Bearer ${token}`);
 
-    return expect(response.status).toBe(401);
+    expect(response.status).toBe(500);
   });
 
   it("[UPDATE] should not update e-mail to another existing e-mail", async () => {
@@ -248,7 +248,7 @@ describe("User", () => {
       })
       .set("Authorization", `Bearer ${token}`);
 
-    return expect(response.status).toBe(400);
+    return expect(response.status).toBe(500);
   });
 
   it("[INDEX] should list users", async () => {
