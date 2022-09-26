@@ -5,6 +5,7 @@ export const validateTurmaStore = async (req, res, next) => {
     const schema = Yup.object().shape({
       turma: Yup.string().required(),
       ano_id: Yup.number(),
+      turno_id: Yup.number(),
     });
 
     await schema.validate(req.body, { abortEarly: false });
@@ -22,6 +23,7 @@ export const validateTurmaUpdate = async (req, res, next) => {
     const schema = Yup.object().shape({
       turma: Yup.string(),
       ano_id: Yup.number(),
+      turno_id: Yup.number(),
     });
 
     await schema.validate(req.body, { abortEarly: false });

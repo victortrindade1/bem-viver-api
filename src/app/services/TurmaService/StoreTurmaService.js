@@ -1,21 +1,19 @@
 import Turma from "../../models/Turma";
 
 class StoreTurmaService {
-  async run({ turma, ano_id }) {
+  async run({ turma, ano_id, turno_id }) {
     const request = {
       turma,
       ano_id,
+      turno_id,
     };
 
     const verifyExists = await Turma.findOne({
-      where: ano_id
-        ? {
-            turma,
-            ano_id,
-          }
-        : {
-            turma,
-          },
+      where: {
+        ano_id: ano_id || null,
+        turma,
+        turno_id: turno_id || null,
+      },
     });
 
     if (verifyExists) {

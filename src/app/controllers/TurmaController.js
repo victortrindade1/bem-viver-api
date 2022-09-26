@@ -1,5 +1,3 @@
-import Youch from "youch";
-
 import IndexTurmaService from "../services/TurmaService/IndexTurmaService";
 import StoreTurmaService from "../services/TurmaService/StoreTurmaService";
 import UpdateTurmaService from "../services/TurmaService/UpdateTurmaService";
@@ -10,14 +8,15 @@ import Ano from "../models/Ano";
 class TurmaController {
   async store(req, res) {
     try {
-      const { turma, ano_id } = req.body;
+      const { turma, ano_id, turno_id } = req.body;
 
-      const id = await StoreTurmaService.run({ turma, ano_id });
+      const id = await StoreTurmaService.run({ turma, ano_id, turno_id });
 
       return res.json({
         id,
         turma,
         ano_id,
+        turno_id,
       });
     } catch (error) {
       return res.status(400).json({ error: "Error in database" });
@@ -26,19 +25,18 @@ class TurmaController {
 
   async update(req, res) {
     try {
-      const { turma, ano_id } = req.body;
+      const { turma, ano_id, turno_id } = req.body;
       const { id } = req.params;
 
-      const response = await UpdateTurmaService.run({ id, turma, ano_id });
+      const response = await UpdateTurmaService.run({
+        id,
+        turma,
+        ano_id,
+        turno_id,
+      });
 
       return res.json(response);
     } catch (err) {
-      if (process.env.NODE_ENV === "development") {
-        const errors = await new Youch(err, req).toJSON();
-
-        return res.status(400).json(errors);
-      }
-
       return res.status(400).json({ error: "Error in database" });
     }
   }

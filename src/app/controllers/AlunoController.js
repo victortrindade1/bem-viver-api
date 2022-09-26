@@ -12,13 +12,20 @@ import Horasaida from "../models/Horasaida";
 class AlunoController {
   async store(req, res) {
     try {
-      const { matricula, nome, dataMatricula, dataPreMatricula } = req.body;
+      const {
+        matricula,
+        nome,
+        dados_escolares_data_matricula,
+        dados_escolares_data_pre_matricula,
+        dados_pessoais_data_nascimento,
+      } = req.body;
 
       const aluno = await StoreAlunoService.run({
         matricula,
         nome,
-        dataMatricula,
-        dataPreMatricula,
+        dados_escolares_data_matricula,
+        dados_escolares_data_pre_matricula,
+        dados_pessoais_data_nascimento,
       });
 
       return res.json(aluno);
@@ -72,15 +79,21 @@ class AlunoController {
           {
             model: Turma,
             as: "dados_escolares_turma",
+            include: [
+              {
+                model: Turno,
+                as: "dados_escolares_turno",
+              },
+            ],
           },
           {
             model: Periodo,
             as: "dados_escolares_periodo",
           },
-          {
-            model: Turno,
-            as: "dados_escolares_turno",
-          },
+          // {
+          //   model: Turno,
+          //   as: "dados_escolares_turno",
+          // },
           {
             model: Horaentrada,
             as: "dados_escolares_horaentrada",

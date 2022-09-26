@@ -6,12 +6,12 @@ export const validateAlunoStore = async (req, res, next) => {
     const schema = Yup.object().shape({
       nome: Yup.string().required(),
       matricula: Yup.number().required(),
-      dataMatricula: Yup.string().when(
-        "dataPreMatricula",
-        (dataPreMatricula, field) =>
-          dataPreMatricula ? field : field.required()
+      dados_escolares_data_matricula: Yup.string().when(
+        "dados_escolares_data_pre_matricula",
+        (dados_escolares_data_pre_matricula, field) =>
+          dados_escolares_data_pre_matricula ? field : field.required()
       ),
-      dataPreMatricula: Yup.string(),
+      dados_escolares_data_pre_matricula: Yup.string(),
     });
 
     await schema.validate(req.body, { abortEarly: false });
@@ -94,7 +94,6 @@ export const validateAlunoUpdate = async (req, res, next) => {
       contatos_buscar3_parentesco: Yup.string(),
       contatos_buscar3_contato: Yup.string(),
       turma_id: Yup.number(),
-      turno_id: Yup.number(),
       horaentrada_id: Yup.number(),
       horasaida_id: Yup.number(),
       periodo_id: Yup.number(),

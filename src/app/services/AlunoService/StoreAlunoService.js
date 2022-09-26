@@ -3,23 +3,34 @@ import Aluno from "../../models/Aluno";
 import statusPagamento from "../../../lib/constants";
 
 export default new (class StoreAlunoService {
-  async run({ matricula, nome, dataMatricula, dataPreMatricula }) {
+  async run({
+    matricula,
+    nome,
+    dados_escolares_data_matricula,
+    dados_escolares_data_pre_matricula,
+    dados_pessoais_data_nascimento,
+  }) {
     const alunoExists = await Aluno.findOne({
-      where: { matricula },
+      where: {
+        // matricula: matricula || null,
+        nome,
+        dados_pessoais_data_nascimento: dados_pessoais_data_nascimento || null,
+      },
     });
 
     if (alunoExists) {
-      throw new Error("Matrícula já existe.");
+      throw new Error("Nome já existe.");
     }
 
     const alunoRequest = {
       nome,
       matricula,
-      dataMatricula,
-      dataPreMatricula,
+      dados_escolares_data_matricula,
+      dados_escolares_data_pre_matricula,
+      dados_pessoais_data_nascimento,
       ativo: true,
       statuspagamento:
-        dataPreMatricula && !dataMatricula
+        dados_escolares_data_pre_matricula && !dados_escolares_data_matricula
           ? statusPagamento[5].status // 5 = Pré Matr.
           : statusPagamento[1].status, // 1 = Sem Pgto
     };

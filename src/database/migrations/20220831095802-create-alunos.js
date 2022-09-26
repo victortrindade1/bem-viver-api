@@ -230,13 +230,13 @@ module.exports = {
         onDelete: "SET NULL",
         allowNull: true,
       },
-      turno_id: {
-        type: Sequelize.INTEGER,
-        references: { model: "turnos", key: "id" },
-        onUpdate: "CASCADE",
-        onDelete: "SET NULL",
-        allowNull: true,
-      },
+      // turno_id: {
+      //   type: Sequelize.INTEGER,
+      //   references: { model: "turnos", key: "id" },
+      //   onUpdate: "CASCADE",
+      //   onDelete: "SET NULL",
+      //   allowNull: true,
+      // },
       periodo_id: {
         type: Sequelize.INTEGER,
         references: { model: "periodos", key: "id" },

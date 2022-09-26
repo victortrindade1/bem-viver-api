@@ -2,6 +2,7 @@ import { Op } from "sequelize";
 
 import Turma from "../../models/Turma";
 import Ano from "../../models/Ano";
+import Turno from "../../models/Turno";
 
 export default new (class IndexTurmaService {
   async run({ filter, limit, page }) {
@@ -26,6 +27,11 @@ export default new (class IndexTurmaService {
         {
           model: Ano,
           as: "dados_escolares_ano",
+          // attributes: ["name", "path", "url"],
+        },
+        {
+          model: Turno,
+          as: "dados_escolares_turno",
           // attributes: ["name", "path", "url"],
         },
       ],

@@ -86,10 +86,10 @@ class Aluno extends Model {
       foreignKey: "periodo_id",
       as: "dados_escolares_periodo",
     });
-    this.belongsTo(models.Turno, {
-      foreignKey: "turno_id",
-      as: "dados_escolares_turno",
-    });
+    // this.belongsTo(models.Turno, {
+    //   foreignKey: "turno_id",
+    //   as: "dados_escolares_turno",
+    // });
     this.belongsTo(models.Horaentrada, {
       foreignKey: "horaentrada_id",
       as: "dados_escolares_horaentrada",

@@ -5,6 +5,8 @@ import truncate from "../../util/truncate";
 import setToken from "../../util/setToken";
 
 describe("Aluno", () => {
+  jest.setTimeout(30000);
+
   let token = "";
 
   beforeEach(async () => {
@@ -18,7 +20,7 @@ describe("Aluno", () => {
       .send({
         nome: "Fernando",
         matricula: 1234,
-        dataMatricula: "12/02/2023",
+        dados_escolares_data_matricula: "12/02/2023",
       })
       .set("Authorization", `Bearer ${token}`);
 
@@ -37,22 +39,22 @@ describe("Aluno", () => {
     expect(response.status).toBe(400);
   });
 
-  it("[STORE] should show error: Matrícula já existe.", async () => {
+  it("[STORE] should show error: Nome já existe.", async () => {
     await request(app)
       .post("/alunos")
       .send({
         nome: "Fernando",
         matricula: 1234,
-        dataMatricula: "12/02/2023",
+        dados_pessoais_data_nascimento: "12/02/2023",
       })
       .set("Authorization", `Bearer ${token}`);
 
     const response = await request(app)
       .post("/alunos")
       .send({
-        nome: "Outro Nome",
-        matricula: 1234,
-        dataMatricula: "01/01/2023",
+        nome: "Fernando",
+        matricula: 1235,
+        dados_pessoais_data_nascimento: "12/02/2023",
       })
       .set("Authorization", `Bearer ${token}`);
 
@@ -65,7 +67,7 @@ describe("Aluno", () => {
       .send({
         nome: "Fernando",
         matricula: 1234,
-        dataMatricula: "12/02/2023",
+        dados_escolares_data_matricula: "12/02/2023",
       })
       .set("Authorization", `Bearer ${token}`);
 
@@ -103,7 +105,7 @@ describe("Aluno", () => {
       .send({
         nome: "Fernando",
         matricula: 1234,
-        dataMatricula: "12/02/2023",
+        dados_escolares_data_matricula: "12/02/2023",
       })
       .set("Authorization", `Bearer ${token}`);
 
@@ -129,7 +131,7 @@ describe("Aluno", () => {
       .send({
         nome: "Fernando",
         matricula: 1234,
-        dataMatricula: "12/02/2023",
+        dados_escolares_data_matricula: "12/02/2023",
       })
       .set("Authorization", `Bearer ${token}`);
 
@@ -155,7 +157,7 @@ describe("Aluno", () => {
       .send({
         nome: "Fernando",
         matricula: 1234,
-        dataMatricula: "12/02/2023",
+        dados_escolares_data_matricula: "12/02/2023",
         sistema: "Fundamental",
       })
       .set("Authorization", `Bearer ${token}`);
@@ -182,7 +184,7 @@ describe("Aluno", () => {
       .send({
         nome: "Fernando",
         matricula: 1234,
-        dataMatricula: "12/02/2023",
+        dados_escolares_data_matricula: "12/02/2023",
         ano: "1 Tarde",
       })
       .set("Authorization", `Bearer ${token}`);
@@ -209,7 +211,7 @@ describe("Aluno", () => {
       .send({
         nome: "Fernando",
         matricula: 1234,
-        dataMatricula: "12/02/2023",
+        dados_escolares_data_matricula: "12/02/2023",
         Turma: "503 Tarde",
       })
       .set("Authorization", `Bearer ${token}`);
@@ -236,7 +238,7 @@ describe("Aluno", () => {
       .send({
         nome: "Fernando",
         matricula: 1234,
-        dataMatricula: "12/02/2023",
+        dados_escolares_data_matricula: "12/02/2023",
         statuspagamento: "Sem Pgto.",
       })
       .set("Authorization", `Bearer ${token}`);
@@ -263,7 +265,7 @@ describe("Aluno", () => {
       .send({
         nome: "Fernando",
         matricula: 1234,
-        dataMatricula: "12/02/2023",
+        dados_escolares_data_matricula: "12/02/2023",
       })
       .set("Authorization", `Bearer ${token}`);
 
@@ -292,7 +294,7 @@ describe("Aluno", () => {
       .send({
         nome: "Fernando",
         matricula: 1234,
-        dataMatricula: "12/02/2023",
+        dados_escolares_data_matricula: "12/02/2023",
       })
       .set("Authorization", `Bearer ${token}`);
 

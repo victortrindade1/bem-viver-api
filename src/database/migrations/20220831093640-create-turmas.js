@@ -11,6 +11,13 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
+      turno_id: {
+        type: Sequelize.INTEGER,
+        references: { model: "turnos", key: "id" },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
+        allowNull: true,
+      },
       ano_id: {
         type: Sequelize.INTEGER,
         references: { model: "anos", key: "id" },
