@@ -5,7 +5,7 @@ import truncate from "../../util/truncate";
 import setToken from "../../util/setToken";
 
 describe("Turma", () => {
-  // jest.setTimeout(30000);
+  jest.setTimeout(30000);
 
   let token = "";
 

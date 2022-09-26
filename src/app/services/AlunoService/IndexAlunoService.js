@@ -1,0 +1,123 @@
+import Aluno from "../../models/Aluno";
+import Sistema from "../../models/Sistema";
+import Ano from "../../models/Ano";
+import Turma from "../../models/Turma";
+
+import { whereFilter } from "../../../utils";
+
+export default new (class IndexAlunoService {
+  async run({ filter, limit, page }) {
+    let queryWhere = {};
+
+    const queryFields = [
+      {
+        queryId: 1,
+        field: "nome",
+        model: Aluno,
+      },
+      {
+        queryId: 2,
+        field: "matricula",
+        model: Aluno,
+      },
+      {
+        queryId: 3,
+        field: "sistema",
+        model: Sistema,
+        as: "dados_escolares_sistema",
+        at: {
+          model: Ano,
+          as: "dados_escolares_ano",
+          at: {
+            model: Turma,
+            as: "dados_escolares_turma",
+            at: {
+              model: Aluno,
+            },
+          },
+        },
+      },
+      {
+        queryId: 4,
+        field: "ano",
+        model: Ano,
+        as: "dados_escolares_ano",
+        at: {
+          model: Turma,
+          as: "dados_escolares_turma",
+          at: {
+            model: Aluno,
+          },
+        },
+      },
+      {
+        queryId: 5,
+        field: "turma",
+        model: Turma,
+        as: "dados_escolares_turma",
+        at: {
+          model: Aluno,
+        },
+      },
+      {
+        queryId: 6,
+        field: "statuspagamento",
+        model: Aluno,
+      },
+    ];
+
+    if (filter) {
+      queryWhere = await whereFilter({
+        filter,
+        queryFields,
+      });
+    }
+
+    const alunosFindAndCount = await Aluno.findAndCountAll({
+      distinct: true,
+      where:
+        (queryWhere.queryId === 1 ||
+          queryWhere.queryId === 2 ||
+          queryWhere.queryId === 6) &&
+        queryWhere.where,
+      limit,
+      offset: (page - 1) * limit,
+      order: [["id", "DESC"]],
+      include: [
+        {
+          model: Turma,
+          as: "dados_escolares_turma",
+          required: !!(
+            queryWhere.queryId === 3 ||
+            queryWhere.queryId === 4 ||
+            queryWhere.queryId === 5
+          ),
+          where: queryWhere.queryId === 5 && queryWhere.where,
+          include: [
+            {
+              model: Ano,
+              as: "dados_escolares_ano",
+              required: !!(
+                queryWhere.queryId === 3 || queryWhere.queryId === 4
+              ),
+              where: queryWhere.queryId === 4 && queryWhere.where,
+              include: [
+                {
+                  model: Sistema,
+                  as: "dados_escolares_sistema",
+                  required: true,
+                  where: queryWhere.queryId === 3 && queryWhere.where,
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    const total = alunosFindAndCount.count;
+    const alunos = alunosFindAndCount.rows;
+
+    return { total, alunos };
+  }
+})();

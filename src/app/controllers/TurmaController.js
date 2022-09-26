@@ -1,5 +1,8 @@
 import Youch from "youch";
-import { Op } from "sequelize";
+
+import IndexTurmaService from "../services/TurmaService/IndexTurmaService";
+import StoreTurmaService from "../services/TurmaService/StoreTurmaService";
+import UpdateTurmaService from "../services/TurmaService/UpdateTurmaService";
 
 import Turma from "../models/Turma";
 import Ano from "../models/Ano";
@@ -9,27 +12,7 @@ class TurmaController {
     try {
       const { turma, ano_id } = req.body;
 
-      const request = {
-        turma,
-        ano_id,
-      };
-
-      const verifyExists = await Turma.findOne({
-        where: ano_id
-          ? {
-              turma,
-              ano_id,
-            }
-          : {
-              turma,
-            },
-      });
-
-      if (verifyExists) {
-        return res.status(400).json({ error: "Turma já existe." });
-      }
-
-      const { id } = await Turma.create(request);
+      const id = await StoreTurmaService.run({ turma, ano_id });
 
       return res.json({
         id,
@@ -46,15 +29,7 @@ class TurmaController {
       const { turma, ano_id } = req.body;
       const { id } = req.params;
 
-      const request = {
-        id,
-        turma,
-        ano_id,
-      };
-
-      const turmaExists = await Turma.findByPk(id);
-
-      const response = await turmaExists.update(request);
+      const response = await UpdateTurmaService.run({ id, turma, ano_id });
 
       return res.json(response);
     } catch (err) {
@@ -72,30 +47,10 @@ class TurmaController {
     try {
       const { page = 1, q: filter, limit = 5 } = req.query;
 
-      const where = {};
-
-      if (filter) {
-        where.turma =
-          process.env.NODE_ENV === "test" // Somente PG suporta iLike
-            ? { [Op.like]: `%${filter}%` }
-            : { [Op.iLike]: `%${filter}%` };
-      }
-
-      const total = await Turma.count({ where });
-
-      const turmas = await Turma.findAll({
-        where,
+      const { turmas, total } = await IndexTurmaService.run({
+        filter,
         limit,
-        offset: (page - 1) * limit,
-        order: [["id", "DESC"]],
-        // attributes: ["id", "label", "created_at", "updated_at"],
-        include: [
-          {
-            model: Ano,
-            as: "dados_escolares_ano",
-            // attributes: ["name", "path", "url"],
-          },
-        ],
+        page,
       });
 
       return res.json({
@@ -106,12 +61,6 @@ class TurmaController {
         pages: Math.ceil(total / limit),
       });
     } catch (err) {
-      if (process.env.NODE_ENV === "development") {
-        const errors = await new Youch(err, req).toJSON();
-
-        return res.status(400).json(errors);
-      }
-
       return res.status(400).json({ error: "Error in database" });
     }
   }
@@ -154,12 +103,6 @@ class TurmaController {
 
       return res.json(turma);
     } catch (err) {
-      if (process.env.NODE_ENV === "development") {
-        const errors = await new Youch(err, req).toJSON();
-
-        return res.status(400).json(errors);
-      }
-
       return res.status(400).json({ error: "Error in database" });
     }
   }
