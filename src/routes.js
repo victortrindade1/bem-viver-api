@@ -14,6 +14,7 @@ import TurnoController from "./app/controllers/TurnoController";
 import PeriodoController from "./app/controllers/PeriodoController";
 import HoraentradaController from "./app/controllers/HoraentradaController";
 import HorasaidaController from "./app/controllers/HorasaidaController";
+import MateriaController from "./app/controllers/MateriaController";
 
 import {
   validateUserStore,
@@ -52,6 +53,10 @@ import {
   validateAlunoStore,
   validateAlunoUpdate,
 } from "./app/validators/AlunoValidator";
+import {
+  validateMateriaStore,
+  validateMateriaUpdate,
+} from "./app/validators/MateriaValidator";
 
 import authMiddleware from "./app/middlewares/auth";
 
@@ -167,5 +172,14 @@ routes.put(
 routes.get("/horasaidas", HorasaidaController.index);
 routes.delete("/horasaidas/:id", HorasaidaController.delete);
 routes.get("/horasaidas/:id", HorasaidaController.show);
+
+/**
+ * Materia
+ */
+routes.post("/materias", validateMateriaStore, MateriaController.store);
+routes.put("/materias/:id", validateMateriaUpdate, MateriaController.update);
+routes.get("/materias", MateriaController.index);
+routes.delete("/materias/:id", MateriaController.delete);
+routes.get("/materias/:id", MateriaController.show);
 
 export default routes;

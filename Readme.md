@@ -2,9 +2,9 @@
 
 ## Onde parei
 
-Turmas:
-Vou tirar o turno_id do aluno.
-Vai ter turno_id na turma, not required.
+Fazer CRUD materias, CRUD simples de professores
+
+Tenho q aprimorar o Index de Turma pra procurar com whereFilter.
 
 Qnd eu fizer professores, verificar como relacionar um professor pra muitas turmas,
 onde cada turma_id vai ter q estar ou na tabela professores ou numa tab terceira entre prof e turmas. ainda nao sei.
