@@ -33,7 +33,7 @@
       "port": 9229,
       "address": "localhost",
       "stopOnEntry": false,
-      "runtimeExecutable": null,
+      "runtimeExecutable": "/Users/victor/.nvm/versions/node/v16.10.0/bin/node",
       "cwd": "${workspaceRoot}"
     }
   ]

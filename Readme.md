@@ -2,14 +2,11 @@
 
 ## Onde parei
 
-Fazer CRUD materias, CRUD simples de professores
+Falta terminar os testes pra filtrar index de professores por matéria
+
+Falta criar matérias com crud e atualizar queryField de Professores com Matérias e testes
 
 Tenho q aprimorar o Index de Turma pra procurar com whereFilter.
-
-Qnd eu fizer professores, verificar como relacionar um professor pra muitas turmas,
-onde cada turma_id vai ter q estar ou na tabela professores ou numa tab terceira entre prof e turmas. ainda nao sei.
-
-Rotas Turmas e Professores
 
 ## Fazer futuramente
 

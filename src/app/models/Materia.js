@@ -17,10 +17,10 @@ class Materia extends Model {
   }
 
   // static associate(models) {
-  // this.hasMany(models.Aluno, {
-  //   foreignKey: "horaentrada_id",
-  //   as: "dados_escolares_horaentrada",
-  // });
+  //   this.hasMany(models.Professor, {
+  //     foreignKey: "materia_id",
+  //     as: "dados_escolares_materia",
+  //   });
   // }
 }
 

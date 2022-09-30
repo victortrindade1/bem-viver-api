@@ -1,7 +1,7 @@
 import Turma from "../../models/Turma";
 
 class StoreTurmaService {
-  async run({ turma, ano_id, turno_id }) {
+  async run({ turma, ano_id, turno_id, professores }) {
     const request = {
       turma,
       ano_id,
@@ -20,9 +20,15 @@ class StoreTurmaService {
       throw new Error("Turma já existe.");
     }
 
-    const { id } = await Turma.create(request);
+    const newTurma = await Turma.create(request);
+    // const { id } = await Turma.create(request);
 
-    return id;
+    // Relação Many-to-Many: Professores e Turmas
+    if (professores && professores.length > 0) {
+      newTurma.setProfessores(professores);
+    }
+
+    return newTurma;
   }
 }
 

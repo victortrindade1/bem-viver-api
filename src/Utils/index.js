@@ -40,16 +40,19 @@ export const whereFilter = async ({ filter, queryFields }) => {
                 required: true,
                 model: queryField.at.at.model,
                 as: queryField.at.at.as,
+                through: queryField.through && { attributes: [] },
                 include: [
                   {
                     required: true,
                     model: queryField.at.model,
                     as: queryField.at.as,
+                    through: queryField.through && { attributes: [] },
                     include: [
                       {
                         required: true,
                         model: queryField.model,
                         as: queryField.as,
+                        through: queryField.through && { attributes: [] },
                         where: query.where,
                       },
                     ],
@@ -72,11 +75,13 @@ export const whereFilter = async ({ filter, queryFields }) => {
               required: true,
               model: queryField.at.model,
               as: queryField.at.as,
+              through: queryField.through && { attributes: [] },
               include: [
                 {
                   required: true,
                   model: queryField.model,
                   as: queryField.as,
+                  through: queryField.through && { attributes: [] },
                   where: query.where,
                 },
               ],
@@ -97,6 +102,7 @@ export const whereFilter = async ({ filter, queryFields }) => {
             required: true,
             model: queryField.model,
             as: queryField.as,
+            through: queryField.through && { attributes: [] },
             where: query.where,
           },
         ],

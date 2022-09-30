@@ -82,13 +82,6 @@ describe("Aluno", () => {
   });
 
   it("[UPDATE] should fail validation", async () => {
-    // await request(app)
-    //   .post("/alunos")
-    //   .send({
-    //     aluno: "1",
-    //   })
-    //   .set("Authorization", `Bearer ${token}`);
-
     const response = await request(app)
       .put(`/alunos/a`)
       .send({

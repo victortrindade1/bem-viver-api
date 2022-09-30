@@ -4,20 +4,22 @@ import UpdateTurmaService from "../services/TurmaService/UpdateTurmaService";
 
 import Turma from "../models/Turma";
 import Ano from "../models/Ano";
+import Turno from "../models/Turno";
+import Professor from "../models/Professor";
 
 class TurmaController {
   async store(req, res) {
     try {
-      const { turma, ano_id, turno_id } = req.body;
+      const { turma, ano_id, turno_id, professores } = req.body;
 
-      const id = await StoreTurmaService.run({ turma, ano_id, turno_id });
-
-      return res.json({
-        id,
+      const newTurma = await StoreTurmaService.run({
         turma,
         ano_id,
         turno_id,
+        professores,
       });
+
+      return res.json(newTurma);
     } catch (error) {
       return res.status(400).json({ error: "Error in database" });
     }
@@ -25,7 +27,7 @@ class TurmaController {
 
   async update(req, res) {
     try {
-      const { turma, ano_id, turno_id } = req.body;
+      const { turma, ano_id, turno_id, professores } = req.body;
       const { id } = req.params;
 
       const response = await UpdateTurmaService.run({
@@ -33,6 +35,7 @@ class TurmaController {
         turma,
         ano_id,
         turno_id,
+        professores,
       });
 
       return res.json(response);
@@ -91,6 +94,16 @@ class TurmaController {
             model: Ano,
             as: "dados_escolares_ano",
             // attributes: ["name", "path", "url"],
+          },
+          {
+            model: Turno,
+            as: "dados_escolares_turno",
+            // attributes: ["name", "path", "url"],
+          },
+          {
+            model: Professor,
+            as: "professores",
+            through: { attributes: [] }, // hide join relation
           },
         ],
       });

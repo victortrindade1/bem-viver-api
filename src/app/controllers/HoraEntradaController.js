@@ -1,4 +1,3 @@
-import Youch from "youch";
 import { Op } from "sequelize";
 
 import Horaentrada from "../models/Horaentrada";
@@ -27,7 +26,7 @@ class HoraentradaController {
         horaentrada,
       });
     } catch (error) {
-      return res.status(400).json({ error: "Error in database" });
+      return res.status(400).json(error.message);
     }
   }
 
@@ -47,13 +46,7 @@ class HoraentradaController {
 
       return res.json(horaentradaUpdated);
     } catch (err) {
-      if (process.env.NODE_ENV === "development") {
-        const errors = await new Youch(err, req).toJSON();
-
-        return res.status(400).json(errors);
-      }
-
-      return res.status(400).json({ error: "Error in database" });
+      return res.status(400).json(err.message);
     }
   }
 
@@ -87,13 +80,7 @@ class HoraentradaController {
         pages: Math.ceil(total / limit),
       });
     } catch (err) {
-      if (process.env.NODE_ENV === "development") {
-        const errors = await new Youch(err, req).toJSON();
-
-        return res.status(400).json(errors);
-      }
-
-      return res.status(400).json({ error: "Error in database" });
+      return res.status(400).json(err.message);
     }
   }
 
@@ -113,7 +100,7 @@ class HoraentradaController {
         .status(200)
         .json({ message: "Horaentrada excluído com sucesso." });
     } catch (err) {
-      return res.status(400).json({ error: "Error in database." });
+      return res.status(400).json(err.message);
     }
   }
 
@@ -129,13 +116,7 @@ class HoraentradaController {
 
       return res.json(horaentrada);
     } catch (err) {
-      if (process.env.NODE_ENV === "development") {
-        const errors = await new Youch(err, req).toJSON();
-
-        return res.status(400).json(errors);
-      }
-
-      return res.status(400).json({ error: "Error in database" });
+      return res.status(400).json(err.message);
     }
   }
 }

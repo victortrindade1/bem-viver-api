@@ -23,6 +23,11 @@ class Turma extends Model {
       foreignKey: "turno_id",
       as: "dados_escolares_turno",
     });
+    this.belongsToMany(models.Professor, {
+      foreignKey: "turma_id",
+      as: "professores",
+      through: "professores_turmas",
+    });
     this.hasMany(models.Aluno, {
       foreignKey: "turma_id",
       as: "dados_escolares_turma",

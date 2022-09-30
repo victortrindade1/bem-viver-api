@@ -5,6 +5,8 @@ import truncate from "../../util/truncate";
 import setToken from "../../util/setToken";
 
 describe("Ano", () => {
+  jest.setTimeout(30000);
+
   let token = "";
 
   beforeEach(async () => {

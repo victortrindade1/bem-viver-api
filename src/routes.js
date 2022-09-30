@@ -15,6 +15,7 @@ import PeriodoController from "./app/controllers/PeriodoController";
 import HoraentradaController from "./app/controllers/HoraentradaController";
 import HorasaidaController from "./app/controllers/HorasaidaController";
 import MateriaController from "./app/controllers/MateriaController";
+import ProfessorController from "./app/controllers/ProfessorController";
 
 import {
   validateUserStore,
@@ -57,6 +58,10 @@ import {
   validateMateriaStore,
   validateMateriaUpdate,
 } from "./app/validators/MateriaValidator";
+import {
+  validateProfessorStore,
+  validateProfessorUpdate,
+} from "./app/validators/ProfessorValidator";
 
 import authMiddleware from "./app/middlewares/auth";
 
@@ -181,5 +186,18 @@ routes.put("/materias/:id", validateMateriaUpdate, MateriaController.update);
 routes.get("/materias", MateriaController.index);
 routes.delete("/materias/:id", MateriaController.delete);
 routes.get("/materias/:id", MateriaController.show);
+
+/**
+ * Materia
+ */
+routes.post("/professores", validateProfessorStore, ProfessorController.store);
+routes.put(
+  "/professores/:id",
+  validateProfessorUpdate,
+  ProfessorController.update
+);
+routes.get("/professores", ProfessorController.index);
+routes.delete("/professores/:id", ProfessorController.delete);
+routes.get("/professores/:id", ProfessorController.show);
 
 export default routes;

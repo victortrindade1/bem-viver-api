@@ -92,6 +92,7 @@ export default new (class IndexAlunoService {
             queryWhere.queryId === 4 ||
             queryWhere.queryId === 5
           ),
+          duplicating: false,
           where: queryWhere.queryId === 5 && queryWhere.where,
           include: [
             {
@@ -100,12 +101,14 @@ export default new (class IndexAlunoService {
               required: !!(
                 queryWhere.queryId === 3 || queryWhere.queryId === 4
               ),
+              duplicating: false,
               where: queryWhere.queryId === 4 && queryWhere.where,
               include: [
                 {
                   model: Sistema,
                   as: "dados_escolares_sistema",
                   required: true,
+                  duplicating: false,
                   where: queryWhere.queryId === 3 && queryWhere.where,
                 },
               ],
