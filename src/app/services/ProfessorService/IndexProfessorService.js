@@ -32,7 +32,6 @@ export default new (class IndexProfessorService {
         field: "ano",
         model: Ano,
         as: "dados_escolares_ano",
-        // through: true,
         at: {
           model: Turma,
           as: "turmas",

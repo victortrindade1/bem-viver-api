@@ -51,6 +51,7 @@ describe("Ano", () => {
       })
       .set("Authorization", `Bearer ${token}`);
 
+    expect(response.body).toBe("Ano já existe.");
     expect(response.status).toBe(400);
   });
 
@@ -73,13 +74,6 @@ describe("Ano", () => {
   });
 
   it("[UPDATE] should fail validation", async () => {
-    // await request(app)
-    //   .post("/anos")
-    //   .send({
-    //     ano: "1",
-    //   })
-    //   .set("Authorization", `Bearer ${token}`);
-
     const response = await request(app)
       .put(`/anos/a`)
       .send({
@@ -87,6 +81,41 @@ describe("Ano", () => {
       })
       .set("Authorization", `Bearer ${token}`);
 
+    expect(response.status).toBe(400);
+  });
+
+  it("[UPDATE] should catch error: Ano já existe.", async () => {
+    const newSistema = await request(app)
+      .post("/sistemas")
+      .send({
+        sistema: "Fundamental",
+      })
+      .set("Authorization", `Bearer ${token}`);
+
+    const newAno = await request(app)
+      .post("/anos")
+      .send({
+        ano: "1",
+      })
+      .set("Authorization", `Bearer ${token}`);
+
+    await request(app)
+      .post("/anos")
+      .send({
+        ano: "2",
+        sistema_id: newSistema.body.id,
+      })
+      .set("Authorization", `Bearer ${token}`);
+
+    const response = await request(app)
+      .put(`/anos/${newAno.body.id}`)
+      .send({
+        ano: "2",
+        sistema_id: newSistema.body.id,
+      })
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(response.body).toBe("Ano já existe.");
     expect(response.status).toBe(400);
   });
 
@@ -114,6 +143,17 @@ describe("Ano", () => {
     );
   });
 
+  it("[INDEX] should catch error", async () => {
+    const response = await request(app)
+      .get("/anos")
+      .query({
+        page: "abc",
+      })
+      .set("Authorization", `Bearer ${token}`);
+
+    return expect(response.status).toBe(400);
+  });
+
   it("[DELETE] should delete ano", async () => {
     const newAno = await request(app)
       .post("/anos")
@@ -138,6 +178,7 @@ describe("Ano", () => {
       .del(`/anos/99`)
       .set("Authorization", `Bearer ${token}`);
 
+    expect(response.body).toBe("Ano não existe.");
     expect(response.status).toBe(400);
   });
 
