@@ -62,7 +62,7 @@ describe("Professor", () => {
       })
       .set("Authorization", `Bearer ${token}`);
 
-    expect(response.status).toBe(400);
+    expect(response.body).toBe("Professor já existe.");
   });
 
   it("[UPDATE] should update professor", async () => {
@@ -276,5 +276,68 @@ describe("Professor", () => {
         }),
       ])
     );
+  });
+
+  it("[INDEX] should catch error", async () => {
+    const response = await request(app)
+      .get("/professores")
+      .query({
+        page: "abc",
+      })
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(400);
+  });
+
+  it("[DELETE] should delete Professor", async () => {
+    const newProfessor = await request(app)
+      .post("/professores")
+      .send({
+        professor_nome: "Fernando",
+        professor_cpf: "12345678912",
+      })
+      .set("Authorization", `Bearer ${token}`);
+
+    const response = await request(app)
+      .del(`/professores/${newProfessor.body.id}`)
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        message: "Professor excluído com sucesso.",
+      })
+    );
+  });
+
+  it("[DELETE] should show error: Professor não existe.", async () => {
+    const response = await request(app)
+      .del(`/professores/99`)
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(response.body).toBe("Professor não existe.");
+  });
+
+  it("[SHOW] should show professor", async () => {
+    const newProfessor = await request(app)
+      .post("/professores")
+      .send({
+        professor_nome: "Fernando",
+        professor_cpf: "12345678912",
+      })
+      .set("Authorization", `Bearer ${token}`);
+
+    const response = await request(app)
+      .get(`/professores/${newProfessor.body.id}`)
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(response.body).toHaveProperty("id");
+  });
+
+  it("[SHOW] should show error: Professor não existe.", async () => {
+    const response = await request(app)
+      .get(`/professores/99`)
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(response.body).toBe("Professor não existe.");
   });
 });

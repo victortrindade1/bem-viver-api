@@ -16,12 +16,13 @@ class Materia extends Model {
     return this;
   }
 
-  // static associate(models) {
-  //   this.hasMany(models.Professor, {
-  //     foreignKey: "materia_id",
-  //     as: "dados_escolares_materia",
-  //   });
-  // }
+  static associate(models) {
+    this.belongsToMany(models.Professor, {
+      foreignKey: "materia_id",
+      as: "professores",
+      through: "professores_materias",
+    });
+  }
 }
 
 export default Materia;

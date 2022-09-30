@@ -4,6 +4,7 @@ export const validateProfessorStore = async (req, res, next) => {
   try {
     const schema = Yup.object().shape({
       turmas: Yup.array().of(Yup.number()),
+      materias: Yup.array().of(Yup.number()),
       professor_nome: Yup.string().required(),
       professor_cpf: Yup.string().required(),
       professor_rg: Yup.string(),
@@ -40,6 +41,7 @@ export const validateProfessorUpdate = async (req, res, next) => {
   try {
     const schema = Yup.object().shape({
       turmas: Yup.array().of(Yup.number()),
+      materias: Yup.array().of(Yup.number()),
       professor_nome: Yup.string(),
       professor_cpf: Yup.string(),
       professor_rg: Yup.string(),

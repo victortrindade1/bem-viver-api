@@ -13,10 +13,19 @@ describe("Matéria", () => {
   });
 
   it("[STORE] should store new materia", async () => {
+    const newProfessor = await request(app)
+      .post("/professores")
+      .send({
+        professor_nome: "Fernando",
+        professor_cpf: "12345678912",
+      })
+      .set("Authorization", `Bearer ${token}`);
+
     const response = await request(app)
       .post("/materias")
       .send({
         materia: "Matemática",
+        professores: [newProfessor.body.id],
       })
       .set("Authorization", `Bearer ${token}`);
 
@@ -53,6 +62,14 @@ describe("Matéria", () => {
   });
 
   it("[UPDATE] should update materia", async () => {
+    const newProfessor = await request(app)
+      .post("/professores")
+      .send({
+        professor_nome: "Claudia Marcia",
+        professor_cpf: "12345678912",
+      })
+      .set("Authorization", `Bearer ${token}`);
+
     const newMateria = await request(app)
       .post("/materias")
       .send({
@@ -64,6 +81,7 @@ describe("Matéria", () => {
       .put(`/materias/${newMateria.body.id}`)
       .send({
         materia: "Português",
+        professores: [newProfessor.body.id],
       })
       .set("Authorization", `Bearer ${token}`);
 
@@ -86,6 +104,31 @@ describe("Matéria", () => {
       .set("Authorization", `Bearer ${token}`);
 
     expect(response.status).toBe(400);
+  });
+
+  it("[UPDATE] should show error: Existe outra matéria com este nome.", async () => {
+    const newMateria = await request(app)
+      .post("/materias")
+      .send({
+        materia: "Matemática",
+      })
+      .set("Authorization", `Bearer ${token}`);
+
+    await request(app)
+      .post("/materias")
+      .send({
+        materia: "Química",
+      })
+      .set("Authorization", `Bearer ${token}`);
+
+    const response = await request(app)
+      .put(`/materias/${newMateria.body.id}`)
+      .send({
+        materia: "Química",
+      })
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(response.body).toBe("Existe outra matéria com este nome.");
   });
 
   it("[INDEX] should list materias", async () => {
@@ -112,6 +155,17 @@ describe("Matéria", () => {
     );
   });
 
+  it("[INDEX] should catch error", async () => {
+    const response = await request(app)
+      .get("/materias")
+      .query({
+        page: "abc",
+      })
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(400);
+  });
+
   it("[DELETE] should delete materia", async () => {
     const newMateria = await request(app)
       .post("/materias")
@@ -136,7 +190,7 @@ describe("Matéria", () => {
       .del(`/materias/99`)
       .set("Authorization", `Bearer ${token}`);
 
-    expect(response.status).toBe(400);
+    expect(response.body).toBe("Matéria não existe.");
   });
 
   it("[SHOW] should show materia", async () => {
@@ -159,6 +213,6 @@ describe("Matéria", () => {
       .get(`/materias/99`)
       .set("Authorization", `Bearer ${token}`);
 
-    expect(response.status).toBe(400);
+    expect(response.body).toBe("Matéria não existe.");
   });
 });

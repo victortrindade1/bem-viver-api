@@ -2,6 +2,9 @@
 
 ## Onde parei
 
+Pode ser q eu faça relacionamento entre Turmas e Matérias tb, assim daria
+pra criar horário das turmas.
+
 Falta terminar os testes pra filtrar index de professores por matéria
 
 Falta criar matérias com crud e atualizar queryField de Professores com Matérias e testes

@@ -1,52 +1,39 @@
-import { Op } from "sequelize";
-
-import Materia from "../models/Materia";
+import StoreMateriaService from "../services/MateriaService/StoreMateriaService";
+import UpdateMateriaService from "../services/MateriaService/UpdateMateriaService";
+import IndexMateriaService from "../services/MateriaService/IndexMateriaService";
+import DeleteMateriaService from "../services/MateriaService/DeleteMateriaService";
+import ShowMateriaService from "../services/MateriaService/ShowMateriaService";
 
 class MateriaController {
   async store(req, res) {
     try {
-      const { materia } = req.body;
+      const { materia, professores } = req.body;
 
-      const materiaExists = await Materia.findOne({
-        where: { materia },
+      const newMateria = await StoreMateriaService.run({
+        materia,
+        professores,
       });
 
-      if (materiaExists) {
-        return res.status(400).json({ error: "Matéria já existe." });
-      }
-
-      const request = {
-        materia,
-      };
-
-      const { id } = await Materia.create(request);
-
-      return res.json({
-        id,
-        materia,
-      });
-    } catch (error) {
-      return res.status(400).json({ error: "Error in database" });
+      return res.json(newMateria);
+    } catch (e) {
+      return res.status(400).json(e.message);
     }
   }
 
   async update(req, res) {
     try {
-      const { materia } = req.body;
+      const { materia, professores } = req.body;
       const { id } = req.params;
 
-      const request = {
+      const materiaUpdated = await UpdateMateriaService.run({
         id,
         materia,
-      };
-
-      const materiaExists = await Materia.findByPk(id);
-
-      const materiaUpdated = await materiaExists.update(request);
+        professores,
+      });
 
       return res.json(materiaUpdated);
-    } catch (err) {
-      return res.status(400).json({ error: "Error in database" });
+    } catch (e) {
+      return res.status(400).json(e.message);
     }
   }
 
@@ -54,22 +41,10 @@ class MateriaController {
     try {
       const { page = 1, q: nameFilter, limit = 5 } = req.query;
 
-      const where = {};
-
-      if (nameFilter) {
-        where.materia =
-          process.env.NODE_ENV === "test" // Somente PG suporta iLike
-            ? { [Op.like]: `%${nameFilter}%` }
-            : { [Op.iLike]: `%${nameFilter}%` };
-      }
-
-      const total = await Materia.count({ where });
-
-      const materias = await Materia.findAll({
-        where,
+      const { total, materias } = await IndexMateriaService.run({
+        nameFilter,
         limit,
-        offset: (page - 1) * limit,
-        order: [["id", "DESC"]],
+        page,
       });
 
       return res.json({
@@ -79,8 +54,8 @@ class MateriaController {
         total,
         pages: Math.ceil(total / limit),
       });
-    } catch (err) {
-      return res.status(400).json({ error: "Error in database" });
+    } catch (e) {
+      return res.status(400).json(e.message);
     }
   }
 
@@ -88,17 +63,11 @@ class MateriaController {
     try {
       const { id } = req.params;
 
-      const materia = await Materia.findByPk(id);
-
-      if (!materia) {
-        return res.status(400).json({ error: "Matéria não existe." });
-      }
-
-      await Materia.destroy({ where: { id } });
+      await DeleteMateriaService.run({ id });
 
       return res.status(200).json({ message: "Matéria excluída com sucesso." });
-    } catch (err) {
-      return res.status(400).json({ error: "Error in database." });
+    } catch (e) {
+      return res.status(400).json(e.message);
     }
   }
 
@@ -106,15 +75,11 @@ class MateriaController {
     try {
       const { id } = req.params;
 
-      const materia = await Materia.findByPk(id, {});
-
-      if (!materia) {
-        return res.status(400).json({ error: "Matéria não existe." });
-      }
+      const materia = await ShowMateriaService.run({ id });
 
       return res.json(materia);
-    } catch (err) {
-      return res.status(400).json({ error: "Error in database" });
+    } catch (e) {
+      return res.status(400).json(e.message);
     }
   }
 }

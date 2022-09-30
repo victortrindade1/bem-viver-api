@@ -4,6 +4,7 @@ export const validateMateriaStore = async (req, res, next) => {
   try {
     const schema = Yup.object().shape({
       materia: Yup.string().required(),
+      professores: Yup.array().of(Yup.number()),
     });
 
     await schema.validate(req.body, { abortEarly: false });
@@ -19,7 +20,8 @@ export const validateMateriaStore = async (req, res, next) => {
 export const validateMateriaUpdate = async (req, res, next) => {
   try {
     const schema = Yup.object().shape({
-      materia: Yup.string().required(),
+      materia: Yup.string(),
+      professores: Yup.array().of(Yup.number()),
     });
 
     await schema.validate(req.body, { abortEarly: false });

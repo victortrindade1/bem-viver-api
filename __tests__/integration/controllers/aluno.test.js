@@ -46,6 +46,7 @@ describe("Aluno", () => {
         nome: "Fernando",
         matricula: 1234,
         dados_pessoais_data_nascimento: "12/02/2023",
+        dados_escolares_data_matricula: "12/02/2023",
       })
       .set("Authorization", `Bearer ${token}`);
 
@@ -55,9 +56,11 @@ describe("Aluno", () => {
         nome: "Fernando",
         matricula: 1235,
         dados_pessoais_data_nascimento: "12/02/2023",
+        dados_escolares_data_matricula: "12/02/2023",
       })
       .set("Authorization", `Bearer ${token}`);
 
+    expect(response.body).toBe("Nome já existe.");
     expect(response.status).toBe(400);
   });
 
@@ -250,6 +253,17 @@ describe("Aluno", () => {
         }),
       ])
     );
+  });
+
+  it("[INDEX] should catch error", async () => {
+    const response = await request(app)
+      .get("/alunos")
+      .query({
+        page: "abc",
+      })
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(400);
   });
 
   it("[DELETE] should delete aluno", async () => {

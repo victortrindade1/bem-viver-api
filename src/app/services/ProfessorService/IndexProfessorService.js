@@ -3,6 +3,7 @@ import Sistema from "../../models/Sistema";
 import Ano from "../../models/Ano";
 import Turma from "../../models/Turma";
 import Turno from "../../models/Turno";
+import Materia from "../../models/Materia";
 
 import { whereFilter } from "../../../utils";
 
@@ -55,6 +56,16 @@ export default new (class IndexProfessorService {
           },
         },
       },
+      {
+        queryId: 5,
+        field: "materia",
+        model: Materia,
+        as: "materias",
+        through: true,
+        at: {
+          model: Professor,
+        },
+      },
     ];
 
     if (filter) {
@@ -104,6 +115,14 @@ export default new (class IndexProfessorService {
               where: queryWhere.queryId === 4 && queryWhere.where,
             },
           ],
+        },
+        {
+          model: Materia,
+          as: "materias",
+          required: !!(queryWhere.queryId === 5),
+          duplicating: false,
+          through: { attributes: [] },
+          where: queryWhere.queryId === 5 && queryWhere.where,
         },
       ],
     });
