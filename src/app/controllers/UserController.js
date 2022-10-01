@@ -1,12 +1,10 @@
 // import * as Yup from "yup";
-import Youch from "youch";
-
-import User from "../models/User";
-import File from "../models/File";
 
 import StoreUserService from "../services/UserService/StoreUserService";
 import UpdateUserService from "../services/UserService/UpdateUserService";
 import IndexUserService from "../services/UserService/IndexUserService";
+import ShowUserService from "../services/UserService/ShowUserService";
+import DeleteUserService from "../services/UserService/DeleteUserService";
 
 class UserController {
   async store(req, res) {
@@ -72,17 +70,11 @@ class UserController {
     try {
       const { id } = req.params;
 
-      const user = await User.findByPk(id);
-
-      if (!user) {
-        return res.status(400).json({ error: "User does not exist." });
-      }
-
-      await User.destroy({ where: { id } });
+      await DeleteUserService.run({ id });
 
       return res.status(200).json({ message: "User deleted successfully." });
     } catch (err) {
-      return res.status(400).json({ error: "Error in database." });
+      return res.status(400).json(err.message);
     }
   }
 
@@ -90,29 +82,11 @@ class UserController {
     try {
       const { id } = req.params;
 
-      const user = await User.findByPk(id, {
-        include: [
-          {
-            model: File,
-            as: "avatar",
-            attributes: ["name", "path", "url"],
-          },
-        ],
-      });
-
-      if (!user) {
-        return res.status(400).json({ error: "User does not exists" });
-      }
+      const user = await ShowUserService.run({ id });
 
       return res.json(user);
     } catch (err) {
-      if (process.env.NODE_ENV === "development") {
-        const errors = await new Youch(err, req).toJSON();
-
-        return res.status(400).json(errors);
-      }
-
-      return res.status(400).json({ error: "Error in database" });
+      return res.status(400).json(err.message);
     }
   }
 }

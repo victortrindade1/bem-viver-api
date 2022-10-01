@@ -1,11 +1,8 @@
 import IndexTurmaService from "../services/TurmaService/IndexTurmaService";
 import StoreTurmaService from "../services/TurmaService/StoreTurmaService";
 import UpdateTurmaService from "../services/TurmaService/UpdateTurmaService";
-
-import Turma from "../models/Turma";
-import Ano from "../models/Ano";
-import Turno from "../models/Turno";
-import Professor from "../models/Professor";
+import DeleteTurmaService from "../services/TurmaService/DeleteTurmaService";
+import ShowTurmaService from "../services/TurmaService/ShowTurmaService";
 
 class TurmaController {
   async store(req, res) {
@@ -70,17 +67,11 @@ class TurmaController {
     try {
       const { id } = req.params;
 
-      const turma = await Turma.findByPk(id);
-
-      if (!turma) {
-        return res.status(400).json({ error: "Turma não existe." });
-      }
-
-      await Turma.destroy({ where: { id } });
+      await DeleteTurmaService.run({ id });
 
       return res.status(200).json({ message: "Turma excluída com sucesso." });
     } catch (err) {
-      return res.status(400).json({ error: "Error in database." });
+      return res.status(400).json(err.message);
     }
   }
 
@@ -88,33 +79,11 @@ class TurmaController {
     try {
       const { id } = req.params;
 
-      const turma = await Turma.findByPk(id, {
-        include: [
-          {
-            model: Ano,
-            as: "dados_escolares_ano",
-            // attributes: ["name", "path", "url"],
-          },
-          {
-            model: Turno,
-            as: "dados_escolares_turno",
-            // attributes: ["name", "path", "url"],
-          },
-          {
-            model: Professor,
-            as: "professores",
-            through: { attributes: [] }, // hide join relation
-          },
-        ],
-      });
-
-      if (!turma) {
-        return res.status(400).json({ error: "Turma não existe" });
-      }
+      const turma = await ShowTurmaService.run({ id });
 
       return res.json(turma);
     } catch (err) {
-      return res.status(400).json({ error: "Error in database" });
+      return res.status(400).json(err.message);
     }
   }
 }

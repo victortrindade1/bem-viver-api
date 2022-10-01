@@ -1,33 +1,22 @@
-import Youch from "youch";
-import { Op } from "sequelize";
-
-import Horasaida from "../models/Horasaida";
+import StoreHorasaidaService from "../services/HorasaidaService/StoreHorasaidaService";
+import UpdateHorasaidaService from "../services/HorasaidaService/UpdateHorasaidaService";
+import IndexHorasaidaService from "../services/HorasaidaService/IndexHorasaidaService";
+import DeleteHorasaidaService from "../services/HorasaidaService/DeleteHorasaidaService";
+import ShowHorasaidaService from "../services/HorasaidaService/ShowHorasaidaService";
 
 class HorasaidaController {
   async store(req, res) {
     try {
-      const horasaidaExists = await Horasaida.findOne({
-        where: { horasaida: req.body.horasaida },
-      });
-
-      if (horasaidaExists) {
-        return res.status(400).json({ error: "Ano já existe." });
-      }
-
       const { horasaida } = req.body;
 
-      const request = {
-        horasaida,
-      };
-
-      const { id } = await Horasaida.create(request);
+      const id = await StoreHorasaidaService.run({ horasaida });
 
       return res.json({
         id,
         horasaida,
       });
     } catch (error) {
-      return res.status(400).json({ error: "Error in database" });
+      return res.status(400).json(error.message);
     }
   }
 
@@ -36,24 +25,14 @@ class HorasaidaController {
       const { horasaida } = req.body;
       const { id } = req.params;
 
-      const request = {
+      const horasaidaUpdated = await UpdateHorasaidaService.run({
         id,
         horasaida,
-      };
-
-      const horasaidaExists = await Horasaida.findByPk(id);
-
-      const horasaidaUpdated = await horasaidaExists.update(request);
+      });
 
       return res.json(horasaidaUpdated);
     } catch (err) {
-      if (process.env.NODE_ENV === "development") {
-        const errors = await new Youch(err, req).toJSON();
-
-        return res.status(400).json(errors);
-      }
-
-      return res.status(400).json({ error: "Error in database" });
+      return res.status(400).json(err.message);
     }
   }
 
@@ -61,22 +40,10 @@ class HorasaidaController {
     try {
       const { page = 1, q: nameFilter, limit = 5 } = req.query;
 
-      const where = {};
-
-      if (nameFilter) {
-        where.horasaida =
-          process.env.NODE_ENV === "test" // Somente PG suporta iLike
-            ? { [Op.like]: `%${nameFilter}%` }
-            : { [Op.iLike]: `%${nameFilter}%` };
-      }
-
-      const total = await Horasaida.count({ where });
-
-      const horasaidas = await Horasaida.findAll({
-        where,
+      const { total, horasaidas } = await IndexHorasaidaService.run({
+        nameFilter,
         limit,
-        offset: (page - 1) * limit,
-        order: [["id", "DESC"]],
+        page,
       });
 
       return res.json({
@@ -87,13 +54,7 @@ class HorasaidaController {
         pages: Math.ceil(total / limit),
       });
     } catch (err) {
-      if (process.env.NODE_ENV === "development") {
-        const errors = await new Youch(err, req).toJSON();
-
-        return res.status(400).json(errors);
-      }
-
-      return res.status(400).json({ error: "Error in database" });
+      return res.status(400).json(err.message);
     }
   }
 
@@ -101,19 +62,13 @@ class HorasaidaController {
     try {
       const { id } = req.params;
 
-      const horasaida = await Horasaida.findByPk(id);
-
-      if (!horasaida) {
-        return res.status(400).json({ error: "Horasaida não existe." });
-      }
-
-      await Horasaida.destroy({ where: { id } });
+      await DeleteHorasaidaService.run({ id });
 
       return res
         .status(200)
         .json({ message: "Horasaida excluído com sucesso." });
     } catch (err) {
-      return res.status(400).json({ error: "Error in database." });
+      return res.status(400).json(err.message);
     }
   }
 
@@ -121,21 +76,11 @@ class HorasaidaController {
     try {
       const { id } = req.params;
 
-      const horasaida = await Horasaida.findByPk(id, {});
-
-      if (!horasaida) {
-        return res.status(400).json({ error: "Horasaida não existe" });
-      }
+      const horasaida = await ShowHorasaidaService.run({ id });
 
       return res.json(horasaida);
     } catch (err) {
-      if (process.env.NODE_ENV === "development") {
-        const errors = await new Youch(err, req).toJSON();
-
-        return res.status(400).json(errors);
-      }
-
-      return res.status(400).json({ error: "Error in database" });
+      return res.status(400).json(err.message);
     }
   }
 }

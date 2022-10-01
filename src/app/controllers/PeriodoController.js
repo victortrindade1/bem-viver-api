@@ -1,33 +1,22 @@
-import Youch from "youch";
-import { Op } from "sequelize";
-
-import Periodo from "../models/Periodo";
+import StorePeriodoService from "../services/PeriodoService/StorePeriodoService";
+import UpdatePeriodoService from "../services/PeriodoService/UpdatePeriodoService";
+import IndexPeriodoService from "../services/PeriodoService/IndexPeriodoService";
+import DeletePeriodoService from "../services/PeriodoService/DeletePeriodoService";
+import ShowPeriodoService from "../services/PeriodoService/ShowPeriodoService";
 
 class PeriodoController {
   async store(req, res) {
     try {
-      const periodoExists = await Periodo.findOne({
-        where: { periodo: req.body.periodo },
-      });
-
-      if (periodoExists) {
-        return res.status(400).json({ error: "Ano já existe." });
-      }
-
       const { periodo } = req.body;
 
-      const request = {
-        periodo,
-      };
-
-      const { id } = await Periodo.create(request);
+      const id = await StorePeriodoService.run({ periodo });
 
       return res.json({
         id,
         periodo,
       });
     } catch (error) {
-      return res.status(400).json({ error: "Error in database" });
+      return res.status(400).json(error.message);
     }
   }
 
@@ -36,24 +25,11 @@ class PeriodoController {
       const { periodo } = req.body;
       const { id } = req.params;
 
-      const request = {
-        id,
-        periodo,
-      };
-
-      const periodoExists = await Periodo.findByPk(id);
-
-      const periodoUpdated = await periodoExists.update(request);
+      const periodoUpdated = await UpdatePeriodoService.run({ id, periodo });
 
       return res.json(periodoUpdated);
     } catch (err) {
-      if (process.env.NODE_ENV === "development") {
-        const errors = await new Youch(err, req).toJSON();
-
-        return res.status(400).json(errors);
-      }
-
-      return res.status(400).json({ error: "Error in database" });
+      return res.status(400).json(err.message);
     }
   }
 
@@ -61,22 +37,10 @@ class PeriodoController {
     try {
       const { page = 1, q: nameFilter, limit = 5 } = req.query;
 
-      const where = {};
-
-      if (nameFilter) {
-        where.periodo =
-          process.env.NODE_ENV === "test" // Somente PG suporta iLike
-            ? { [Op.like]: `%${nameFilter}%` }
-            : { [Op.iLike]: `%${nameFilter}%` };
-      }
-
-      const total = await Periodo.count({ where });
-
-      const periodos = await Periodo.findAll({
-        where,
+      const { total, periodos } = await IndexPeriodoService.run({
+        nameFilter,
         limit,
-        offset: (page - 1) * limit,
-        order: [["id", "DESC"]],
+        page,
       });
 
       return res.json({
@@ -87,13 +51,7 @@ class PeriodoController {
         pages: Math.ceil(total / limit),
       });
     } catch (err) {
-      if (process.env.NODE_ENV === "development") {
-        const errors = await new Youch(err, req).toJSON();
-
-        return res.status(400).json(errors);
-      }
-
-      return res.status(400).json({ error: "Error in database" });
+      return res.status(400).json(err.message);
     }
   }
 
@@ -101,17 +59,11 @@ class PeriodoController {
     try {
       const { id } = req.params;
 
-      const periodo = await Periodo.findByPk(id);
-
-      if (!periodo) {
-        return res.status(400).json({ error: "Periodo não existe." });
-      }
-
-      await Periodo.destroy({ where: { id } });
+      await DeletePeriodoService.run({ id });
 
       return res.status(200).json({ message: "Periodo excluído com sucesso." });
     } catch (err) {
-      return res.status(400).json({ error: "Error in database." });
+      return res.status(400).json(err.message);
     }
   }
 
@@ -119,21 +71,11 @@ class PeriodoController {
     try {
       const { id } = req.params;
 
-      const periodo = await Periodo.findByPk(id, {});
-
-      if (!periodo) {
-        return res.status(400).json({ error: "Periodo não existe" });
-      }
+      const periodo = await ShowPeriodoService.run({ id });
 
       return res.json(periodo);
     } catch (err) {
-      if (process.env.NODE_ENV === "development") {
-        const errors = await new Youch(err, req).toJSON();
-
-        return res.status(400).json(errors);
-      }
-
-      return res.status(400).json({ error: "Error in database" });
+      return res.status(400).json(err.message);
     }
   }
 }

@@ -1,25 +1,15 @@
-import { Op } from "sequelize";
-
-import Horaentrada from "../models/Horaentrada";
+import StoreHoraentradaService from "../services/HoraentradaService/StoreHoraentradaService";
+import UpdateHoraentradaService from "../services/HoraentradaService/UpdateHoraentradaService";
+import IndexHoraentradaService from "../services/HoraentradaService/IndexHoraentradaService";
+import DeleteHoraentradaService from "../services/HoraentradaService/DeleteHoraentradaService";
+import ShowHoraentradaService from "../services/HoraentradaService/ShowHoraentradaService";
 
 class HoraentradaController {
   async store(req, res) {
     try {
-      const horaentradaExists = await Horaentrada.findOne({
-        where: { horaentrada: req.body.horaentrada },
-      });
-
-      if (horaentradaExists) {
-        return res.status(400).json({ error: "Ano já existe." });
-      }
-
       const { horaentrada } = req.body;
 
-      const request = {
-        horaentrada,
-      };
-
-      const { id } = await Horaentrada.create(request);
+      const id = await StoreHoraentradaService.run({ horaentrada });
 
       return res.json({
         id,
@@ -35,14 +25,10 @@ class HoraentradaController {
       const { horaentrada } = req.body;
       const { id } = req.params;
 
-      const request = {
+      const horaentradaUpdated = await UpdateHoraentradaService.run({
         id,
         horaentrada,
-      };
-
-      const horaentradaExists = await Horaentrada.findByPk(id);
-
-      const horaentradaUpdated = await horaentradaExists.update(request);
+      });
 
       return res.json(horaentradaUpdated);
     } catch (err) {
@@ -54,22 +40,10 @@ class HoraentradaController {
     try {
       const { page = 1, q: nameFilter, limit = 5 } = req.query;
 
-      const where = {};
-
-      if (nameFilter) {
-        where.horaentrada =
-          process.env.NODE_ENV === "test" // Somente PG suporta iLike
-            ? { [Op.like]: `%${nameFilter}%` }
-            : { [Op.iLike]: `%${nameFilter}%` };
-      }
-
-      const total = await Horaentrada.count({ where });
-
-      const horaentradas = await Horaentrada.findAll({
-        where,
+      const { total, horaentradas } = await IndexHoraentradaService.run({
+        nameFilter,
         limit,
-        offset: (page - 1) * limit,
-        order: [["id", "DESC"]],
+        page,
       });
 
       return res.json({
@@ -88,13 +62,7 @@ class HoraentradaController {
     try {
       const { id } = req.params;
 
-      const horaentrada = await Horaentrada.findByPk(id);
-
-      if (!horaentrada) {
-        return res.status(400).json({ error: "Horaentrada não existe." });
-      }
-
-      await Horaentrada.destroy({ where: { id } });
+      await DeleteHoraentradaService.run({ id });
 
       return res
         .status(200)
@@ -108,11 +76,7 @@ class HoraentradaController {
     try {
       const { id } = req.params;
 
-      const horaentrada = await Horaentrada.findByPk(id, {});
-
-      if (!horaentrada) {
-        return res.status(400).json({ error: "Horaentrada não existe" });
-      }
+      const horaentrada = await ShowHoraentradaService.run({ id });
 
       return res.json(horaentrada);
     } catch (err) {

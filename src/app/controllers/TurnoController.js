@@ -1,8 +1,8 @@
 import StoreTurnoService from "../services/TurnoService/StoreTurnoService";
 import UpdateTurnoService from "../services/TurnoService/UpdateTurnoService";
 import IndexTurnoService from "../services/TurnoService/IndexTurnoService";
-
-import Turno from "../models/Turno";
+import DeleteTurnoService from "../services/TurnoService/DeleteTurnoService";
+import ShowTurnoService from "../services/TurnoService/ShowTurnoService";
 
 class TurnoController {
   async store(req, res) {
@@ -64,17 +64,11 @@ class TurnoController {
     try {
       const { id } = req.params;
 
-      const turno = await Turno.findByPk(id);
-
-      if (!turno) {
-        return res.status(400).json({ error: "Turno não existe." });
-      }
-
-      await Turno.destroy({ where: { id } });
+      await DeleteTurnoService.run({ id });
 
       return res.status(200).json({ message: "Turno excluído com sucesso." });
     } catch (err) {
-      return res.status(400).json({ error: "Error in database." });
+      return res.status(400).json(err.message);
     }
   }
 
@@ -82,15 +76,11 @@ class TurnoController {
     try {
       const { id } = req.params;
 
-      const turno = await Turno.findByPk(id, {});
-
-      if (!turno) {
-        return res.status(400).json({ error: "Turno não existe" });
-      }
+      const turno = await ShowTurnoService.run({ id });
 
       return res.json(turno);
     } catch (error) {
-      return res.status(400).json({ error: "Error in database" });
+      return res.status(400).json(error.message);
     }
   }
 }
