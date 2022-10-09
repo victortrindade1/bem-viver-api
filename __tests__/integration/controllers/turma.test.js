@@ -150,6 +150,103 @@ describe("Turma", () => {
     );
   });
 
+  it("[INDEX] should filter turmas by Turno", async () => {
+    const newTurno = await request(app)
+      .post("/turnos")
+      .send({
+        turno: "Noturno",
+      })
+      .set("Authorization", `Bearer ${token}`);
+
+    await request(app)
+      .post("/turmas")
+      .send({
+        turma: "507",
+        turno_id: newTurno.body.id,
+      })
+      .set("Authorization", `Bearer ${token}`);
+
+    const response = await request(app)
+      .get("/turmas")
+      .query({
+        q: "Notur",
+      })
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(response.body.items).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          turma: "507",
+        }),
+      ])
+    );
+  });
+
+  it("[INDEX] should filter turmas by Ano", async () => {
+    const newAno = await request(app)
+      .post("/anos")
+      .send({
+        ano: "Primeiro",
+      })
+      .set("Authorization", `Bearer ${token}`);
+
+    await request(app)
+      .post("/turmas")
+      .send({
+        turma: "507",
+        ano_id: newAno.body.id,
+      })
+      .set("Authorization", `Bearer ${token}`);
+
+    const response = await request(app)
+      .get("/turmas")
+      .query({
+        q: "Primei",
+      })
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(response.body.items).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          turma: "507",
+        }),
+      ])
+    );
+  });
+
+  it("[INDEX] should filter turmas by Professor", async () => {
+    const newProfessor = await request(app)
+      .post("/professores")
+      .send({
+        professor_nome: "Claudia Marcia",
+        professor_cpf: "12345678912",
+      })
+      .set("Authorization", `Bearer ${token}`);
+
+    await request(app)
+      .post("/turmas")
+      .send({
+        turma: "507",
+        professores: [newProfessor.body.id],
+      })
+      .set("Authorization", `Bearer ${token}`);
+
+    const response = await request(app)
+      .get("/turmas")
+      .query({
+        q: "Claudia",
+      })
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(response.body.items).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          turma: "507",
+        }),
+      ])
+    );
+  });
+
   it("[DELETE] should delete turma", async () => {
     const newTurma = await request(app)
       .post("/turmas")

@@ -2,7 +2,9 @@
 
 ## Onde parei
 
-Tenho q aprimorar o Index de Turma pra procurar com whereFilter.
+A estrutura básica do backend está formada. Falta ainda toda a parte de
+pagamentos dos alunos, falta tb a gestão de gastos. Por hora vou pegar o
+frontend pra fazer. Depois volto aqui pra terminar o backend.
 
 ## Fazer futuramente
 

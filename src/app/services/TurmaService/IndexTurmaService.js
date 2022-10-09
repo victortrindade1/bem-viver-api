@@ -1,55 +1,98 @@
-import { Op } from "sequelize";
-
 import Turma from "../../models/Turma";
 import Ano from "../../models/Ano";
 import Turno from "../../models/Turno";
 import Professor from "../../models/Professor";
 import Materia from "../../models/Materia";
 
+import { whereFilter } from "../../../utils";
+
 export default new (class IndexTurmaService {
   async run({ filter, limit, page }) {
-    const where = {};
+    let queryWhere = {};
+
+    const queryFields = [
+      {
+        queryId: 1,
+        field: "turma",
+        model: Turma,
+      },
+      {
+        queryId: 2,
+        field: "turno",
+        model: Turno,
+        as: "dados_escolares_turno",
+        at: {
+          model: Turma,
+        },
+      },
+      {
+        queryId: 3,
+        field: "ano",
+        model: Ano,
+        as: "dados_escolares_ano",
+        at: {
+          model: Turma,
+        },
+      },
+      {
+        queryId: 4,
+        field: "professor_nome",
+        model: Professor,
+        as: "professores",
+        through: true,
+        at: {
+          model: Turma,
+        },
+      },
+    ];
 
     if (filter) {
-      where.turma =
-        process.env.NODE_ENV === "test" // Somente PG suporta iLike
-          ? { [Op.like]: `%${filter}%` }
-          : { [Op.iLike]: `%${filter}%` };
+      queryWhere = await whereFilter({
+        filter,
+        queryFields,
+      });
     }
 
-    const total = await Turma.count({ where });
-
-    const turmas = await Turma.findAll({
-      where,
+    const turmasFindAndCount = await Turma.findAndCountAll({
+      distinct: true,
+      where: queryWhere.queryId === 1 && queryWhere.where,
       limit,
       offset: (page - 1) * limit,
       order: [["id", "DESC"]],
-      // attributes: ["id", "label", "created_at", "updated_at"],
       include: [
-        {
-          model: Ano,
-          as: "dados_escolares_ano",
-          // attributes: ["name", "path", "url"],
-        },
         {
           model: Turno,
           as: "dados_escolares_turno",
-          // attributes: ["name", "path", "url"],
+          required: !!(queryWhere.queryId === 2),
+          duplicating: false,
+          where: queryWhere.queryId === 2 && queryWhere.where,
+        },
+        {
+          model: Ano,
+          as: "dados_escolares_ano",
+          required: !!(queryWhere.queryId === 3),
+          duplicating: false,
+          where: queryWhere.queryId === 3 && queryWhere.where,
         },
         {
           model: Professor,
           as: "professores",
+          required: !!(queryWhere.queryId === 4),
           duplicating: false,
-          through: { attributes: [] }, // hide join relation
+          through: { attributes: [] },
+          where: queryWhere.queryId === 4 && queryWhere.where,
         },
         {
           model: Materia,
           as: "materias",
           duplicating: false,
-          through: { attributes: [] }, // hide join relation
+          through: { attributes: [] },
         },
       ],
     });
+
+    const total = turmasFindAndCount.count;
+    const turmas = turmasFindAndCount.rows;
 
     return { total, turmas };
   }
