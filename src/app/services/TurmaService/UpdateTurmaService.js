@@ -1,7 +1,7 @@
 import Turma from "../../models/Turma";
 
 class UpdateTurmaService {
-  async run({ id, turma, ano_id, turno_id, professores }) {
+  async run({ id, turma, ano_id, turno_id, professores, materias }) {
     const request = {
       id,
       turma,
@@ -27,7 +27,12 @@ class UpdateTurmaService {
 
     // Relação Many-to-Many: Professores e Turmas
     if (professores && professores.length > 0) {
-      response.setProfessores(professores);
+      await response.setProfessores(professores);
+    }
+
+    // Relação Many-to-Many: Matérias e Turmas
+    if (materias && materias.length > 0) {
+      await response.setMaterias(materias);
     }
 
     return response;

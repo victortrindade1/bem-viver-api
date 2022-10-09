@@ -2,9 +2,6 @@
 
 ## Onde parei
 
-Pode ser q eu faça relacionamento entre Turmas e Matérias tb, assim daria
-pra criar horário das turmas.
-
 Tenho q aprimorar o Index de Turma pra procurar com whereFilter.
 
 ## Fazer futuramente

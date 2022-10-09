@@ -7,6 +7,7 @@ export const validateTurmaStore = async (req, res, next) => {
       ano_id: Yup.number(),
       turno_id: Yup.number(),
       professores: Yup.array().of(Yup.number()),
+      materias: Yup.array().of(Yup.number()),
     });
 
     await schema.validate(req.body, { abortEarly: false });
@@ -26,6 +27,7 @@ export const validateTurmaUpdate = async (req, res, next) => {
       ano_id: Yup.number(),
       turno_id: Yup.number(),
       professores: Yup.array().of(Yup.number()),
+      materias: Yup.array().of(Yup.number()),
     });
 
     await schema.validate(req.body, { abortEarly: false });

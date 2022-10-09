@@ -121,6 +121,9 @@ export default new (class IndexAlunoService {
     const total = alunosFindAndCount.count;
     const alunos = alunosFindAndCount.rows;
 
-    return { total, alunos };
+    return {
+      total,
+      alunos,
+    };
   }
 })();

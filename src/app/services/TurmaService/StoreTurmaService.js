@@ -1,7 +1,7 @@
 import Turma from "../../models/Turma";
 
 class StoreTurmaService {
-  async run({ turma, ano_id, turno_id, professores }) {
+  async run({ turma, ano_id, turno_id, professores, materias }) {
     const request = {
       turma,
       ano_id,
@@ -25,7 +25,12 @@ class StoreTurmaService {
 
     // Relação Many-to-Many: Professores e Turmas
     if (professores && professores.length > 0) {
-      newTurma.setProfessores(professores);
+      await newTurma.setProfessores(professores);
+    }
+
+    // Relação Many-to-Many: Matérias e Turmas
+    if (materias && materias.length > 0) {
+      await newTurma.setMaterias(materias);
     }
 
     return newTurma;

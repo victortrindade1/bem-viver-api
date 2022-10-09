@@ -3,7 +3,7 @@ import { Op } from "sequelize";
 import Materia from "../../models/Materia";
 
 export default new (class UpdateMateriaService {
-  async run({ id, materia, professores }) {
+  async run({ id, materia, professores, turmas }) {
     const request = {
       materia,
     };
@@ -30,6 +30,11 @@ export default new (class UpdateMateriaService {
     // Relação Many-to-Many: Professores e Matérias
     if (professores && professores.length > 0) {
       materiaUpdated.setProfessores(professores);
+    }
+
+    // Relação Many-to-Many: Turmas e Matérias
+    if (turmas && turmas.length > 0) {
+      materiaUpdated.setTurmas(turmas);
     }
 
     return materiaUpdated;

@@ -1,5 +1,6 @@
 import Materia from "../../models/Materia";
 import Professor from "../../models/Professor";
+import Turma from "../../models/Turma";
 
 export default new (class ShowMateriaService {
   async run({ id }) {
@@ -8,6 +9,12 @@ export default new (class ShowMateriaService {
         {
           model: Professor,
           as: "professores",
+          duplicating: false,
+          through: { attributes: [] },
+        },
+        {
+          model: Turma,
+          as: "turmas",
           duplicating: false,
           through: { attributes: [] },
         },

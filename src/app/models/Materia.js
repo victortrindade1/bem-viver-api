@@ -22,6 +22,11 @@ class Materia extends Model {
       as: "professores",
       through: "professores_materias",
     });
+    this.belongsToMany(models.Turma, {
+      foreignKey: "materia_id",
+      as: "turmas",
+      through: "turmas_materias",
+    });
   }
 }
 

@@ -15,10 +15,27 @@ describe("Turma", () => {
   });
 
   it("[STORE] should store new turma", async () => {
+    const newProfessor = await request(app)
+      .post("/professores")
+      .send({
+        professor_nome: "Claudia Marcia",
+        professor_cpf: "12345678912",
+      })
+      .set("Authorization", `Bearer ${token}`);
+
+    const newMateria = await request(app)
+      .post("/materias")
+      .send({
+        materia: "Matemática",
+      })
+      .set("Authorization", `Bearer ${token}`);
+
     const response = await request(app)
       .post("/turmas")
       .send({
         turma: "5070",
+        professores: [newProfessor.body.id],
+        materias: [newMateria.body.id],
       })
       .set("Authorization", `Bearer ${token}`);
 
@@ -52,9 +69,25 @@ describe("Turma", () => {
       .set("Authorization", `Bearer ${token}`);
 
     expect(response.status).toBe(400);
+    expect(response.body.error).toBe("Turma já existe.");
   });
 
   it("[UPDATE] should update turma", async () => {
+    const newProfessor = await request(app)
+      .post("/professores")
+      .send({
+        professor_nome: "Claudia Marcia",
+        professor_cpf: "12345678912",
+      })
+      .set("Authorization", `Bearer ${token}`);
+
+    const newMateria = await request(app)
+      .post("/materias")
+      .send({
+        materia: "Matemática",
+      })
+      .set("Authorization", `Bearer ${token}`);
+
     const newTurma = await request(app)
       .post("/turmas")
       .send({
@@ -66,6 +99,8 @@ describe("Turma", () => {
       .put(`/turmas/${newTurma.body.id}`)
       .send({
         turma: "503 - A",
+        professores: [newProfessor.body.id],
+        materias: [newMateria.body.id],
       })
       .set("Authorization", `Bearer ${token}`);
 

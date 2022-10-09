@@ -4,6 +4,7 @@ import Turma from "../../models/Turma";
 import Ano from "../../models/Ano";
 import Turno from "../../models/Turno";
 import Professor from "../../models/Professor";
+import Materia from "../../models/Materia";
 
 export default new (class IndexTurmaService {
   async run({ filter, limit, page }) {
@@ -38,6 +39,13 @@ export default new (class IndexTurmaService {
         {
           model: Professor,
           as: "professores",
+          duplicating: false,
+          through: { attributes: [] }, // hide join relation
+        },
+        {
+          model: Materia,
+          as: "materias",
+          duplicating: false,
           through: { attributes: [] }, // hide join relation
         },
       ],

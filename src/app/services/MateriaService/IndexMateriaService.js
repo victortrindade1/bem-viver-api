@@ -2,6 +2,7 @@ import { Op } from "sequelize";
 
 import Materia from "../../models/Materia";
 import Professor from "../../models/Professor";
+import Turma from "../../models/Turma";
 
 export default new (class IndexMateriaService {
   async run({ nameFilter, limit, page }) {
@@ -25,6 +26,13 @@ export default new (class IndexMateriaService {
         {
           model: Professor,
           as: "professores",
+          // required: true,
+          duplicating: false,
+          through: { attributes: [] },
+        },
+        {
+          model: Turma,
+          as: "turmas",
           // required: true,
           duplicating: false,
           through: { attributes: [] },

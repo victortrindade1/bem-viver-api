@@ -1,7 +1,7 @@
 import Materia from "../../models/Materia";
 
 export default new (class StoreMateriaService {
-  async run({ materia, professores }) {
+  async run({ materia, professores, turmas }) {
     const materiaExists = await Materia.findOne({
       where: { materia },
     });
@@ -18,7 +18,12 @@ export default new (class StoreMateriaService {
 
     // Relação Many-to-Many: Professores e Matérias
     if (professores && professores.length > 0) {
-      newMateria.setProfessores(professores);
+      await newMateria.setProfessores(professores);
+    }
+
+    // Relação Many-to-Many: Turmas e Matérias
+    if (turmas && turmas.length > 0) {
+      await newMateria.setTurmas(turmas);
     }
 
     return newMateria;

@@ -1,5 +1,6 @@
 import Turma from "../../models/Turma";
 import Professor from "../../models/Professor";
+import Materia from "../../models/Materia";
 import Ano from "../../models/Ano";
 import Turno from "../../models/Turno";
 
@@ -20,6 +21,11 @@ export default new (class ShowTurmaService {
         {
           model: Professor,
           as: "professores",
+          through: { attributes: [] }, // hide join relation
+        },
+        {
+          model: Materia,
+          as: "materias",
           through: { attributes: [] }, // hide join relation
         },
       ],

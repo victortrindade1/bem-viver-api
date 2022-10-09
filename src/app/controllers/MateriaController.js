@@ -7,11 +7,12 @@ import ShowMateriaService from "../services/MateriaService/ShowMateriaService";
 class MateriaController {
   async store(req, res) {
     try {
-      const { materia, professores } = req.body;
+      const { materia, professores, turmas } = req.body;
 
       const newMateria = await StoreMateriaService.run({
         materia,
         professores,
+        turmas,
       });
 
       return res.json(newMateria);
@@ -22,13 +23,14 @@ class MateriaController {
 
   async update(req, res) {
     try {
-      const { materia, professores } = req.body;
+      const { materia, professores, turmas } = req.body;
       const { id } = req.params;
 
       const materiaUpdated = await UpdateMateriaService.run({
         id,
         materia,
         professores,
+        turmas,
       });
 
       return res.json(materiaUpdated);

@@ -4,25 +4,29 @@ import authConfig from "../../config/auth";
 
 class SessionController {
   async store(req, res) {
-    const { email, password } = req.body;
+    try {
+      const { email, password } = req.body;
 
-    const { id, name, isAdmin, avatar } = await StoreSessionService.run({
-      email,
-      password,
-    });
-
-    return res.json({
-      user: {
-        id,
-        name,
+      const { id, name, isAdmin, avatar } = await StoreSessionService.run({
         email,
-        isAdmin,
-        avatar,
-      },
-      token: jwt.sign({ id }, authConfig.secret, {
-        expiresIn: authConfig.expiresIn,
-      }),
-    });
+        password,
+      });
+
+      return res.json({
+        user: {
+          id,
+          name,
+          email,
+          isAdmin,
+          avatar,
+        },
+        token: jwt.sign({ id }, authConfig.secret, {
+          expiresIn: authConfig.expiresIn,
+        }),
+      });
+    } catch (e) {
+      return res.status(400).json(e.message);
+    }
   }
 }
 

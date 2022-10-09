@@ -30,12 +30,12 @@ export default new (class UpdateProfessorService {
 
     // Relação Many-to-Many: Professores e Turmas
     if (turmas && turmas.length > 0) {
-      professorUpdated.setTurmas(turmas);
+      await professorUpdated.setTurmas(turmas);
     }
 
     // Relação Many-to-Many: Professores e Matérias
     if (materias && materias.length > 0) {
-      professorUpdated.setMaterias(materias);
+      await professorUpdated.setMaterias(materias);
     }
 
     return professorUpdated;

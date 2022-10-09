@@ -16,12 +16,12 @@ export default new (class StoreProfessorService {
 
     // Relação Many-to-Many: Professores e Turmas
     if (turmas && turmas.length > 0) {
-      newProfessor.setTurmas(turmas);
+      await newProfessor.setTurmas(turmas);
     }
 
     // Relação Many-to-Many: Professores e Matérias
     if (materias && materias.length > 0) {
-      newProfessor.setMaterias(materias);
+      await newProfessor.setMaterias(materias);
     }
 
     return newProfessor;

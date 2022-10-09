@@ -26,9 +26,6 @@ export const whereFilter = async ({ filter, queryFields }) => {
         ? { [Op.like]: `%${filter}%` }
         : { [Op.iLike]: `%${filter}%` }
     );
-    // {
-    //   [Op.iLike]: `%${filter}%`,
-    // });
 
     if (queryField.at) {
       if (queryField.at.at) {

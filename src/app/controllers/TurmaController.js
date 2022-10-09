@@ -7,24 +7,25 @@ import ShowTurmaService from "../services/TurmaService/ShowTurmaService";
 class TurmaController {
   async store(req, res) {
     try {
-      const { turma, ano_id, turno_id, professores } = req.body;
+      const { turma, ano_id, turno_id, professores, materias } = req.body;
 
       const newTurma = await StoreTurmaService.run({
         turma,
         ano_id,
         turno_id,
         professores,
+        materias,
       });
 
       return res.json(newTurma);
     } catch (error) {
-      return res.status(400).json({ error: "Error in database" });
+      return res.status(400).json({ error: error.message });
     }
   }
 
   async update(req, res) {
     try {
-      const { turma, ano_id, turno_id, professores } = req.body;
+      const { turma, ano_id, turno_id, professores, materias } = req.body;
       const { id } = req.params;
 
       const response = await UpdateTurmaService.run({
@@ -33,11 +34,12 @@ class TurmaController {
         ano_id,
         turno_id,
         professores,
+        materias,
       });
 
       return res.json(response);
     } catch (err) {
-      return res.status(400).json({ error: "Error in database" });
+      return res.status(400).json({ error: err.message });
     }
   }
 
