@@ -19,10 +19,10 @@ class SessionController {
           email,
           isAdmin,
           avatar,
+          token: jwt.sign({ id }, authConfig.secret, {
+            expiresIn: authConfig.expiresIn,
+          }),
         },
-        token: jwt.sign({ id }, authConfig.secret, {
-          expiresIn: authConfig.expiresIn,
-        }),
       });
     } catch (e) {
       return res.status(400).json(e.message);

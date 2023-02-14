@@ -1,7 +1,11 @@
 import User from "../../models/User";
 
 class UpdateUserService {
-  async run({ id, email, oldPassword, name, avatar_id }) {
+  async run({ id, email, oldPassword, name, avatar_id, password }) {
+    if (password && !oldPassword) {
+      throw new Error("Password does not match");
+    }
+
     const user = await User.findByPk(id);
 
     // Se tiver enviado e-mail, verifica se já existe algum igual
@@ -21,6 +25,7 @@ class UpdateUserService {
       name,
       email,
       avatar_id,
+      password,
     };
 
     const userUpdated = await user.update(request);

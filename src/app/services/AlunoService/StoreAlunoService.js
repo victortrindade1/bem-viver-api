@@ -19,7 +19,17 @@ export default new (class StoreAlunoService {
     });
 
     if (alunoExists) {
-      throw new Error("Nome já existe.");
+      throw new Error("Este aluno já existe.");
+    }
+
+    const matriculaExists = await Aluno.findOne({
+      where: {
+        matricula,
+      },
+    });
+
+    if (matriculaExists) {
+      throw new Error("Esta matrícula já existe.");
     }
 
     const alunoRequest = {

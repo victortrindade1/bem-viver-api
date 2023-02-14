@@ -16,6 +16,7 @@ import HoraentradaController from "./app/controllers/HoraentradaController";
 import HorasaidaController from "./app/controllers/HorasaidaController";
 import MateriaController from "./app/controllers/MateriaController";
 import ProfessorController from "./app/controllers/ProfessorController";
+import MatriculaController from "./app/controllers/MatriculaController";
 
 import {
   validateUserStore,
@@ -96,6 +97,11 @@ routes.put("/alunos/:id", validateAlunoUpdate, AlunoController.update);
 routes.get("/alunos", AlunoController.index);
 routes.delete("/alunos/:id", AlunoController.delete);
 routes.get("/alunos/:id", AlunoController.show);
+
+/**
+ * Matrícula - retorna último id de aluno + 1 pra gerar nova matrícula
+ */
+routes.post("/alunos/novo/matricula", MatriculaController.show);
 
 /**
  * File

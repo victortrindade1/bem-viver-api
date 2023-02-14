@@ -1,5 +1,9 @@
 import { Op, where, cast, col } from "sequelize";
 
+// Yup regex
+export const dateFormat = /^\d{2}\/\d{2}\/\d{4}$/;
+export const cepFormat = /^\d{5}-\d{3}$/;
+
 // Verifica se a string é número. Retorna boolean
 export function isNumeric(str) {
   if (typeof str !== "string") return false; // we only process strings!
