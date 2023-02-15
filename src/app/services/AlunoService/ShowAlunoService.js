@@ -2,6 +2,7 @@ import Aluno from "../../models/Aluno";
 import Turma from "../../models/Turma";
 import Periodo from "../../models/Periodo";
 import Turno from "../../models/Turno";
+import Ano from "../../models/Ano";
 import Horaentrada from "../../models/Horaentrada";
 import Horasaida from "../../models/Horasaida";
 
@@ -16,6 +17,10 @@ export default new (class ShowAlunoService {
             {
               model: Turno,
               as: "dados_escolares_turno",
+            },
+            {
+              model: Ano,
+              as: "dados_escolares_ano",
             },
           ],
         },

@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { dateFormat } from "../../utils";
+import { dateFormat, cepFormat } from "../../utils";
 import statusPagamento from "../../lib/constants";
 
 export const validateAlunoStore = async (req, res, next) => {
@@ -109,8 +109,8 @@ export const validateAlunoUpdate = async (req, res, next) => {
       contatos_end_bairro: Yup.string(),
       contatos_end_cep: Yup.string()
         .nullable()
-        .min(9, "CEP tem 9 caracteres")
-        .max(9, "CEP tem 9 caracteres"),
+        .transform((curr, orig) => (orig === "" ? null : curr))
+        .matches(cepFormat, "Cep incorreto"),
       contatos_end_cidade: Yup.string(),
       contatos_buscar1_nome: Yup.string(),
       contatos_buscar1_parentesco: Yup.string(),
