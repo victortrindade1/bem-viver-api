@@ -3,6 +3,7 @@ import Ano from "../../models/Ano";
 import Turno from "../../models/Turno";
 import Professor from "../../models/Professor";
 import Materia from "../../models/Materia";
+import Sistema from "../../models/Sistema";
 
 import { whereFilter } from "../../../utils";
 
@@ -20,7 +21,7 @@ export default new (class IndexTurmaService {
         queryId: 2,
         field: "turno",
         model: Turno,
-        as: "dados_escolares_turno",
+        as: "dados_turno",
         at: {
           model: Turma,
         },
@@ -29,7 +30,7 @@ export default new (class IndexTurmaService {
         queryId: 3,
         field: "ano",
         model: Ano,
-        as: "dados_escolares_ano",
+        as: "dados_ano",
         at: {
           model: Turma,
         },
@@ -42,6 +43,20 @@ export default new (class IndexTurmaService {
         through: true,
         at: {
           model: Turma,
+        },
+      },
+      {
+        queryId: 5,
+        field: "sistema",
+        model: Sistema,
+        as: "dados_sistema",
+        through: true,
+        at: {
+          model: Ano,
+          as: "dados_ano",
+          at: {
+            model: Turma,
+          },
         },
       },
     ];
@@ -62,17 +77,26 @@ export default new (class IndexTurmaService {
       include: [
         {
           model: Turno,
-          as: "dados_escolares_turno",
+          as: "dados_turno",
           required: !!(queryWhere.queryId === 2),
           duplicating: false,
           where: queryWhere.queryId === 2 && queryWhere.where,
         },
         {
           model: Ano,
-          as: "dados_escolares_ano",
-          required: !!(queryWhere.queryId === 3),
+          as: "dados_ano",
+          required: !!(queryWhere.queryId === 3 || queryWhere.queryId === 5),
           duplicating: false,
           where: queryWhere.queryId === 3 && queryWhere.where,
+          include: [
+            {
+              model: Sistema,
+              as: "dados_sistema",
+              required: true,
+              duplicating: false,
+              where: queryWhere.queryId === 5 && queryWhere.where,
+            },
+          ],
         },
         {
           model: Professor,

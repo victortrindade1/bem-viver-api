@@ -24,13 +24,13 @@ export default new (class IndexAlunoService {
         queryId: 3,
         field: "sistema",
         model: Sistema,
-        as: "dados_escolares_sistema",
+        as: "dados_sistema",
         at: {
           model: Ano,
-          as: "dados_escolares_ano",
+          as: "dados_ano",
           at: {
             model: Turma,
-            as: "dados_escolares_turma",
+            as: "dados_turma",
             at: {
               model: Aluno,
             },
@@ -41,10 +41,10 @@ export default new (class IndexAlunoService {
         queryId: 4,
         field: "ano",
         model: Ano,
-        as: "dados_escolares_ano",
+        as: "dados_ano",
         at: {
           model: Turma,
-          as: "dados_escolares_turma",
+          as: "dados_turma",
           at: {
             model: Aluno,
           },
@@ -54,7 +54,7 @@ export default new (class IndexAlunoService {
         queryId: 5,
         field: "turma",
         model: Turma,
-        as: "dados_escolares_turma",
+        as: "dados_turma",
         at: {
           model: Aluno,
         },
@@ -86,7 +86,7 @@ export default new (class IndexAlunoService {
       include: [
         {
           model: Turma,
-          as: "dados_escolares_turma",
+          as: "dados_turma",
           required: !!(
             queryWhere.queryId === 3 ||
             queryWhere.queryId === 4 ||
@@ -97,7 +97,7 @@ export default new (class IndexAlunoService {
           include: [
             {
               model: Ano,
-              as: "dados_escolares_ano",
+              as: "dados_ano",
               required: !!(
                 queryWhere.queryId === 3 || queryWhere.queryId === 4
               ),
@@ -106,7 +106,7 @@ export default new (class IndexAlunoService {
               include: [
                 {
                   model: Sistema,
-                  as: "dados_escolares_sistema",
+                  as: "dados_sistema",
                   required: true,
                   duplicating: false,
                   where: queryWhere.queryId === 3 && queryWhere.where,

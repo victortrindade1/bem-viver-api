@@ -17,7 +17,7 @@ class Sistema extends Model {
   static associate(models) {
     this.hasMany(models.Ano, {
       foreignKey: "sistema_id",
-      as: "dados_escolares_sistema",
+      as: "dados_sistema",
     });
   }
 }

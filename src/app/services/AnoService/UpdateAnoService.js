@@ -17,7 +17,7 @@ export default new (class UpdateAnoService {
           {
             [Op.not]: [{ id: anoExists.id }],
           },
-          { ano, sistema_id: sistema_id || null },
+          { ano: ano || null, sistema_id: sistema_id || null },
         ],
       },
     });

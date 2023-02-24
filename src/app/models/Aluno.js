@@ -52,13 +52,13 @@ class Aluno extends Model {
         contatos_buscar3_nome: Sequelize.STRING,
         contatos_buscar3_parentesco: Sequelize.STRING,
         contatos_buscar3_contato: Sequelize.STRING,
-        // dados_escolares_sistema: Sequelize.STRING,
-        // dados_escolares_turma: Sequelize.STRING,
-        // dados_escolares_turno: Sequelize.STRING,
+        // dados_sistema: Sequelize.STRING,
+        // dados_turma: Sequelize.STRING,
+        // dados_turno: Sequelize.STRING,
         // dados_escolares_horario_entrada: Sequelize.STRING,
         // dados_escolares_horario_saida: Sequelize.STRING,
-        // dados_escolares_ano: Sequelize.STRING,
-        // dados_escolares_periodo: Sequelize.STRING,
+        // dados_ano: Sequelize.STRING,
+        // dados_periodo: Sequelize.STRING,
         dados_escolares_data_pre_matricula: Sequelize.STRING,
         dados_escolares_data_matricula: Sequelize.STRING,
         dados_escolares_observacoes: Sequelize.STRING,
@@ -80,23 +80,23 @@ class Aluno extends Model {
   static associate(models) {
     this.belongsTo(models.Turma, {
       foreignKey: "turma_id",
-      as: "dados_escolares_turma",
+      as: "dados_turma",
     });
     this.belongsTo(models.Periodo, {
       foreignKey: "periodo_id",
-      as: "dados_escolares_periodo",
+      as: "dados_periodo",
     });
     // this.belongsTo(models.Turno, {
     //   foreignKey: "turno_id",
-    //   as: "dados_escolares_turno",
+    //   as: "dados_turno",
     // });
     this.belongsTo(models.Horaentrada, {
       foreignKey: "horaentrada_id",
-      as: "dados_escolares_horaentrada",
+      as: "dados_horaentrada",
     });
     this.belongsTo(models.Horasaida, {
       foreignKey: "horasaida_id",
-      as: "dados_escolares_horasaida",
+      as: "dados_horasaida",
     });
     // this.belongsTo(models.Statuspagamento, {
     //   foreignKey: "statuspagamento_id",

@@ -10,12 +10,12 @@ export default new (class ShowTurmaService {
       include: [
         {
           model: Ano,
-          as: "dados_escolares_ano",
+          as: "dados_ano",
           // attributes: ["name", "path", "url"],
         },
         {
           model: Turno,
-          as: "dados_escolares_turno",
+          as: "dados_turno",
           // attributes: ["name", "path", "url"],
         },
         {

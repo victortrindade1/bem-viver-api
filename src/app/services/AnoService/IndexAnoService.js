@@ -1,6 +1,7 @@
 import { Op } from "sequelize";
 
 import Ano from "../../models/Ano";
+import Sistema from "../../models/Sistema";
 
 export default new (class IndexAnoService {
   async run({ nameFilter, limit, page }) {
@@ -20,6 +21,12 @@ export default new (class IndexAnoService {
       limit,
       offset: (page - 1) * limit,
       order: [["id", "DESC"]],
+      include: [
+        {
+          model: Sistema,
+          as: "dados_sistema",
+        },
+      ],
     });
 
     return { total, anos };

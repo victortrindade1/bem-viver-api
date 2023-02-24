@@ -17,7 +17,7 @@ class Periodo extends Model {
   static associate(models) {
     this.hasMany(models.Aluno, {
       foreignKey: "periodo_id",
-      as: "dados_escolares_periodo",
+      as: "dados_periodo",
     });
   }
 }

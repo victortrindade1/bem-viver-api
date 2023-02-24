@@ -1,4 +1,11 @@
 import Aluno from "../../models/Aluno";
+import Turma from "../../models/Turma";
+import Turno from "../../models/Turno";
+import Ano from "../../models/Ano";
+import Sistema from "../../models/Sistema";
+import Periodo from "../../models/Periodo";
+import Horaentrada from "../../models/Horaentrada";
+import Horasaida from "../../models/Horasaida";
 
 export default new (class UpdateAlunoService {
   async run({ id, requestData }) {
@@ -7,6 +14,7 @@ export default new (class UpdateAlunoService {
     const {
       ativo,
       nome,
+      matricula,
       statuspagamento,
       dados_pessoais_rg,
       dados_pessoais_cpf,
@@ -52,7 +60,10 @@ export default new (class UpdateAlunoService {
       contatos_buscar3_nome,
       contatos_buscar3_parentesco,
       contatos_buscar3_contato,
-      dados_escolares_sistema,
+      // dados_sistema,
+      // dados_turma,
+      // dados_turno,
+      // dados_ano,
       turma_id,
       horaentrada_id,
       horasaida_id,
@@ -69,9 +80,10 @@ export default new (class UpdateAlunoService {
       anamnese_observacoes,
     } = requestData;
 
-    const alunoUpdated = await aluno.update({
+    await aluno.update({
       ativo,
       nome,
+      matricula,
       statuspagamento,
       dados_pessoais_rg,
       dados_pessoais_cpf,
@@ -117,11 +129,14 @@ export default new (class UpdateAlunoService {
       contatos_buscar3_nome,
       contatos_buscar3_parentesco,
       contatos_buscar3_contato,
-      dados_escolares_sistema,
       turma_id,
       horaentrada_id,
       horasaida_id,
       periodo_id,
+      // dados_turma,
+      // dados_turno,
+      // dados_ano,
+      // dados_sistema,
       dados_escolares_data_pre_matricula,
       dados_escolares_data_matricula,
       dados_escolares_data_encerramento,
@@ -134,6 +149,45 @@ export default new (class UpdateAlunoService {
       anamnese_observacoes,
     });
 
+    const alunoUpdated = await Aluno.findByPk(id, {
+      include: [
+        {
+          model: Turma,
+          as: "dados_turma",
+          include: [
+            {
+              model: Turno,
+              as: "dados_turno",
+            },
+            {
+              model: Ano,
+              as: "dados_ano",
+              include: [
+                {
+                  model: Sistema,
+                  as: "dados_sistema",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          model: Periodo,
+          as: "dados_periodo",
+        },
+        {
+          model: Horaentrada,
+          as: "dados_horaentrada",
+        },
+        {
+          model: Horasaida,
+          as: "dados_horasaida",
+        },
+        // {
+        //   model:
+        // }
+      ],
+    });
     return alunoUpdated;
   }
 })();

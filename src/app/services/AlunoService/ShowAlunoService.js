@@ -12,33 +12,33 @@ export default new (class ShowAlunoService {
       include: [
         {
           model: Turma,
-          as: "dados_escolares_turma",
+          as: "dados_turma",
           include: [
             {
               model: Turno,
-              as: "dados_escolares_turno",
+              as: "dados_turno",
             },
             {
               model: Ano,
-              as: "dados_escolares_ano",
+              as: "dados_ano",
             },
           ],
         },
         {
           model: Periodo,
-          as: "dados_escolares_periodo",
+          as: "dados_periodo",
         },
         // {
         //   model: Turno,
-        //   as: "dados_escolares_turno",
+        //   as: "dados_turno",
         // },
         {
           model: Horaentrada,
-          as: "dados_escolares_horaentrada",
+          as: "dados_horaentrada",
         },
         {
           model: Horasaida,
-          as: "dados_escolares_horasaida",
+          as: "dados_horasaida",
         },
       ],
     });

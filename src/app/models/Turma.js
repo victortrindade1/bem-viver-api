@@ -17,11 +17,11 @@ class Turma extends Model {
   static associate(models) {
     this.belongsTo(models.Ano, {
       foreignKey: "ano_id",
-      as: "dados_escolares_ano",
+      as: "dados_ano",
     });
     this.belongsTo(models.Turno, {
       foreignKey: "turno_id",
-      as: "dados_escolares_turno",
+      as: "dados_turno",
     });
     this.belongsToMany(models.Professor, {
       foreignKey: "turma_id",
@@ -35,7 +35,7 @@ class Turma extends Model {
     });
     this.hasMany(models.Aluno, {
       foreignKey: "turma_id",
-      as: "dados_escolares_turma",
+      as: "dados_turma",
     });
   }
 }

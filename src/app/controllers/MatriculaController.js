@@ -6,12 +6,15 @@ class MatriculaController {
   // Serve para retornar qual próximo id pra gerar matrícula
   async show(req, res) {
     try {
-      const { id } = await Aluno.findOne({
+      const aluno = await Aluno.findOne({
         order: [["id", "DESC"]],
       });
 
+      const id = aluno?.id ? aluno?.id : 0;
+
       // Matrícula = ano atual + id
       const year = format(new Date(), "yyyy");
+
       const matricula = `${year}${Number(id) + 1}`;
 
       // Verifica se matrícula já existe. Se sim, retorna vazio pro usuário

@@ -17,7 +17,7 @@ class Horaentrada extends Model {
   static associate(models) {
     this.hasMany(models.Aluno, {
       foreignKey: "horaentrada_id",
-      as: "dados_escolares_horaentrada",
+      as: "dados_horaentrada",
     });
   }
 }

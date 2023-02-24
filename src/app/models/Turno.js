@@ -17,11 +17,11 @@ class Turno extends Model {
   static associate(models) {
     // this.hasMany(models.Aluno, {
     //   foreignKey: "turno_id",
-    //   as: "dados_escolares_turno",
+    //   as: "dados_turno",
     // });
     this.hasMany(models.Turma, {
       foreignKey: "turno_id",
-      as: "dados_escolares_turno",
+      as: "dados_turno",
     });
   }
 }

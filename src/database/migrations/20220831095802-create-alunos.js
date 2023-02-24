@@ -9,7 +9,8 @@ module.exports = {
       },
       matricula: {
         allowNull: false,
-        type: Sequelize.BIGINT,
+        type: Sequelize.STRING,
+        unique: true,
       },
       nome: {
         allowNull: false,

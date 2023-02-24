@@ -17,12 +17,12 @@ class Ano extends Model {
   static associate(models) {
     this.hasMany(models.Turma, {
       foreignKey: "ano_id",
-      as: "dados_escolares_ano",
+      as: "dados_ano",
     });
 
     this.belongsTo(models.Sistema, {
       foreignKey: "sistema_id",
-      as: "dados_escolares_sistema",
+      as: "dados_sistema",
     });
   }
 }

@@ -31,7 +31,7 @@ export default new (class IndexProfessorService {
         queryId: 3,
         field: "ano",
         model: Ano,
-        as: "dados_escolares_ano",
+        as: "dados_ano",
         at: {
           model: Turma,
           as: "turmas",
@@ -45,7 +45,7 @@ export default new (class IndexProfessorService {
         queryId: 4,
         field: "turno",
         model: Turno,
-        as: "dados_escolares_turno",
+        as: "dados_turno",
         at: {
           model: Turma,
           as: "turmas",
@@ -95,20 +95,20 @@ export default new (class IndexProfessorService {
           include: [
             {
               model: Ano,
-              as: "dados_escolares_ano",
+              as: "dados_ano",
               required: !!(queryWhere.queryId === 3),
               duplicating: false,
               where: queryWhere.queryId === 3 && queryWhere.where,
               include: [
                 {
                   model: Sistema,
-                  as: "dados_escolares_sistema",
+                  as: "dados_sistema",
                 },
               ],
             },
             {
               model: Turno,
-              as: "dados_escolares_turno",
+              as: "dados_turno",
               required: !!(queryWhere.queryId === 4),
               duplicating: false,
               where: queryWhere.queryId === 4 && queryWhere.where,

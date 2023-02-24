@@ -17,7 +17,7 @@ class Horasaida extends Model {
   static associate(models) {
     this.hasMany(models.Aluno, {
       foreignKey: "horasaida_id",
-      as: "dados_escolares_horasaida",
+      as: "dados_horasaida",
     });
   }
 }
