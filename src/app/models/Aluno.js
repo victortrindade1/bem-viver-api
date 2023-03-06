@@ -61,6 +61,7 @@ class Aluno extends Model {
         // dados_periodo: Sequelize.STRING,
         dados_escolares_data_pre_matricula: Sequelize.STRING,
         dados_escolares_data_matricula: Sequelize.STRING,
+        dados_escolares_data_encerramento: Sequelize.STRING,
         dados_escolares_observacoes: Sequelize.STRING,
         anamnese_pediatra: Sequelize.STRING,
         anamnese_contato_pediatra: Sequelize.STRING,

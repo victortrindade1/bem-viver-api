@@ -76,7 +76,8 @@ export default new (class IndexAlunoService {
     const alunosFindAndCount = await Aluno.findAndCountAll({
       distinct: true,
       where:
-        (queryWhere.queryId === 1 ||
+        (queryWhere.queryId === 0 || // Este pro caso de não achar nada
+          queryWhere.queryId === 1 ||
           queryWhere.queryId === 2 ||
           queryWhere.queryId === 6) &&
         queryWhere.where,

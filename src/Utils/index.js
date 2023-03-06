@@ -128,8 +128,9 @@ export const whereFilter = async ({ filter, queryFields }) => {
   query.queryId = queryId;
 
   if (queryId === 0) {
-    query.where = {};
+    query.where = {
+      id: 0, // Para retornar array vazio caso não encontre
+    };
   }
-
   return query;
 };

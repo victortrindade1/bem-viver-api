@@ -79,7 +79,6 @@ export default new (class UpdateAlunoService {
       anamnese_temperatura_banho,
       anamnese_observacoes,
     } = requestData;
-
     await aluno.update({
       ativo,
       nome,

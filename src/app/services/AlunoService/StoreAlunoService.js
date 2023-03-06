@@ -41,8 +41,8 @@ export default new (class StoreAlunoService {
       ativo: true,
       statuspagamento:
         dados_escolares_data_pre_matricula && !dados_escolares_data_matricula
-          ? statusPagamento[5].status // 5 = Pré Matr.
-          : statusPagamento[1].status, // 1 = Sem Pgto
+          ? statusPagamento[4].status // 4 = Pré Matr.
+          : statusPagamento[0].status, // 0 = Sem Pgto
     };
 
     const aluno = await Aluno.create(alunoRequest);

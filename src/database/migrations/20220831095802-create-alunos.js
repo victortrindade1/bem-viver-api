@@ -253,6 +253,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
+      dados_escolares_data_encerramento: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       dados_escolares_observacoes: {
         type: Sequelize.STRING,
         allowNull: true,
