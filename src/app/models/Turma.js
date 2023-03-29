@@ -37,6 +37,10 @@ class Turma extends Model {
       foreignKey: "turma_id",
       as: "dados_turma",
     });
+    this.hasMany(models.Horario, {
+      foreignKey: "turma_id",
+      as: "turma_horario",
+    });
   }
 }
 

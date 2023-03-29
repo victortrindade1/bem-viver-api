@@ -27,6 +27,10 @@ class Materia extends Model {
       as: "turmas",
       through: "turmas_materias",
     });
+    this.hasMany(models.Horario, {
+      foreignKey: "materia_id",
+      as: "materia_horario",
+    });
   }
 }
 

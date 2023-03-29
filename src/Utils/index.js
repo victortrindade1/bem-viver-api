@@ -134,3 +134,9 @@ export const whereFilter = async ({ filter, queryFields }) => {
   }
   return query;
 };
+
+/**
+ * Deixa a primeira letra maiúscula
+ */
+export const capitalizeFirstLetter = (string) =>
+  string.charAt(0).toUpperCase() + string.slice(1);

@@ -17,6 +17,7 @@ import HorasaidaController from "./app/controllers/HorasaidaController";
 import MateriaController from "./app/controllers/MateriaController";
 import ProfessorController from "./app/controllers/ProfessorController";
 import MatriculaController from "./app/controllers/MatriculaController";
+import HorarioController from "./app/controllers/HorarioController";
 
 import {
   validateUserStore,
@@ -63,6 +64,10 @@ import {
   validateProfessorStore,
   validateProfessorUpdate,
 } from "./app/validators/ProfessorValidator";
+import {
+  validateHorarioStore,
+  validateHorarioUpdate,
+} from "./app/validators/HorarioValidator";
 
 import authMiddleware from "./app/middlewares/auth";
 
@@ -194,7 +199,7 @@ routes.delete("/materias/:id", MateriaController.delete);
 routes.get("/materias/:id", MateriaController.show);
 
 /**
- * Materia
+ * Professor
  */
 routes.post("/professores", validateProfessorStore, ProfessorController.store);
 routes.put(
@@ -205,5 +210,14 @@ routes.put(
 routes.get("/professores", ProfessorController.index);
 routes.delete("/professores/:id", ProfessorController.delete);
 routes.get("/professores/:id", ProfessorController.show);
+
+/**
+ * Horario
+ */
+routes.post("/horarios", validateHorarioStore, HorarioController.store);
+routes.put("/horarios/:id", validateHorarioUpdate, HorarioController.update);
+routes.get("/horarios", HorarioController.index);
+routes.delete("/horarios/:id", HorarioController.delete);
+routes.get("/horarios/:id", HorarioController.show);
 
 export default routes;

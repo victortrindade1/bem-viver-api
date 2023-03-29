@@ -12,6 +12,7 @@ import Periodo from "../app/models/Periodo";
 import Horaentrada from "../app/models/Horaentrada";
 import Horasaida from "../app/models/Horasaida";
 import Professor from "../app/models/Professor";
+import Horario from "../app/models/Horario";
 
 import databaseConfig from "../config/database";
 
@@ -28,6 +29,7 @@ const models = [
   Horaentrada,
   Horasaida,
   Professor,
+  Horario,
 ];
 
 class Database {

@@ -46,6 +46,10 @@ class Professor extends Model {
       as: "materias",
       through: "professores_materias",
     });
+    this.hasMany(models.Horario, {
+      foreignKey: "professor_id",
+      as: "professor",
+    });
   }
 }
 

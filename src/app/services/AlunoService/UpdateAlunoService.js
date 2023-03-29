@@ -7,6 +7,8 @@ import Periodo from "../../models/Periodo";
 import Horaentrada from "../../models/Horaentrada";
 import Horasaida from "../../models/Horasaida";
 
+import { capitalizeFirstLetter } from "../../../utils";
+
 export default new (class UpdateAlunoService {
   async run({ id, requestData }) {
     const aluno = await Aluno.findByPk(id);
@@ -81,7 +83,7 @@ export default new (class UpdateAlunoService {
     } = requestData;
     await aluno.update({
       ativo,
-      nome,
+      nome: nome && capitalizeFirstLetter(nome),
       matricula,
       statuspagamento,
       dados_pessoais_rg,

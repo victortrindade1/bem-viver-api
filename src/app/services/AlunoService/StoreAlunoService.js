@@ -1,5 +1,6 @@
 import Aluno from "../../models/Aluno";
 
+import { capitalizeFirstLetter } from "../../../utils";
 import statusPagamento from "../../../lib/constants";
 
 export default new (class StoreAlunoService {
@@ -10,10 +11,13 @@ export default new (class StoreAlunoService {
     dados_escolares_data_pre_matricula,
     dados_pessoais_data_nascimento,
   }) {
+    // Se tiver primeira letra minúscula, troca
+    const nomeCapitalized = capitalizeFirstLetter(nome);
+
     const alunoExists = await Aluno.findOne({
       where: {
         // matricula: matricula || null,
-        nome,
+        nome: nomeCapitalized,
         dados_pessoais_data_nascimento: dados_pessoais_data_nascimento || null,
       },
     });
@@ -33,7 +37,7 @@ export default new (class StoreAlunoService {
     }
 
     const alunoRequest = {
-      nome,
+      nome: nomeCapitalized,
       matricula,
       dados_escolares_data_matricula,
       dados_escolares_data_pre_matricula,

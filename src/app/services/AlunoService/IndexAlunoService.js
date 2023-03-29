@@ -6,7 +6,7 @@ import Turma from "../../models/Turma";
 import { whereFilter } from "../../../utils";
 
 export default new (class IndexAlunoService {
-  async run({ filter, limit, page }) {
+  async run({ filter, limit, page, order }) {
     let queryWhere = {};
 
     const queryFields = [
@@ -83,7 +83,7 @@ export default new (class IndexAlunoService {
         queryWhere.where,
       limit,
       offset: (page - 1) * limit,
-      order: [["id", "DESC"]],
+      order: [["id", order]],
       include: [
         {
           model: Turma,

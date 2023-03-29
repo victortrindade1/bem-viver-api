@@ -5,7 +5,7 @@ class Aluno extends Model {
     super.init(
       {
         ativo: Sequelize.BOOLEAN,
-        matricula: Sequelize.BIGINT,
+        matricula: Sequelize.STRING,
         nome: Sequelize.STRING,
         statuspagamento: Sequelize.STRING,
         dados_pessoais_rg: Sequelize.STRING,
