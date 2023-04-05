@@ -25,14 +25,21 @@ export default new (class IndexMateriaService {
       include: [
         {
           model: Professor,
-          as: "professores",
+          as: "professores_horario",
+          // required: true,
+          duplicating: false,
+          through: { attributes: [] },
+        },
+        {
+          model: Professor,
+          as: "materias_professor",
           // required: true,
           duplicating: false,
           through: { attributes: [] },
         },
         {
           model: Turma,
-          as: "turmas",
+          as: "turmas_horario",
           // required: true,
           duplicating: false,
           through: { attributes: [] },

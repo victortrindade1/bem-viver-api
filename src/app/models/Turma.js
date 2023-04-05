@@ -24,14 +24,14 @@ class Turma extends Model {
       as: "dados_turno",
     });
     this.belongsToMany(models.Professor, {
+      as: "professores_horario",
       foreignKey: "turma_id",
-      as: "professores",
-      through: "professores_turmas",
+      through: "horarios",
     });
     this.belongsToMany(models.Materia, {
+      as: "materias_horario",
       foreignKey: "turma_id",
-      as: "materias",
-      through: "turmas_materias",
+      through: "horarios",
     });
     this.hasMany(models.Aluno, {
       foreignKey: "turma_id",
@@ -39,7 +39,7 @@ class Turma extends Model {
     });
     this.hasMany(models.Horario, {
       foreignKey: "turma_id",
-      as: "turma_horario",
+      as: "turmas",
     });
   }
 }

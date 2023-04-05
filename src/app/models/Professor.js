@@ -37,18 +37,23 @@ class Professor extends Model {
 
   static associate(models) {
     this.belongsToMany(models.Turma, {
+      as: "turmas_horario",
       foreignKey: "professor_id",
-      as: "turmas",
-      through: "professores_turmas",
+      through: "horarios",
     });
     this.belongsToMany(models.Materia, {
+      as: "materias_horario",
       foreignKey: "professor_id",
-      as: "materias",
+      through: "horarios",
+    });
+    this.belongsToMany(models.Materia, {
+      as: "materias_professor",
+      foreignKey: "professor_id",
       through: "professores_materias",
     });
     this.hasMany(models.Horario, {
+      as: "professor_horario",
       foreignKey: "professor_id",
-      as: "professor",
     });
   }
 }

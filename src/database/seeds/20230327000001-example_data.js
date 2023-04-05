@@ -108,63 +108,21 @@ module.exports = {
       },
     ]);
 
-    await QueryInterface.bulkInsert("professores_turmas", [
-      {
-        professor_id: 1,
-        turma_id: 2,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        professor_id: 2,
-        turma_id: 1,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        professor_id: 2,
-        turma_id: 2,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-    ]);
-
     await QueryInterface.bulkInsert("professores_materias", [
       {
         professor_id: 1,
-        materia_id: 2,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        professor_id: 2,
         materia_id: 1,
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
         professor_id: 2,
-        materia_id: 2,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-    ]);
-
-    await QueryInterface.bulkInsert("turmas_materias", [
-      {
-        turma_id: 1,
-        materia_id: 2,
+        materia_id: 3,
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
-        turma_id: 2,
-        materia_id: 1,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        turma_id: 2,
+        professor_id: 2,
         materia_id: 2,
         created_at: new Date(),
         updated_at: new Date(),
@@ -175,16 +133,16 @@ module.exports = {
       {
         diahora: "1996-01-01T07:00:00Z",
         professor_id: 1,
+        turma_id: 2,
         materia_id: 1,
-        turma_id: 1,
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
         diahora: "1996-01-01T07:50:00Z",
-        professor_id: 1,
-        materia_id: 1,
+        professor_id: 2,
         turma_id: 1,
+        materia_id: 3,
         created_at: new Date(),
         updated_at: new Date(),
       },

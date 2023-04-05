@@ -8,14 +8,21 @@ export default new (class ShowProfessorService {
       include: [
         {
           model: Turma,
-          as: "turmas",
+          as: "turmas_horario",
           through: { attributes: [] }, // hide join relation
+          include: [
+            {
+              model: Materia,
+              as: "materias_horario",
+              through: { attributes: [] }, // hide join relation
+            },
+          ],
         },
-        {
-          model: Materia,
-          as: "materias",
-          through: { attributes: [] }, // hide join relation
-        },
+        // {
+        //   model: Materia,
+        //   as: "materias_horario",
+        //   through: { attributes: [] }, // hide join relation
+        // },
       ],
     });
 

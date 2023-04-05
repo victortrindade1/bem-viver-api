@@ -12,6 +12,8 @@ class Horario extends Model {
       },
       {
         sequelize,
+        modelName: "Horario",
+        tableName: "horarios",
       }
     );
 
@@ -20,16 +22,16 @@ class Horario extends Model {
 
   static associate(models) {
     this.belongsTo(models.Professor, {
+      as: "professor_horario",
       foreignKey: "professor_id",
-      as: "professor",
     });
     this.belongsTo(models.Materia, {
-      foreignKey: "materia_id",
       as: "materia_horario",
+      foreignKey: "materia_id",
     });
     this.belongsTo(models.Turma, {
+      as: "turmas",
       foreignKey: "turma_id",
-      as: "turma_horario",
     });
   }
 }

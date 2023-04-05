@@ -83,7 +83,7 @@ export default new (class IndexProfessorService {
       include: [
         {
           model: Turma,
-          as: "turmas",
+          as: "turmas_horario",
           required: !!(
             queryWhere.queryId === 2 ||
             queryWhere.queryId === 3 ||
@@ -113,16 +113,32 @@ export default new (class IndexProfessorService {
               duplicating: false,
               where: queryWhere.queryId === 4 && queryWhere.where,
             },
+            {
+              model: Materia,
+              as: "materias_horario",
+              required: !!(queryWhere.queryId === 5),
+              duplicating: false,
+              through: { attributes: [] },
+              where: queryWhere.queryId === 5 && queryWhere.where,
+            },
           ],
         },
         {
           model: Materia,
-          as: "materias",
+          as: "materias_professor",
           required: !!(queryWhere.queryId === 5),
           duplicating: false,
           through: { attributes: [] },
           where: queryWhere.queryId === 5 && queryWhere.where,
         },
+        // {
+        //   model: Materia,
+        //   as: "materias_horario",
+        //   required: !!(queryWhere.queryId === 5),
+        //   duplicating: false,
+        //   through: { attributes: [] },
+        //   where: queryWhere.queryId === 5 && queryWhere.where,
+        // },
       ],
     });
 

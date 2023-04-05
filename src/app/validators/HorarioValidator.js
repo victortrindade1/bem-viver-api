@@ -4,9 +4,9 @@ export const validateHorarioStore = async (req, res, next) => {
   try {
     const schema = Yup.object().shape({
       diahora: Yup.string().required(),
-      professor_id: Yup.number(),
-      materia_id: Yup.number(),
-      turma_id: Yup.number(),
+      professor_id: Yup.number().required(),
+      materia_id: Yup.number().required(),
+      turma_id: Yup.number().required(),
     });
 
     await schema.validate(req.body, { abortEarly: false });

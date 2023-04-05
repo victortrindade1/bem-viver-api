@@ -28,10 +28,12 @@ module.exports = {
       professor_cpf: {
         allowNull: true,
         type: Sequelize.STRING,
+        unique: true,
       },
       professor_rg: {
         allowNull: true,
         type: Sequelize.STRING,
+        unique: true,
       },
       professor_data_nascimento: {
         allowNull: true,

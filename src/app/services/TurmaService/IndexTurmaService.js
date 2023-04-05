@@ -100,7 +100,7 @@ export default new (class IndexTurmaService {
         },
         {
           model: Professor,
-          as: "professores",
+          as: "professores_horario",
           required: !!(queryWhere.queryId === 4),
           duplicating: false,
           through: { attributes: [] },
@@ -108,7 +108,7 @@ export default new (class IndexTurmaService {
         },
         {
           model: Materia,
-          as: "materias",
+          as: "materias_horario",
           duplicating: false,
           through: { attributes: [] },
         },

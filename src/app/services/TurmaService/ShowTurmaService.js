@@ -20,12 +20,12 @@ export default new (class ShowTurmaService {
         },
         {
           model: Professor,
-          as: "professores",
+          as: "professores_horario",
           through: { attributes: [] }, // hide join relation
         },
         {
           model: Materia,
-          as: "materias",
+          as: "materias_horario",
           through: { attributes: [] }, // hide join relation
         },
       ],

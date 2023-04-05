@@ -19,13 +19,18 @@ class Materia extends Model {
   static associate(models) {
     this.belongsToMany(models.Professor, {
       foreignKey: "materia_id",
-      as: "professores",
+      as: "professores_horario",
+      through: "horarios",
+    });
+    this.belongsToMany(models.Professor, {
+      foreignKey: "materia_id",
+      as: "materias_professor",
       through: "professores_materias",
     });
     this.belongsToMany(models.Turma, {
       foreignKey: "materia_id",
-      as: "turmas",
-      through: "turmas_materias",
+      as: "turmas_horario",
+      through: "horarios",
     });
     this.hasMany(models.Horario, {
       foreignKey: "materia_id",
