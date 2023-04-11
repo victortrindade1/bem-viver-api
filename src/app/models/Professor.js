@@ -5,6 +5,9 @@ class Professor extends Model {
     super.init(
       {
         professor_nome: Sequelize.STRING,
+        professor_celular: Sequelize.STRING,
+        professor_telefone: Sequelize.STRING,
+        professor_email: Sequelize.STRING,
         professor_cpf: Sequelize.STRING,
         professor_rg: Sequelize.STRING,
         professor_data_nascimento: Sequelize.STRING,

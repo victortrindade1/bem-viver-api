@@ -4,6 +4,7 @@ import Ano from "../../models/Ano";
 import Turma from "../../models/Turma";
 
 import { whereFilter } from "../../../utils";
+// import whereFilter from "../../../utils/whereBuilder";
 
 export default new (class IndexAlunoService {
   async run({ filter, limit, page, order }) {
@@ -72,7 +73,7 @@ export default new (class IndexAlunoService {
         queryFields,
       });
     }
-
+    // console.log({ queryWhere });
     const alunosFindAndCount = await Aluno.findAndCountAll({
       distinct: true,
       where:

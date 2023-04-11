@@ -6,7 +6,13 @@ export const validateProfessorStore = async (req, res, next) => {
       // turmas: Yup.array().of(Yup.number()),
       materias: Yup.array().of(Yup.number()),
       professor_nome: Yup.string().required(),
-      professor_cpf: Yup.string().required(),
+      professor_celular: Yup.string(),
+      professor_telefone: Yup.string(),
+      professor_email: Yup.string().email(),
+      professor_cpf: Yup.string()
+        .required()
+        .min(14, "CPF precisa ter 14 caracteres")
+        .max(14, "CPF precisa ter 14 caracteres"),
       professor_rg: Yup.string(),
       professor_data_nascimento: Yup.string(),
       profissional_registro_cfep: Yup.string(),

@@ -25,6 +25,21 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
+      professor_celular: {
+        allowNull: true,
+        type: Sequelize.STRING,
+        unique: true,
+      },
+      professor_telefone: {
+        allowNull: true,
+        type: Sequelize.STRING,
+        unique: true,
+      },
+      professor_email: {
+        allowNull: true,
+        type: Sequelize.STRING,
+        unique: true,
+      },
       professor_cpf: {
         allowNull: true,
         type: Sequelize.STRING,

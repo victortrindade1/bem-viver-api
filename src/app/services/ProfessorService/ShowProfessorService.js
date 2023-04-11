@@ -18,6 +18,11 @@ export default new (class ShowProfessorService {
             },
           ],
         },
+        {
+          model: Materia,
+          as: "materias_professor",
+          through: { attributes: [] }, // hide join relation
+        },
         // {
         //   model: Materia,
         //   as: "materias_horario",

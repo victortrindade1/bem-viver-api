@@ -30,7 +30,7 @@ class Horario extends Model {
       foreignKey: "materia_id",
     });
     this.belongsTo(models.Turma, {
-      as: "turmas",
+      as: "dados_turma",
       foreignKey: "turma_id",
     });
   }
