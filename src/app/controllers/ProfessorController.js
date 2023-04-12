@@ -7,10 +7,10 @@ import ShowProfessorService from "../services/ProfessorService/ShowProfessorServ
 class ProfessorController {
   async store(req, res) {
     try {
-      const requestData = req.body;
+      const { professor_nome } = req.body;
 
       const newProfessor = await StoreProfessorService.run({
-        requestData,
+        professor_nome,
       });
 
       return res.json(newProfessor);

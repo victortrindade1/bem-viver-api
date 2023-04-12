@@ -1,18 +1,16 @@
 import Professor from "../../models/Professor";
 
 export default new (class StoreProfessorService {
-  async run({ requestData }) {
-    const { professor_cpf } = requestData;
-
+  async run({ professor_nome }) {
     const professorExists = await Professor.findOne({
-      where: { professor_cpf },
+      where: { professor_nome },
     });
 
     if (professorExists) {
       throw new Error("Professor já existe.");
     }
 
-    const newProfessor = await Professor.create(requestData);
+    const newProfessor = await Professor.create({ professor_nome });
 
     // // Relação Many-to-Many: Professores e Turmas
     // if (turmas && turmas.length > 0) {
