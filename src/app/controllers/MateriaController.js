@@ -41,12 +41,13 @@ class MateriaController {
 
   async index(req, res) {
     try {
-      const { page = 1, q: nameFilter, limit = 5 } = req.query;
+      const { page = 1, q: nameFilter, limit = 5, complete = true } = req.query;
 
       const { total, materias } = await IndexMateriaService.run({
         nameFilter,
         limit,
         page,
+        complete,
       });
 
       return res.json({

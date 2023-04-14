@@ -5,7 +5,7 @@ import Professor from "../../models/Professor";
 import Turma from "../../models/Turma";
 
 export default new (class IndexMateriaService {
-  async run({ nameFilter, limit, page }) {
+  async run({ nameFilter, limit, page, complete }) {
     const where = {};
 
     if (nameFilter) {
@@ -22,7 +22,8 @@ export default new (class IndexMateriaService {
       limit,
       offset: (page - 1) * limit,
       order: [["id", "DESC"]],
-      include: [
+      // attributes: ["materia"],
+      include: complete === true && [
         {
           model: Professor,
           as: "professores_horario",
