@@ -18,7 +18,7 @@ import MateriaController from "./app/controllers/MateriaController";
 import ProfessorController from "./app/controllers/ProfessorController";
 import MatriculaController from "./app/controllers/MatriculaController";
 import HorarioController from "./app/controllers/HorarioController";
-// import TurmaProfessorMateriaController from "./app/controllers/TurmaProfessorMateriaController";
+import ProfessorMateriaController from "./app/controllers/ProfessorMateriaController";
 
 import {
   validateUserStore,
@@ -226,8 +226,9 @@ routes.delete("/horarios/:id", HorarioController.delete);
 routes.get("/horarios/:id", HorarioController.show);
 
 /**
- * Relação Turma - Professor - Materia
+ * Relação Professor - Materia
  */
+routes.delete("/professormateria/:id", ProfessorMateriaController.delete);
 // routes.post(
 //   "/turmaprofessormateria",
 //   validateTurmaProfessorMateriaStore,
@@ -237,10 +238,6 @@ routes.get("/horarios/:id", HorarioController.show);
 //   "/turmaprofessormateria/:id",
 //   validateTurmaProfessorMateriaUpdate,
 //   TurmaProfessorMateriaController.update
-// );
-// routes.delete(
-//   "/turmaprofessormateria/:id",
-//   TurmaProfessorMateriaController.delete
 // );
 
 export default routes;

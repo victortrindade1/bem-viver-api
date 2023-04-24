@@ -163,8 +163,8 @@ export default new (class IndexProfessorService {
         {
           model: Materia,
           as: "materias_professor",
-          attributes: ["materia"],
-          through: { attributes: [] },
+          attributes: ["id", "materia"],
+          through: { attributes: ["id"] },
           // where: queryWhere.queryId === 6 && queryWhere.where,
           // required: !!(queryWhere.queryId === 6),
           // duplicating: false,

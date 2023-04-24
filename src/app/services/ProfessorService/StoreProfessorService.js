@@ -1,3 +1,5 @@
+import { format } from "date-fns";
+
 import Professor from "../../models/Professor";
 
 export default new (class StoreProfessorService {
@@ -10,7 +12,11 @@ export default new (class StoreProfessorService {
       throw new Error("Professor já existe.");
     }
 
-    const newProfessor = await Professor.create({ professor_nome });
+    const newProfessor = await Professor.create({
+      professor_nome,
+      ativo: true,
+      profissional_data_matricula: format(new Date(), "dd/MM/yyyy"),
+    });
 
     // // Relação Many-to-Many: Professores e Turmas
     // if (turmas && turmas.length > 0) {

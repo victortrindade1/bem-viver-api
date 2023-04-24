@@ -1,6 +1,6 @@
 module.exports = {
-  up: async (QueryInterface) => {
-    await QueryInterface.bulkInsert("sistemas", [
+  up: async (queryInterface) => {
+    await queryInterface.bulkInsert("sistemas", [
       {
         sistema: "Infantil",
         created_at: new Date(),
@@ -13,28 +13,38 @@ module.exports = {
       },
     ]);
 
-    await QueryInterface.bulkInsert("anos", [
+    const sistemas = await queryInterface.sequelize.query(
+      `SELECT id from SISTEMAS;`
+    );
+
+    const sistemasRows = sistemas[0];
+
+    await queryInterface.bulkInsert("anos", [
       {
         ano: "Maternal I",
-        sistema_id: 1,
+        sistema_id: sistemasRows[1].id,
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
         ano: "1ª série",
-        sistema_id: 2,
+        sistema_id: sistemasRows[0].id,
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
         ano: "2ª série",
-        sistema_id: 2,
+        sistema_id: sistemasRows[0].id,
         created_at: new Date(),
         updated_at: new Date(),
       },
     ]);
 
-    await QueryInterface.bulkInsert("turnos", [
+    const anos = await queryInterface.sequelize.query(`SELECT id from ANOS;`);
+
+    const anosRows = anos[0];
+
+    await queryInterface.bulkInsert("turnos", [
       {
         turno: "Diurno",
         created_at: new Date(),
@@ -47,31 +57,43 @@ module.exports = {
       },
     ]);
 
-    await QueryInterface.bulkInsert("turmas", [
+    const turnos = await queryInterface.sequelize.query(
+      `SELECT id from TURNOS;`
+    );
+
+    const turnosRows = turnos[0];
+
+    await queryInterface.bulkInsert("turmas", [
       {
         turma: "108",
-        ano_id: 2,
-        turno_id: 1,
+        ano_id: anosRows[0].id,
+        turno_id: turnosRows[1].id,
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
         turma: "109",
-        ano_id: 2,
-        turno_id: 1,
+        ano_id: anosRows[1].id,
+        turno_id: turnosRows[0].id,
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
         turma: "201",
-        ano_id: 3,
-        turno_id: 1,
+        ano_id: anosRows[2].id,
+        turno_id: turnosRows[0].id,
         created_at: new Date(),
         updated_at: new Date(),
       },
     ]);
 
-    await QueryInterface.bulkInsert("materias", [
+    const turmas = await queryInterface.sequelize.query(
+      `SELECT id from TURMAS;`
+    );
+
+    const turmasRows = turmas[0];
+
+    await queryInterface.bulkInsert("materias", [
       {
         materia: "Ciências",
         created_at: new Date(),
@@ -89,10 +111,17 @@ module.exports = {
       },
     ]);
 
-    await QueryInterface.bulkInsert("professores", [
+    const materias = await queryInterface.sequelize.query(
+      `SELECT id from MATERIAS;`
+    );
+
+    const materiasRows = materias[0];
+
+    await queryInterface.bulkInsert("professores", [
       {
         professor_nome: "Prof Girafales",
         professor_cpf: "123387",
+        ativo: true,
         // turmas: [2],
         // materias: [2, 3],
         created_at: new Date(),
@@ -101,6 +130,7 @@ module.exports = {
       {
         professor_nome: "Dona Florinda",
         professor_cpf: "123389",
+        ativo: true,
         // turmas: [1, 2],
         // materias: [1, 2, 3],
         created_at: new Date(),
@@ -108,47 +138,53 @@ module.exports = {
       },
     ]);
 
-    await QueryInterface.bulkInsert("professores_materias", [
+    const professores = await queryInterface.sequelize.query(
+      `SELECT id from PROFESSORES;`
+    );
+
+    const professoresRows = professores[0];
+
+    await queryInterface.bulkInsert("professores_materias", [
       {
-        professor_id: 1,
-        materia_id: 1,
+        professor_id: professoresRows[0].id,
+        materia_id: materiasRows[0].id,
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
-        professor_id: 2,
-        materia_id: 3,
+        professor_id: professoresRows[1].id,
+        materia_id: materiasRows[2].id,
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
-        professor_id: 2,
-        materia_id: 2,
+        professor_id: professoresRows[1].id,
+        materia_id: materiasRows[1].id,
         created_at: new Date(),
         updated_at: new Date(),
       },
     ]);
 
-    await QueryInterface.bulkInsert("horarios", [
+    await queryInterface.bulkInsert("horarios", [
       {
         diahora: "1996-01-01T07:00:00Z",
-        professor_id: 1,
-        turma_id: 2,
-        materia_id: 1,
+        professor_id: professoresRows[0].id,
+        turma_id: turmasRows[1].id,
+        materia_id: materiasRows[0].id,
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
         diahora: "1996-01-01T07:50:00Z",
-        professor_id: 2,
-        turma_id: 1,
-        materia_id: 3,
+        professor_id: professoresRows[1].id,
+        turma_id: turmasRows[0].id,
+        materia_id: materiasRows[2].id,
         created_at: new Date(),
         updated_at: new Date(),
       },
     ]);
 
-    await QueryInterface.bulkInsert("horaentradas", [
+    await queryInterface.bulkInsert("horaentradas", [
       {
         horaentrada: "07:00h",
         created_at: new Date(),
@@ -161,7 +197,7 @@ module.exports = {
       },
     ]);
 
-    await QueryInterface.bulkInsert("horasaidas", [
+    await queryInterface.bulkInsert("horasaidas", [
       {
         horasaida: "12:00h",
         created_at: new Date(),
@@ -174,7 +210,7 @@ module.exports = {
       },
     ]);
 
-    await QueryInterface.bulkInsert("periodos", [
+    await queryInterface.bulkInsert("periodos", [
       {
         periodo: "4 horas",
         created_at: new Date(),
@@ -187,7 +223,7 @@ module.exports = {
       },
     ]);
 
-    await QueryInterface.bulkInsert("alunos", [
+    await queryInterface.bulkInsert("alunos", [
       {
         dados_escolares_data_matricula: "13/02/2023",
         dados_escolares_data_pre_matricula: null,
@@ -210,5 +246,18 @@ module.exports = {
       },
     ]);
   },
-  down: () => {},
+  down: async (queryInterface) => {
+    await queryInterface.bulkDelete("sistemas", null, {});
+    await queryInterface.bulkDelete("anos", null, {});
+    await queryInterface.bulkDelete("turnos", null, {});
+    await queryInterface.bulkDelete("turmas", null, {});
+    await queryInterface.bulkDelete("materias", null, {});
+    await queryInterface.bulkDelete("professores", null, {});
+    await queryInterface.bulkDelete("professores_materias", null, {});
+    await queryInterface.bulkDelete("horarios", null, {});
+    await queryInterface.bulkDelete("horaentradas", null, {});
+    await queryInterface.bulkDelete("horasaidas", null, {});
+    await queryInterface.bulkDelete("periodos", null, {});
+    await queryInterface.bulkDelete("alunos", null, {});
+  },
 };

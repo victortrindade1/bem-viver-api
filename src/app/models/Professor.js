@@ -5,12 +5,15 @@ class Professor extends Model {
     super.init(
       {
         professor_nome: Sequelize.STRING,
+        ativo: Sequelize.BOOLEAN,
         professor_celular: Sequelize.STRING,
         professor_telefone: Sequelize.STRING,
         professor_email: Sequelize.STRING,
         professor_cpf: Sequelize.STRING,
         professor_rg: Sequelize.STRING,
         professor_data_nascimento: Sequelize.STRING,
+        profissional_data_matricula: Sequelize.STRING,
+        profissional_data_encerramento: Sequelize.STRING,
         profissional_registro_cfep: Sequelize.STRING,
         profissional_formacao_acad_1: Sequelize.STRING,
         profissional_instituicao_1: Sequelize.STRING,
@@ -56,6 +59,10 @@ class Professor extends Model {
     });
     this.hasMany(models.Horario, {
       as: "professor_horario",
+      foreignKey: "professor_id",
+    });
+    this.hasMany(models.ProfessorMateria, {
+      as: "professor_materia",
       foreignKey: "professor_id",
     });
   }

@@ -13,6 +13,7 @@ import Horaentrada from "../app/models/Horaentrada";
 import Horasaida from "../app/models/Horasaida";
 import Professor from "../app/models/Professor";
 import Horario from "../app/models/Horario";
+import ProfessorMateria from "../app/models/ProfessorMateria";
 
 import databaseConfig from "../config/database";
 
@@ -30,6 +31,7 @@ const models = [
   Horasaida,
   Professor,
   Horario,
+  ProfessorMateria,
 ];
 
 class Database {

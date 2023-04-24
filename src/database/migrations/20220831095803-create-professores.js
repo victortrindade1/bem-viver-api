@@ -25,6 +25,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
+      ativo: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN,
+      },
       professor_celular: {
         allowNull: true,
         type: Sequelize.STRING,
@@ -51,6 +55,14 @@ module.exports = {
         unique: true,
       },
       professor_data_nascimento: {
+        allowNull: true,
+        type: Sequelize.STRING,
+      },
+      profissional_data_matricula: {
+        allowNull: true,
+        type: Sequelize.STRING,
+      },
+      profissional_data_encerramento: {
         allowNull: true,
         type: Sequelize.STRING,
       },

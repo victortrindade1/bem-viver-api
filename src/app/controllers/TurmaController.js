@@ -61,7 +61,7 @@ class TurmaController {
         pages: Math.ceil(total / limit),
       });
     } catch (err) {
-      return res.status(400).json({ error: "Error in database" });
+      return res.status(400).json(err, err.message);
     }
   }
 

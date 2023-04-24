@@ -36,6 +36,10 @@ class Materia extends Model {
       foreignKey: "materia_id",
       as: "materia_horario",
     });
+    this.hasMany(models.ProfessorMateria, {
+      as: "materia_professor",
+      foreignKey: "materia_id",
+    });
   }
 }
 

@@ -4,6 +4,7 @@ export const validateProfessorStore = async (req, res, next) => {
   try {
     const schema = Yup.object().shape({
       professor_nome: Yup.string().required(),
+      // ativo: Yup.boolean().required(),
     });
 
     await schema.validate(req.body, { abortEarly: false });
@@ -22,9 +23,12 @@ export const validateProfessorUpdate = async (req, res, next) => {
       turmas: Yup.array().of(Yup.number()),
       materias: Yup.array().of(Yup.number()),
       professor_nome: Yup.string(),
+      ativo: Yup.boolean(),
       professor_cpf: Yup.string(),
       professor_rg: Yup.string(),
       professor_data_nascimento: Yup.string(),
+      profissional_data_matricula: Yup.string(),
+      profissional_data_encerramento: Yup.string(),
       profissional_registro_cfep: Yup.string(),
       profissional_formacao_acad_1: Yup.string(),
       profissional_instituicao_1: Yup.string(),

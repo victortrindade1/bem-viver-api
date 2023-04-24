@@ -49,8 +49,8 @@ export default new (class ShowProfessorService {
         {
           model: Materia,
           as: "materias_professor",
-          attributes: ["materia"],
-          through: { attributes: [] },
+          attributes: ["id", "materia"],
+          through: { attributes: ["id"] },
         },
       ],
     });

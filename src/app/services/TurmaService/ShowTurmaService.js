@@ -3,6 +3,7 @@ import Professor from "../../models/Professor";
 import Materia from "../../models/Materia";
 import Ano from "../../models/Ano";
 import Turno from "../../models/Turno";
+import Sistema from "../../models/Sistema";
 
 export default new (class ShowTurmaService {
   async run({ id }) {
@@ -11,6 +12,12 @@ export default new (class ShowTurmaService {
         {
           model: Ano,
           as: "dados_ano",
+          include: [
+            {
+              model: Sistema,
+              as: "dados_sistema",
+            },
+          ],
           // attributes: ["name", "path", "url"],
         },
         {
