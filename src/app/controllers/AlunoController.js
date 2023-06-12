@@ -45,13 +45,20 @@ class AlunoController {
 
   async index(req, res) {
     try {
-      const { page = 1, q: filter, limit = 5, order = "DESC" } = req.query;
+      const {
+        page = 1,
+        q: filter,
+        limit = 5,
+        order = "DESC",
+        field = "Nome",
+      } = req.query;
 
       const { total, alunos } = await IndexAlunoService.run({
         filter,
         limit,
         page,
         order,
+        field,
       });
 
       return res.json({

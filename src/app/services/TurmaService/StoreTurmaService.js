@@ -1,7 +1,8 @@
 import Turma from "../../models/Turma";
+import ShowTurmaService from "./ShowTurmaService";
 
 class StoreTurmaService {
-  async run({ turma, ano_id, turno_id, professores, materias }) {
+  async run({ turma, ano_id, turno_id }) {
     const request = {
       turma,
       ano_id,
@@ -10,9 +11,9 @@ class StoreTurmaService {
 
     const verifyExists = await Turma.findOne({
       where: {
-        ano_id: ano_id || null,
         turma,
-        turno_id: turno_id || null,
+        turno_id,
+        ano_id,
       },
     });
 
@@ -21,19 +22,10 @@ class StoreTurmaService {
     }
 
     const newTurma = await Turma.create(request);
-    // const { id } = await Turma.create(request);
 
-    // Relação Many-to-Many: Professores e Turmas
-    if (professores && professores.length > 0) {
-      await newTurma.setProfessores(professores);
-    }
+    const turmaCreated = await ShowTurmaService.run({ id: newTurma.id });
 
-    // Relação Many-to-Many: Matérias e Turmas
-    if (materias && materias.length > 0) {
-      await newTurma.setMaterias(materias);
-    }
-
-    return newTurma;
+    return turmaCreated;
   }
 }
 

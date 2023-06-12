@@ -7,9 +7,20 @@ export default new (class UpdatePeriodoService {
       periodo,
     };
 
-    const periodoExists = await Periodo.findByPk(id);
+    const periodoFound = await Periodo.findByPk(id);
 
-    const periodoUpdated = await periodoExists.update(request);
+    // Verifica se existe outro com este nome
+    const verifyExists = await Periodo.findOne({
+      where: {
+        periodo: periodo || periodoFound.periodo,
+      },
+    });
+
+    if (verifyExists) {
+      throw new Error("Período já existe.");
+    }
+
+    const periodoUpdated = await periodoFound.update(request);
 
     return periodoUpdated;
   }

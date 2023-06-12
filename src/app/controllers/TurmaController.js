@@ -7,14 +7,12 @@ import ShowTurmaService from "../services/TurmaService/ShowTurmaService";
 class TurmaController {
   async store(req, res) {
     try {
-      const { turma, ano_id, turno_id, professores, materias } = req.body;
+      const { turma, ano_id, turno_id } = req.body;
 
       const newTurma = await StoreTurmaService.run({
         turma,
         ano_id,
         turno_id,
-        professores,
-        materias,
       });
 
       return res.json(newTurma);
@@ -25,7 +23,7 @@ class TurmaController {
 
   async update(req, res) {
     try {
-      const { turma, ano_id, turno_id, professores, materias } = req.body;
+      const { turma, ano_id, turno_id } = req.body;
       const { id } = req.params;
 
       const response = await UpdateTurmaService.run({
@@ -33,8 +31,6 @@ class TurmaController {
         turma,
         ano_id,
         turno_id,
-        professores,
-        materias,
       });
 
       return res.json(response);

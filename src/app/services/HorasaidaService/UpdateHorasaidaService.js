@@ -7,9 +7,20 @@ export default new (class UpdateHorasaidaService {
       horasaida,
     };
 
-    const horasaidaExists = await Horasaida.findByPk(id);
+    const horasaidaFound = await Horasaida.findByPk(id);
 
-    const horasaidaUpdated = await horasaidaExists.update(request);
+    // Verifica se existe outro com este nome
+    const verifyExists = await Horasaida.findOne({
+      where: {
+        horasaida: horasaida || horasaidaFound.horasaida,
+      },
+    });
+
+    if (verifyExists) {
+      throw new Error("Hora de Saída já existe.");
+    }
+
+    const horasaidaUpdated = await horasaidaFound.update(request);
 
     return horasaidaUpdated;
   }
